@@ -1,0 +1,5 @@
+const deals = [
+  { id: 1, name: 'Cabbage', effectiveDate: 12/1/2019, closingDate: 11/4/2021, subSector: 'Infrastructure', isLiquid: 'Yes'},
+  { id: 2, name: 'Garlic', effectiveDate: 17/06/2023, closingDate: , subSector: 'Residential', isLiquid: 'Yes'},
+  { id: 3, name: 'Apple', effectiveDate: 4/1/2024, closingDate: , subSector: 'CLO', isLiquid: 'No'},
+];
