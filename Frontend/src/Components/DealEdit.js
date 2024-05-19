@@ -5,18 +5,16 @@ import { MDBTable, MDBTableHead, MDBTableBody } from 'mdb-react-ui-kit';
 
 function DealEdit({ deal, setGotDeals, setShowEditForm, setPageMsg }) {
 
-  //const effectiveDate = deal.effectiveDate;
   const [effectiveDateEntered, setEffectiveDateEntered] = useState(deal.effectiveDate);
-  //const closingDate = deal.closingDate;
   const [closingDateEntered, setClosingDateEntered] = useState(deal.closingDate);
-  //const subSector = deal.subSector;
   const [subSectorEntered, setSubSectorEntered] = useState(deal.subSector);
-  //const isLiquid = deal.isLiquid;
   const [isLiquidEntered, setIsLiquidEntered] = useState(deal.isLiquid);
 
   const [itemChanged, setItemChanged] = useState(false);
 
   const navigate = useNavigate();
+
+  const subSectorValueList = ['CLO', 'Residential', 'Infrastructure'];
 
   function handleEffectiveDateChange(event) {
     event.preventDefault();
@@ -128,14 +126,12 @@ function DealEdit({ deal, setGotDeals, setShowEditForm, setPageMsg }) {
     navigate("/");
   }
 
-  const subSectorValueList = ['CLO', 'Residential', 'Infrastructure'];
-
   return (
     <div className="App">
       < form id="MainForm" onSubmit={handleSubmit}>
         <center>
-          <h5>Edit Deal: <b>{deal.dealName}</b></h5>
-          <MDBTable id='EditDeal'>
+          <p>Editing Deal: <b>{deal.dealName}</b></p>
+          <MDBTable striped hover bordered align="middle" small responsive borderColor="dark">
             <MDBTableHead>
               <tr>
                 <th>Deal Field</th>
@@ -158,7 +154,7 @@ function DealEdit({ deal, setGotDeals, setShowEditForm, setPageMsg }) {
                 <td><input type='checkbox' id='closingDateNull' value='off' onChange={handleClosingDateChange} /></td>
               </tr>
               <tr>
-                <td>subSector</td>
+                <td>Sub-Sector</td>
                 <td>{deal.subSector}</td>
                 <td>
                   <select id='subSector' onChange={handleSubSectorChange}>
@@ -182,7 +178,6 @@ function DealEdit({ deal, setGotDeals, setShowEditForm, setPageMsg }) {
               </tr>
             </MDBTableBody>
           </MDBTable>
-          <br></br>
           <button onClick={() => handleCancel()}>Cancel</button>{itemChanged && <button>Save Changes</button>}
         </center>
       </form>

@@ -62,7 +62,9 @@ export default function Securities({ deal, setModalOpen, setPageMsg }) {
                      </MDBTableBody>
                   </MDBTable>
                </MDBModalBody>
-               <MDBModalFooter><MDBBtn color='secondary' onClick={() => setModalOpen(false)}>Close</MDBBtn></MDBModalFooter>
+               <MDBModalFooter>
+                  <MDBBtn color='secondary' onClick={() => setModalOpen(false)}>Close</MDBBtn>
+               </MDBModalFooter>
             </MDBModalContent>
          </MDBModalDialog>
       </MDBModal>

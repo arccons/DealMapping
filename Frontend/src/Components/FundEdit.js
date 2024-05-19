@@ -87,7 +87,7 @@ function FundEdit({ fund, setGotFunds, setShowEditForm, setPageMsg }) {
       <form id="MainForm" onSubmit={handleSubmit}>
         <center>
           <h6>Editing fund: <b>{fund.fund_name}</b></h6>
-          <MDBTable id='record'>
+          <MDBTable striped hover bordered align="middle" small responsive borderColor="dark">
             <MDBTableHead>
               <tr>
                 <th>Fund Field</th>

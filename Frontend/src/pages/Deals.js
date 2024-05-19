@@ -90,7 +90,7 @@ function Deals({ setDBdeal }) {
               setModalOpen={showSecurities}
               placeholder={"Search Deals"}>
             </Search>
-            <br></br>
+            <br />
             <MDBTable striped hover bordered align="middle" small responsive borderColor="dark">
               <MDBTableHead>
                 <tr align="center">
@@ -135,6 +135,7 @@ function Deals({ setDBdeal }) {
             setShowEditForm={setShowEditForm}
             setPageMsg={setPageMsg} />
         }
+        <br />
         {pageMsg}
       </center>
     </div>
