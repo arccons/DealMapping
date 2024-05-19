@@ -20,7 +20,11 @@ from API import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', views.dealList),
-    path('dealList/', views.dealList),
-    path('updateDeal/', views.updateDeal),
+    path('', views.deals), # GET
+    path('deals', views.deals), # GET
+    path('dealSecurities/<int:dealID>', views.dealSecurities), # GET
+    path('funds/<int:dealID>', views.funds), # GET
+    path('fundHistory/<int:dealID>/<int:fund_id>/<str:as_of_date>', views.fundHistory), # GET
+    path('updateDeal', views.updateDeal), # POST
+    path('updateFund', views.updateFund), # POST
 ]
