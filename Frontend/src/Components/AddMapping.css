@@ -1,0 +1,14 @@
+.PITrange {
+   display: flex;
+   flex-direction: column;
+}
+
+.PIT {
+   border-bottom: 5px;
+   flex-direction: row;
+}
+
+.dateRange {
+   border-top: 5px;
+   flex-direction: row;
+}

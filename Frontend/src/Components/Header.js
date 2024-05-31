@@ -15,11 +15,11 @@ export default function Header() {
         <>
             <MDBNavbar expand='lg' light bgColor='light' className='top'>
                 <MDBContainer fluid>
-                    <MDBNavbarBrand>DealMapping</MDBNavbarBrand>
+                    <MDBNavbarBrand href='/'>DealMapping</MDBNavbarBrand>
                     <MDBCollapse navbar>
                         <MDBNavbarNav>
                             <MDBNavbarItem>
-                                <MDBNavbarLink active aria-current='page' href='/'>Deals</MDBNavbarLink>
+                                <MDBNavbarLink active href='/'>Deals</MDBNavbarLink>
                             </MDBNavbarItem>
                         </MDBNavbarNav>
                     </MDBCollapse>

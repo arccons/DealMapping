@@ -17,12 +17,12 @@ export default function Securities({ deal, setModalOpen, setPageMsg }) {
    const [securities, setSecurities] = useState([]);
    const [gotSecurities, setGotSecurities] = useState(false);
 
-   const securitiesURL = "http://localhost:8000/dealSecurities/" + deal.id;
+   const securitiesURL = "http://localhost:8000/dealSecurities/" + deal.ACDB_Deal_ID;
 
    useEffect(() => {
-      console.log("Search.js: useEffect entered.");
+      console.log("Securities.js: useEffect entered.");
       if (!gotSecurities) {
-         console.log("useEffect: Getting securities list.");
+         console.log("Securities.js: useEffect getting securities list.");
          const config = {
             headers: {
                'content-type': 'application/json'
@@ -39,7 +39,7 @@ export default function Securities({ deal, setModalOpen, setPageMsg }) {
                setGotSecurities(false);
                setSecurities([]);
                setModalOpen(false);
-               const errMsg = "Error getting securities from DB: " + error.message;
+               const errMsg = "Securities.js: Error getting securities from DB: " + error.message;
                console.log(errMsg);
                setPageMsg(errMsg);
             });
@@ -51,14 +51,25 @@ export default function Securities({ deal, setModalOpen, setPageMsg }) {
          <MDBModalDialog>
             <MDBModalContent>
                <MDBModalHeader>
-                  <MDBModalTitle>Securities for: {deal.dealName}</MDBModalTitle>
+                  <MDBModalTitle>Securities for: {deal.Deal_Name}</MDBModalTitle>
                   <MDBBtn className='btn-close' color='none' onClick={() => setModalOpen(false)}></MDBBtn>
                </MDBModalHeader>
                <MDBModalBody>
                   <MDBTable>
-                     <MDBTableHead><tr><th>Security</th><th>As of Date</th></tr></MDBTableHead>
+                     <MDBTableHead>
+                        <tr>
+                           <th>Security</th>
+                           <th>Investment Type</th>
+                           <th>Currency</th>
+                        </tr>
+                     </MDBTableHead>
                      <MDBTableBody>
-                        {securities.map((s, index) => (<tr key={index}><td>{s.security_id}</td><td>{s.as_of_date}</td></tr>))}
+                        {securities.map((s, index) => (
+                           <tr key={index}>
+                              <td>{s.Security_Name}</td>
+                              <td>{s.Investment_Type}</td>
+                              <td>{s.Currency}</td>
+                           </tr>))}
                      </MDBTableBody>
                   </MDBTable>
                </MDBModalBody>

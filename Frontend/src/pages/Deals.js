@@ -5,9 +5,10 @@ import { MDBTable, MDBTableHead, MDBTableBody, MDBBtn } from 'mdb-react-ui-kit';
 
 import DealEdit from '../Components/DealEdit';
 import Securities from '../Components/Securities';
+
 import Search from '../ARC/Search';
 
-function Deals({ setDBdeal }) {
+export default function Deals({ setDBdeal }) {
 
   const [gotDeals, setGotDeals] = useState(false);
   const [initialDealList, setInitialDealList] = useState([]);
@@ -21,12 +22,12 @@ function Deals({ setDBdeal }) {
   const navigate = useNavigate();
 
   const dealsURL = "http://localhost:8000/deals";
-  const search_parameters = ["id", "dealName"];
+  const search_parameters = ["ACDB_Deal_ID", "Deal_Name"];
 
   useEffect(() => {
     console.log("Deal.js: useEffect entered.");
     if (!gotDeals) {
-      console.log("useEffect: Getting deal list.");
+      console.log("Deal.js: useEffect getting deal list.");
       const config = {
         headers: {
           'content-type': 'application/json'
@@ -39,10 +40,10 @@ function Deals({ setDBdeal }) {
           setCurrentDealList(initialDeals);
           setGotDeals(true);
           setShowEditForm(false);
-          setPageMsg("Got deal list from DB.");
+          setPageMsg("Deal.js: Got deal list from DB.");
         })
         .catch(error => {
-          setPageMsg("Error getting deal list: " + error);
+          setPageMsg("Deal.js: Error getting deal list: " + error);
           setGotDeals(false);
           setShowEditForm(false);
         });
@@ -55,16 +56,18 @@ function Deals({ setDBdeal }) {
     const selectedIndex = event.target.value;
     const dl = currrentDealList[selectedIndex];
     setCurrentDeal(dl);
-    setPageMsg("Got deal details.");
+    setShowEditForm(true);
+    setPageMsg("Deal.js: Got deal details.");
   }
 
-  function handleMappingClick(event) {
+  function handleFundsClick(event) {
     event.preventDefault();
     setShowEditForm(false);
     const selectedIndex = event.target.value;
     const dl = currrentDealList[selectedIndex];
+    setCurrentDeal(dl);
     setDBdeal(dl);
-    navigate('/funds');
+    navigate('/funds')
   }
 
   function handleSecuritiesClick(event) {
@@ -72,9 +75,9 @@ function Deals({ setDBdeal }) {
     const selectedIndex = event.target.value;
     const dl = currrentDealList[selectedIndex];
     setCurrentDeal(dl);
-    console.log("Current deal = " + dl.dealName);
+    console.log("Deal.js: Current deal = " + dl.dealName);
     setShowSecurities(true);
-    console.log("showSecurities = " + showSecurities);
+    console.log("Deal.js: showSecurities = " + showSecurities);
   }
 
   return (
@@ -87,36 +90,39 @@ function Deals({ setDBdeal }) {
               initialDataList={initialDealList}
               setCurrentDataList={setCurrentDealList}
               search_parameters={search_parameters}
-              setModalOpen={showSecurities}
               placeholder={"Search Deals"}>
             </Search>
             <br />
             <MDBTable striped hover bordered align="middle" small responsive borderColor="dark">
               <MDBTableHead>
                 <tr align="center">
-                  <th>Securities</th>
-                  <th>ID</th>
-                  <th>Name</th>
-                  <th>Effective Date</th>
+                  <th>Edit Deal</th>
+                  <th>ACDB_Deal_ID</th>
+                  <th>Entity Code</th>
+                  <th>Deal Name</th>
                   <th>Closing Date</th>
+                  <th>Modified Date</th>
                   <th>Sub-Sector</th>
+                  <th>Strategy</th>
                   <th>Is Liquid</th>
-                  <th>Edit</th>
-                  <th>Mappings</th>
+                  <th>Securities</th>
+                  <th>Funds</th>
                 </tr>
               </MDBTableHead>
               <MDBTableBody>
                 {currrentDealList.map((d, index) => (
                   <tr key={index} align="center">
+                    <td><MDBBtn color='link' size='sm' value={index} onClick={handleEditClick}>Edit Deal</MDBBtn></td>
+                    <td>{d.ACDB_Deal_ID}</td>
+                    <td>{d.Deal_Name_EntityCode}</td>
+                    <td>{d.Deal_Name}</td>
+                    <td>{d.Closing_Date === 'None' ? '' : d.Closing_Date}</td>
+                    <td>{d.Modify_Date === 'None' ? '' : d.Modify_Date}</td>
+                    <td>{d.Subsector}</td>
+                    <td>{d.Strategy}</td>
+                    <td>{d.Liquid_Illiquid}</td>
                     <td><button value={index} onClick={handleSecuritiesClick}>Securities</button></td>
-                    <td>{d.id}</td>
-                    <td>{d.dealName}</td>
-                    <td>{d.effectiveDate}</td>
-                    <td>{d.closingDate === 'None' ? '' : d.closingDate}</td>
-                    <td>{d.subSector}</td>
-                    <td>{d.isLiquid}</td>
-                    <td><MDBBtn color='link' rounded size='sm' value={index} onClick={handleEditClick}>Edit</MDBBtn></td>
-                    <td><button value={index} onClick={handleMappingClick}>Mappings</button></td>
+                    <td><button value={index} onClick={handleFundsClick}>Funds</button></td>
                   </tr>
                 ))}
               </MDBTableBody>
@@ -133,13 +139,10 @@ function Deals({ setDBdeal }) {
             deal={currentDeal}
             setGotDeals={setGotDeals}
             setShowEditForm={setShowEditForm}
-            setPageMsg={setPageMsg} />
-        }
+            setPageMsg={setPageMsg} />}
         <br />
         {pageMsg}
       </center>
     </div>
   );
 }
-
-export default Deals;

@@ -1,17 +1,16 @@
-USE [DealDB]
+USE [DealMapping]
 GO
 
-/****** Object:  View [dbo].[deal_securities_v]    Script Date: 19-05-2024 11:37:55 ******/
+/****** Object:  View [dbo].[deal_securities_v]    Script Date: 26-05-2024 10:56:25 ******/
 SET ANSI_NULLS ON
 GO
 
 SET QUOTED_IDENTIFIER ON
 GO
 
-
 CREATE VIEW [dbo].[deal_securities_v]
 AS
-SELECT dbo.Deal.id, dbo.Deal.dealName, dbo.DealSecurity.security_id, dbo.DealSecurity.as_of_date
-FROM  dbo.Deal INNER JOIN
-       dbo.DealSecurity ON dbo.Deal.id = dbo.DealSecurity.deal_id
+SELECT dbo.security.*, dbo.deal_security_fact.As_Of_Date, dbo.deal_security_fact.ACDB_Deal_ID
+FROM  dbo.security INNER JOIN
+       dbo.deal_security_fact ON dbo.security.Security_ID = dbo.deal_security_fact.Security_ID
 GO

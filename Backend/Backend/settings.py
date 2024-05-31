@@ -104,18 +104,18 @@ WSGI_APPLICATION = 'Backend.wsgi.application'
 
 DATABASES = {
     'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'DB' / 'db.sqlite3',
+    },
+    'mssql': {
         'ENGINE': os.getenv("MSSQL_ENGINE"), #'mssql',
-        'NAME': os.getenv("MSSQL_DATABASE"), #'DealDB',
+        'NAME': os.getenv("MSSQL_DATABASE"), #'DealMapping',
         'HOST': os.getenv("MSSQL_DB_HOST"), #'DESKTOP-ALT0UH5',
         'OPTIONS': {
                 'driver': os.getenv("MSSQL_DB_DRIVER"), #'ODBC Driver 18 for SQL Server',
                 'Trusted_Connection': os.getenv("MSSQL_TRUSTED_CONNECTION"), #'yes',
                 },
     },
-    'sqlite': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
 }
 
 

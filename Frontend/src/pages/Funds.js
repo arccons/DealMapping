@@ -2,30 +2,28 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { MDBTable, MDBTableHead, MDBTableBody, MDBBtn } from 'mdb-react-ui-kit';
-import History from '../Components/History';
 import FundEdit from '../Components/FundEdit';
 import Search from '../ARC/Search';
 
-function Funds({ DBdeal }) {
+export default function Funds({ DBdeal, setDBfund }) {
 
   const [initialFundList, setInitialFundList] = useState([]);
   const [currrentFundList, setCurrentFundList] = useState([]);
   const [currentFund, setCurrentFund] = useState();
   const [gotFunds, setGotFunds] = useState(false);
 
-  const [showHistory, setShowHistory] = useState(false);
   const [showEditForm, setShowEditForm] = useState(false);
   const [pageMsg, setPageMsg] = useState("");
 
   const navigate = useNavigate();
-  const fundsURL = "http://localhost:8000/funds/" + DBdeal.id;
-  const search_parameters = ["fund_name"];
+  const fundsURL = "http://localhost:8000/dealFunds/" + DBdeal.ACDB_Deal_ID;
+
+  const search_parameters = ["ACDB_Deal_ID", "Fund_Name"];
 
   useEffect(() => {
     console.log("Funds.js: useEffect entered.");
     if (!gotFunds) {
       console.log("Funds.js: useEffect getting Funds list.");
-      console.log(DBdeal);
       const config = {
         headers: {
           'content-type': 'application/json'
@@ -33,12 +31,11 @@ function Funds({ DBdeal }) {
       }
       axios.get(fundsURL, config)
         .then(response => {
-          const funds = JSON.parse(response.data.FUNDS_LIST);
-          setInitialFundList(funds);
-          setCurrentFundList(funds);
+          const DBfunds = JSON.parse(response.data.FUNDS_LIST);
+          setInitialFundList(DBfunds);
+          setCurrentFundList(DBfunds);
           setGotFunds(true);
-          console.log(funds);
-          setPageMsg("Got funds list from DB for deal: " + DBdeal.dealName);
+          setPageMsg("Got funds list from DB for deal: " + DBdeal.Deal_Name);
         })
         .catch(error => {
           setPageMsg("Error getting funds list: " + error);
@@ -47,38 +44,28 @@ function Funds({ DBdeal }) {
     }
   }, [DBdeal, fundsURL, gotFunds, pageMsg])
 
-  function handleHistoryClick(event) {
-    event.preventDefault();
-    const selectedIndex = event.target.value;
-    const f = currrentFundList[selectedIndex];
-    setCurrentFund(f);
-    setShowHistory(true);
-    setPageMsg("Editing Fund for deal ID: " + DBdeal.dealName);
-  }
-
   function handleEditClick(event) {
     event.preventDefault();
     const selectedIndex = event.target.value;
     const f = currrentFundList[selectedIndex];
     setCurrentFund(f);
     setShowEditForm(true);
-    setPageMsg("Editing Fund for deal ID: " + DBdeal.dealName);
+    setPageMsg("Editing Fund for deal ID: " + DBdeal.Deal_Name);
+  }
+
+  function handleMappingClick(event) {
+    event.preventDefault();
+    const selectedIndex = event.target.value;
+    const f = currrentFundList[selectedIndex];
+    setCurrentFund(f);
+    setDBfund(f);
+    navigate('/mappings');
   }
 
   return (
     <div className="App">
       <center>
-        <h5>{DBdeal.dealName}</h5>
-        <div>
-          Deal ID: <b>{DBdeal.id}</b> ||
-          Deal Name: <b>{DBdeal.dealName}</b> ||
-          Effective Date: <b>{DBdeal.effectiveDate}</b> ||
-          Closing Date: <b>{DBdeal.closingDate === 'None' ? '' : DBdeal.closingDate}</b> ||
-          Sub-Sector: <b>{DBdeal.subSector}</b> ||
-          Is Liquid: <b>{DBdeal.isLiquid}</b>
-        </div>
-        <br></br>
-        <h6>Funds for: {DBdeal.dealName}</h6>
+        <h5>Funds for: {DBdeal.Deal_Name} (ACDB_Deal_ID: {DBdeal.ACDB_Deal_ID}) </h5>
         {gotFunds &&
           <Search
             initialDataList={initialFundList}
@@ -91,67 +78,27 @@ function Funds({ DBdeal }) {
         <MDBTable striped hover bordered align="middle" small responsive borderColor="dark">
           <MDBTableHead>
             <tr align="center">
-              <th>History</th>
-              <th>Name</th>
-              <th>As of Date</th>
-              <th>Local Cmmt</th>
-              <th>Legal Cmmt</th>
-              <th>Is Active</th>
-              <th>Realized IRR</th>
-              <th>Realized PNL</th>
-              <th>Realized Date</th>
-              <th>IC_PM_ADJ</th>
-              <th>Realized MOIC</th>
+              <th>Edit Fund</th>
+              <th>Fund Name</th>
+              <th>Active/Realized</th>
+              <th>Deal Investment Currency</th>
+              <th>Investment Blended FX Rate</th>
+              <th>Mapping</th>
             </tr>
           </MDBTableHead>
           <MDBTableBody>
             {currrentFundList.map((f, index) => (
               <tr key={index} align="center">
-                <td><button value={index} onClick={handleHistoryClick}>History</button></td>
-                <td>{f.fund_name}</td>
-                <td>{f.as_of_date}</td>
-                <td>{f.local_cmmt === 'None' ? '' : f.local_cmmt}
-                  <br />
-                  <MDBBtn color='link' rounded size='sm' value={index} onClick={handleEditClick}>Edit</MDBBtn>
-                </td>
-                <td>{f.legal_cmmt === 'None' ? '' : f.legal_cmmt}
-                  <br />
-                  <MDBBtn color='link' rounded size='sm' value={index} onClick={handleEditClick}>Edit</MDBBtn>
-                </td>
-                <td>{f.is_active === 'None' ? '' : f.is_active}
-                  <br />
-                  <MDBBtn color='link' rounded size='sm' value={index} onClick={handleEditClick}>Edit</MDBBtn>
-                </td>
-                <td>{f.realized_irr === 'None' ? '' : f.realized_irr}
-                  <br />
-                  <MDBBtn color='link' rounded size='sm' value={index} onClick={handleEditClick}>Edit</MDBBtn>
-                </td>
-                <td>{f.realized_pnl === 'None' ? '' : f.realized_pnl}
-                  <br />
-                  <MDBBtn color='link' rounded size='sm' value={index} onClick={handleEditClick}>Edit</MDBBtn>
-                </td>
-                <td>{f.realized_date === 'None' ? '' : f.realized_date}
-                  <br />
-                  <MDBBtn color='link' rounded size='sm' value={index} onClick={handleEditClick}>Edit</MDBBtn>
-                </td>
-                <td>{f.ic_pm_adj === 'None' ? '' : f.ic_pm_adj}
-                  <br />
-                  <MDBBtn color='link' rounded size='sm' value={index} onClick={handleEditClick}>Edit</MDBBtn>
-                </td>
-                <td>{f.realized_moic === 'None' ? '' : f.realized_moic}
-                  <br />
-                  <MDBBtn color='link' rounded size='sm' value={index} onClick={handleEditClick}>Edit</MDBBtn>
-                </td>
+                <td><MDBBtn color='link' size='sm' value={index} onClick={handleEditClick}>Edit Fund</MDBBtn></td>
+                <td>{f.Fund_Name}</td>
+                <td>{f.Active_Realized}</td>
+                <td>{f.Deal_Investment_Currency}</td>
+                <td>{f.Investment_Blended_FX_Rate}</td>
+                <td><button value={index} onClick={handleMappingClick}>Mapping</button></td>
               </tr>
             ))}
           </MDBTableBody>
         </MDBTable>
-        {showHistory &&
-          <History
-            fund={currentFund}
-            setModalOpen={setShowHistory}
-            setPageMsg={setPageMsg}>
-          </History>}
         {!showEditForm && <button onClick={() => navigate("/")}>Done</button>}
         <br></br>
         {showEditForm &&
@@ -166,5 +113,3 @@ function Funds({ DBdeal }) {
     </div>
   );
 }
-
-export default Funds;

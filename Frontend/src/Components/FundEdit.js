@@ -1,63 +1,27 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { MDBTable, MDBTableHead, MDBTableBody } from 'mdb-react-ui-kit';
+import { ARC_handleSelectChange_NULL, ARC_handleTextChange_NULL } from '../ARC/ChangeFields';
 
-function FundEdit({ fund, setGotFunds, setShowEditForm, setPageMsg }) {
+export default function FundEdit({ fund, setGotFunds, setShowEditForm, setPageMsg }) {
 
-  const [local_cmmt, setLocalCmmt] = useState(fund.local_cmmt);
-  const [is_active, setIsActive] = useState(fund.is_active);
-  const [realized_irr, setRealizedIRR] = useState(fund.realized_irr);
-  const [realized_pnl, setRealizedPNL] = useState(fund.realized_pnl);
-  const [realized_date, setRealizedDate] = useState(fund.realized_date);
+  const [activeFinal, setActiveFinal] = useState(fund.Active_Realized);
+  const [currencyFinal, setCurrencyFinal] = useState(fund.Deal_Investment_Currency);
+  const [FXrateFinal, setFXrateFinal] = useState(fund.Investment_Blended_FX_Rate);
 
   const [itemChanged, setItemChanged] = useState(false);
-
-  const navigate = useNavigate();
-
-  function handleLocalCmmtChange(event) {
-    event.preventDefault();
-    setItemChanged(true);
-    setLocalCmmt(document.getElementById("localCmmt").value);
-  }
-
-  function handleIsActiveChange(event) {
-    event.preventDefault();
-    setItemChanged(true);
-    setIsActive(document.getElementById("isActive").value);
-  }
-
-  function handleRealizedIRRchange(event) {
-    event.preventDefault();
-    setItemChanged(true);
-    setRealizedIRR(document.getElementById("realizedIRR").value);
-  }
-
-  function handlerealizedPNLchange(event) {
-    event.preventDefault();
-    setItemChanged(true);
-    setRealizedPNL(document.getElementById("realizedPNL").value)
-  }
-
-  function handleRealizedDateChange(event) {
-    event.preventDefault();
-    setItemChanged(true);
-    setRealizedDate(document.getElementById("realizedDate").value)
-  }
 
   function handleSubmit(event) {
     event.preventDefault();
     if (itemChanged) {
       const url = 'http://localhost:8000/updateFund';
       const formData = new FormData();
-      formData.append('deal_id', fund.deal_id);
-      formData.append('fund_name', fund.fund_name);
-      formData.append('as_of_date', fund.as_of_date);
-      formData.append('local_cmmt', local_cmmt === 'None' ? '' : local_cmmt);
-      formData.append('is_active', is_active === 'None' ? '' : is_active);
-      formData.append('realized_irr', realized_irr === 'None' ? '' : realized_irr);
-      formData.append('realized_pnl', realized_pnl === 'None' ? '' : realized_pnl);
-      formData.append('realized_date', realized_date === 'None' ? '' : realized_date);
+      formData.append('ACDB_Deal_ID', fund.ACDB_Deal_ID);
+      formData.append('Fund_Name', fund.Fund_Name);
+      //formData.append('As_Of_Date', fund.As_Of_Date);
+      formData.append('Active_Realized', activeFinal === 'None' ? '' : activeFinal);
+      formData.append('Deal_Investment_Currency', currencyFinal === 'None' ? '' : currencyFinal);
+      formData.append('Investment_Blended_FX_Rate', FXrateFinal === 'None' ? '' : FXrateFinal);
       const config = {
         headers: {
           'content-type': 'application/vnd.api+json'
@@ -67,7 +31,7 @@ function FundEdit({ fund, setGotFunds, setShowEditForm, setPageMsg }) {
         .then((response) => {
           setGotFunds(false);
           setShowEditForm(false);
-          setPageMsg("fund details updated. " + response.message);
+          setPageMsg("Fund details updated. " + response.message);
         })
         .catch((error) => {
           setPageMsg("Error updating fund details. " + error);
@@ -75,60 +39,83 @@ function FundEdit({ fund, setGotFunds, setShowEditForm, setPageMsg }) {
     }
   }
 
+  /* function handleActiveChange(event) {
+    //event.preventDefault();
+    setItemChanged(true);
+    const nullVal = document.getElementById("activeNull").checked;
+    console.log("activeNull nullVal = " + nullVal);
+    let enteredVal = document.getElementById("active").value;
+    console.log("active enteredVal = " + enteredVal);
+    if (nullVal === true) {
+      setActiveFinal(null);
+    }
+    else if (nullVal === false) {
+      if (enteredVal !== '-1') {
+        setActiveFinal(enteredVal);
+      }
+    }
+  } */
+
+  function handleTextChange(nullField, changedField, setter) {
+    setItemChanged(true);
+    ARC_handleTextChange_NULL(nullField, changedField, setter);
+  }
+
+  function handleSelectChange(nullField, changedField, setter) {
+    setItemChanged(true);
+    ARC_handleSelectChange_NULL(nullField, changedField, setter);
+  }
+
   function handleCancel() {
     setShowEditForm(false);
     setItemChanged(false);
     setPageMsg("Got funds list from DB for deal.");
-    navigate("/funds");
   }
 
   return (
     <div className="App">
       <form id="MainForm" onSubmit={handleSubmit}>
         <center>
-          <h6>Editing fund: <b>{fund.fund_name}</b></h6>
+          <h6>Editing fund: <b>{fund.Fund_Name}</b></h6>
           <MDBTable striped hover bordered align="middle" small responsive borderColor="dark">
             <MDBTableHead>
               <tr>
                 <th>Fund Field</th>
                 <th>Current Value</th>
                 <th>Updated Value</th>
+                <th>NULL Value</th>
               </tr>
             </MDBTableHead>
             <MDBTableBody>
               <tr>
-                <td>Local Cmmt</td>
-                <td>{fund.local_cmmt}</td>
-                <td><input type="text" id='localCmmt' onChange={handleLocalCmmtChange}></input></td>
+                <td>Active/Realized</td>
+                <td>{fund.Active_Realized}</td>
+                <td>
+                  <select id='active' onChange={() => handleSelectChange("activeNull", "active", setActiveFinal)}>
+                    <option value={"-1"}>Choose one option</option>
+                    <option key={1} value={"Active"}>{"Active"}</option>
+                    <option key={2} value={"Realized"}>{"Realized"}</option>
+                  </select>
+                </td>
+                <td><input type='checkbox' id='activeNull' onChange={() => handleSelectChange("activeNull", "active", setActiveFinal)} /></td>
               </tr>
               <tr>
-                <td>Is Active</td>
-                <td>{fund.is_active}</td>
-                <td><input type="text" id='isActive' onChange={handleIsActiveChange}></input></td>
+                <td>Deal Investment Currency</td>
+                <td>{fund.Deal_Investment_Currency}</td>
+                <td><input type="text" id='currency' onChange={() => handleTextChange("currencyNull", "currency", setCurrencyFinal)} /></td>
+                <td><input type='checkbox' id='currencyNull' onChange={() => handleTextChange("currencyNull", "currency", setCurrencyFinal)} /></td>
               </tr>
               <tr>
-                <td>Realized IRR</td>
-                <td>{fund.realized_irr}</td>
-                <td><input type="text" id='realizedIRR' onChange={handleRealizedIRRchange}></input></td>
-              </tr>
-              <tr>
-                <td>Realized PNL</td>
-                <td>{fund.realized_pnl}</td>
-                <td><input type="text" id='realizedPNL' onChange={handlerealizedPNLchange}></input></td>
-              </tr>
-              <tr>
-                <td>Realized Date</td>
-                <td>{fund.realized_date}</td>
-                <td><input type="Date" id='realizedDate' onChange={handleRealizedDateChange}></input></td>
+                <td>Investment Blended FX Rate</td>
+                <td>{fund.Investment_Blended_FX_Rate}</td>
+                <td><input type="text" id='FXrate' onChange={() => handleTextChange("FXrateNull", "FXrate", setFXrateFinal)}></input></td>
+                <td><input type='checkbox' id='FXrateNull' onChange={() => handleTextChange("FXrateNull", "FXrate", setFXrateFinal)} /></td>
               </tr>
             </MDBTableBody>
           </MDBTable>
-          <br></br>
           <button onClick={() => handleCancel()}>Cancel</button>{itemChanged && <button>Save Changes</button>}
         </center>
       </form>
     </div>
   );
 }
-
-export default FundEdit;
