@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import { MDBTable, MDBTableHead, MDBTableBody, MDBBtn } from 'mdb-react-ui-kit';
 import FundEdit from '../Components/FundEdit';
 import Search from '../ARC/Search';
+import { Table, Button } from 'react-bootstrap';
 
 export default function Funds({ DBdeal, setDBfund }) {
 
@@ -75,8 +75,8 @@ export default function Funds({ DBdeal, setDBfund }) {
           </Search>
         }
         <br></br>
-        <MDBTable striped hover bordered align="middle" small responsive borderColor="dark">
-          <MDBTableHead>
+        <Table striped hover bordered align="middle" responsive>
+          <thead>
             <tr align="center">
               <th>Edit Fund</th>
               <th>Fund Name</th>
@@ -85,21 +85,21 @@ export default function Funds({ DBdeal, setDBfund }) {
               <th>Investment Blended FX Rate</th>
               <th>Mapping</th>
             </tr>
-          </MDBTableHead>
-          <MDBTableBody>
+          </thead>
+          <tbody>
             {currrentFundList.map((f, index) => (
               <tr key={index} align="center">
-                <td><MDBBtn color='link' size='sm' value={index} onClick={handleEditClick}>Edit Fund</MDBBtn></td>
+                <td><Button variant="link" size='sm' value={index} onClick={handleEditClick}>Edit Fund</Button></td>
                 <td>{f.Fund_Name}</td>
                 <td>{f.Active_Realized}</td>
                 <td>{f.Deal_Investment_Currency}</td>
                 <td>{f.Investment_Blended_FX_Rate}</td>
-                <td><button value={index} onClick={handleMappingClick}>Mapping</button></td>
+                <td><Button variant="secondary" size='sm' value={index} onClick={handleMappingClick}>Mapping</Button></td>
               </tr>
             ))}
-          </MDBTableBody>
-        </MDBTable>
-        {!showEditForm && <button onClick={() => navigate("/")}>Done</button>}
+          </tbody>
+        </Table>
+        {!showEditForm && <Button onClick={() => navigate("/")}>Done</Button>}
         <br></br>
         {showEditForm &&
           <FundEdit

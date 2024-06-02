@@ -136,7 +136,7 @@ def addMapping(ACDB_Deal_ID, Fund_Name, Realized_PnL, Realized_IRR, Realized_MOI
                Commitment_Local, Commitment_USD, Legal_Commitment_Local, Legal_Commitment_USD, 
                ITD_PM_Adjustment_USD, IC_Discretionary_Unfunded_USD, 
                DealMapping_Filename, Modified, Copy_Num, Modified_By, 
-               PIT = None, range_from = None, range_to = None):
+               PIT, range_from, range_to):
     fnStr = fileStr + "::addMapping"
 
     mappingDateSet = set()
@@ -144,12 +144,12 @@ def addMapping(ACDB_Deal_ID, Fund_Name, Realized_PnL, Realized_IRR, Realized_MOI
         mappingDateSet.add(datetime.datetime.strptime(PIT, '%Y-%m-%d').date())
     else:
         if (range_from != '' and range_to != ''):
-            # GET BUSINESS DAYS
             date_from = datetime.datetime.strptime(range_from, '%Y-%m-%d').date()
             date_to = datetime.datetime.strptime(range_to, '%Y-%m-%d').date()
             delta = datetime.timedelta(days=1)
             while (date_from <= date_to):
-                mappingDateSet.add(date_from)
+                if date_from.weekday() < 5:
+                    mappingDateSet.add(date_from)
                 date_from += delta
     print(f"mappingDateSet = {mappingDateSet}")
     sql_stmt = DB.getMappingAsOfDateSQL(ACDB_Deal_ID, Fund_Name)
@@ -166,7 +166,7 @@ def addMapping(ACDB_Deal_ID, Fund_Name, Realized_PnL, Realized_IRR, Realized_MOI
     print(f"insertMappingsSet = {insertMappingsSet}")
 
     if len(insertMappingsSet) == 0 and len(updateMappingsSet) == 0:
-        return {'retVal': False, 'errorMessage': f"{fnStr}: No value specified for As Of Date."}
+        return {'retVal': False, 'errorMessage': f"{fnStr}: No valid value specified for As Of Date."}
 
     writeCursor, writeDBconn = DB.connect_to_DB()
     try:

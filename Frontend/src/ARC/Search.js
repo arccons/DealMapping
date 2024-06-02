@@ -2,7 +2,7 @@ import "../App.css";
 
 import React, { useEffect, useState } from "react";
 
-function Search({ initialDataList, setCurrentDataList, search_parameters, placeholder }) {
+export default function Search({ initialDataList, setCurrentDataList, search_parameters, placeholder }) {
 
    const [currentData, setCurrentData] = useState([]);
    const [query, setQuery] = useState("");
@@ -16,8 +16,7 @@ function Search({ initialDataList, setCurrentDataList, search_parameters, placeh
       if (query !== '') {
          let queryStr = query.toString().toLowerCase();
          let searchResults = currentData.filter(d =>
-            search_parameters.some(param =>
-               d[param.toString()].toString().toLowerCase().includes(queryStr)));
+            search_parameters.some(param => d[param.toString()].toString().toLowerCase().includes(queryStr)));
          console.log("searchResults = " + searchResults);
          return searchResults;
       }
@@ -32,19 +31,17 @@ function Search({ initialDataList, setCurrentDataList, search_parameters, placeh
    }
 
    return (
-      <div className="container">
+      <div className=".container-fluid">
          <div className="input-box" data-mdb-input-init>
             <input
-               type="search"
+               type="Search"
                name="search-form"
                id="search-form"
                className="form-control"
-               onChange={(e) => handleSearchQuery(e)}
+               onChange={handleSearchQuery}
                placeholder={placeholder}
             />
          </div>
       </div>
    );
 }
-
-export default Search;

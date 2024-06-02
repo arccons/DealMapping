@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-import { MDBTable, MDBTableHead, MDBTableBody } from 'mdb-react-ui-kit';
-import {
+//import { MDBTable, MDBTableHead, MDBTableBody } from 'mdb-react-ui-kit';
+/* import {
    MDBBtn,
    MDBModal,
    MDBModalDialog,
@@ -10,7 +10,8 @@ import {
    MDBModalTitle,
    MDBModalBody,
    MDBModalFooter,
-} from 'mdb-react-ui-kit';
+} from 'mdb-react-ui-kit'; */
+import { Button, Modal, Table } from 'react-bootstrap';
 
 export default function MappingHistory({ mapping, setModalOpen, setPageMsg }) {
 
@@ -47,53 +48,48 @@ export default function MappingHistory({ mapping, setModalOpen, setPageMsg }) {
    });
 
    return (
-      <MDBModal open>
-         <MDBModalDialog size='fullscreen'>
-            <MDBModalContent>
-               <MDBModalHeader>
-                  <MDBModalTitle>History for Fund: {mapping.Fund_Name} || Deal: {mapping.ACDB_Deal_ID}</MDBModalTitle>
-                  <MDBBtn className='btn-close' color='none' onClick={() => setModalOpen(false)}></MDBBtn>
-               </MDBModalHeader>
-               <MDBModalBody>
-                  <MDBTable>
-                     <MDBTableHead>
-                        <tr>
-                           <th>As of Date</th>
-                           <th>Realized Date</th>
-                           <th>Realized PnL</th>
-                           <th>Realized IRR</th>
-                           <th>Realized MOIC</th>
-                           <th>Commitment Local</th>
-                           <th>Commitment USD</th>
-                           <th>Legal Commitment Local</th>
-                           <th>Legal Commitment USD</th>
-                           <th>ITD PM Adjustment USD</th>
-                           <th>IC Discretionary Unfunded USD</th>
-                        </tr>
-                     </MDBTableHead>
-                     <MDBTableBody>
-                        {history.map((f, index) => (
-                           <tr key={index}>
-                              <td>{f.As_Of_Date}</td>
-                              <td>{f.Realized_Date === 'None' ? '' : f.Realized_Date}</td>
-                              <td>{f.Realized_PnL === 'None' ? '' : f.Realized_PnL}</td>
-                              <td>{f.Realized_IRR === 'None' ? '' : f.Realized_IRR}</td>
-                              <td>{f.Realized_MOIC === 'None' ? '' : f.Realized_MOIC}</td>
-                              <td>{f.Commitment_Local === 'None' ? '' : f.Commitment_Local}</td>
-                              <td>{f.Commitment_USD === 'None' ? '' : f.Commitment_USD}</td>
-                              <td>{f.Legal_Commitment_Local === 'None' ? '' : f.Legal_Commitment_Local}</td>
-                              <td>{f.Legal_Commitment_USD === 'None' ? '' : f.Legal_Commitment_USD}</td>
-                              <td>{f.ITD_PM_Adjustment_USD === 'None' ? '' : f.ITD_PM_Adjustment_USD}</td>
-                              <td>{f.IC_Discretionary_Unfunded_USD === 'None' ? '' : f.IC_Discretionary_Unfunded_USD}</td>
-                           </tr>))}
-                     </MDBTableBody>
-                  </MDBTable>
-               </MDBModalBody>
-               <MDBModalFooter>
-                  <MDBBtn color='secondary' onClick={() => setModalOpen(false)}>Close</MDBBtn>
-               </MDBModalFooter>
-            </MDBModalContent>
-         </MDBModalDialog>
-      </MDBModal>
+      <Modal show>
+         <Modal.Dialog centered scrollable onHide={() => setModalOpen(false)}>
+            <Modal.Header closeButton onHide={() => setModalOpen(false)}>
+               <Modal.Title>History: Fund - {mapping.Fund_Name} AND Deal - {mapping.ACDB_Deal_ID}</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+               <Table>
+                  <thead>
+                     <tr>
+                        <th>As of Date</th>
+                        <th>Realized Date</th>
+                        <th>Realized PnL</th>
+                        <th>Realized IRR</th>
+                        <th>Realized MOIC</th>
+                        <th>Commitment Local</th>
+                        <th>Commitment USD</th>
+                        <th>Legal Commitment Local</th>
+                        <th>Legal Commitment USD</th>
+                        <th>ITD PM Adjustment USD</th>
+                        <th>IC Discretionary Unfunded USD</th>
+                     </tr>
+                  </thead>
+                  <tbody>
+                     {history.map((f, index) => (
+                        <tr key={index}>
+                           <td>{f.As_Of_Date}</td>
+                           <td>{f.Realized_Date === 'None' ? '' : f.Realized_Date}</td>
+                           <td>{f.Realized_PnL === 'None' ? '' : f.Realized_PnL}</td>
+                           <td>{f.Realized_IRR === 'None' ? '' : f.Realized_IRR}</td>
+                           <td>{f.Realized_MOIC === 'None' ? '' : f.Realized_MOIC}</td>
+                           <td>{f.Commitment_Local === 'None' ? '' : f.Commitment_Local}</td>
+                           <td>{f.Commitment_USD === 'None' ? '' : f.Commitment_USD}</td>
+                           <td>{f.Legal_Commitment_Local === 'None' ? '' : f.Legal_Commitment_Local}</td>
+                           <td>{f.Legal_Commitment_USD === 'None' ? '' : f.Legal_Commitment_USD}</td>
+                           <td>{f.ITD_PM_Adjustment_USD === 'None' ? '' : f.ITD_PM_Adjustment_USD}</td>
+                           <td>{f.IC_Discretionary_Unfunded_USD === 'None' ? '' : f.IC_Discretionary_Unfunded_USD}</td>
+                        </tr>))}
+                  </tbody>
+               </Table>
+            </Modal.Body>
+            <Modal.Footer><Button onClick={() => setModalOpen(false)}>Close</Button></Modal.Footer>
+         </Modal.Dialog>
+      </Modal>
    );
 }

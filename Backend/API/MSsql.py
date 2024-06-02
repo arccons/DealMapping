@@ -52,10 +52,6 @@ def updateDealSQL(ACDB_Deal_ID, Deal_Name_EntityCode, Deal_Name, Closing_Date, M
         Modify_Date_str = f", Modify_Date = '{Modify_Date}'"
     else:
         Modify_Date_str = f", Modify_Date = NULL"
-    if Modify_Date != '':
-        Modify_Date_str = f", Modify_Date = '{Modify_Date}'"
-    else:
-        Modify_Date_str = f", Modify_Date = NULL"
 
     sql_stmt_1 = f"UPDATE {DBstr}.Deal SET "
     sql_stmt_2 = f"Subsector = '{Subsector}', Strategy = '{Strategy}'"
@@ -89,7 +85,7 @@ def insertMappingSQL(As_Of_Date, ACDB_Deal_ID, Fund_Name,
     
     Realized_Date_str = f""
     if Realized_Date != '':
-        Realized_Date_str = f", {Realized_Date}"
+        Realized_Date_str = f", '{Realized_Date}'"
     else:
         Realized_Date_str = f", NULL"
 

@@ -1,16 +1,10 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-import { MDBTable, MDBTableHead, MDBTableBody } from 'mdb-react-ui-kit';
 import {
-   MDBBtn,
-   MDBModal,
-   MDBModalDialog,
-   MDBModalContent,
-   MDBModalHeader,
-   MDBModalTitle,
-   MDBModalBody,
-   MDBModalFooter,
-} from 'mdb-react-ui-kit';
+   Button,
+   Modal,
+   Table
+} from 'react-bootstrap';
 
 export default function Securities({ deal, setModalOpen, setPageMsg }) {
 
@@ -47,37 +41,35 @@ export default function Securities({ deal, setModalOpen, setPageMsg }) {
    });
 
    return (
-      <MDBModal open>
-         <MDBModalDialog>
-            <MDBModalContent>
-               <MDBModalHeader>
-                  <MDBModalTitle>Securities for: {deal.Deal_Name}</MDBModalTitle>
-                  <MDBBtn className='btn-close' color='none' onClick={() => setModalOpen(false)}></MDBBtn>
-               </MDBModalHeader>
-               <MDBModalBody>
-                  <MDBTable>
-                     <MDBTableHead>
-                        <tr>
-                           <th>Security</th>
-                           <th>Investment Type</th>
-                           <th>Currency</th>
-                        </tr>
-                     </MDBTableHead>
-                     <MDBTableBody>
-                        {securities.map((s, index) => (
-                           <tr key={index}>
-                              <td>{s.Security_Name}</td>
-                              <td>{s.Investment_Type}</td>
-                              <td>{s.Currency}</td>
-                           </tr>))}
-                     </MDBTableBody>
-                  </MDBTable>
-               </MDBModalBody>
-               <MDBModalFooter>
-                  <MDBBtn color='secondary' onClick={() => setModalOpen(false)}>Close</MDBBtn>
-               </MDBModalFooter>
-            </MDBModalContent>
-         </MDBModalDialog>
-      </MDBModal>
+      <Modal show>
+         <Modal.Dialog>
+            <Modal.Header>
+               <Modal.Title>Securities for: {deal.Deal_Name}</Modal.Title>
+               <Button className='btn-close' color='none' onClick={() => setModalOpen(false)}></Button>
+            </Modal.Header>
+            <Modal.Body>
+               <Table>
+                  <thead>
+                     <tr>
+                        <th>Security</th>
+                        <th>Investment Type</th>
+                        <th>Currency</th>
+                     </tr>
+                  </thead>
+                  <tbody>
+                     {securities.map((s, index) => (
+                        <tr key={index}>
+                           <td>{s.Security_Name}</td>
+                           <td>{s.Investment_Type}</td>
+                           <td>{s.Currency}</td>
+                        </tr>))}
+                  </tbody>
+               </Table>
+            </Modal.Body>
+            <Modal.Footer>
+               <Button color='secondary' onClick={() => setModalOpen(false)}>Close</Button>
+            </Modal.Footer>
+         </Modal.Dialog>
+      </Modal>
    );
 }

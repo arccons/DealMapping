@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import { MDBTable, MDBTableHead, MDBTableBody } from 'mdb-react-ui-kit';
 import { ARC_handleSelectChange_NULL, ARC_handleDateChange_NULL } from '../ARC/ChangeFields';
+import { Button, Container, Row, Col } from 'react-bootstrap';
 
 export default function DealEdit({ deal, setGotDeals, setShowEditForm, setPageMsg }) {
 
@@ -68,74 +68,82 @@ export default function DealEdit({ deal, setGotDeals, setShowEditForm, setPageMs
 
   return (
     <div className="App">
-      < form id="MainForm" onSubmit={handleSubmit}>
-        <center>
+      <center>
+        < form id="MainForm" onSubmit={handleSubmit}>
           <p>Editing Deal: <b>{deal.Deal_Name}</b></p>
-          <MDBTable striped hover bordered align="middle" small responsive borderColor="dark">
-            <MDBTableHead>
-              <tr>
-                <th>Deal Field</th>
-                <th>Current Value</th>
-                <th>Updated Value</th>
-                <th>Set NULL Value</th>
-              </tr>
-            </MDBTableHead>
-            <MDBTableBody>
-              <tr>
-                <td>Closing_Date</td>
-                <td>{deal.Closing_Date}</td>
-                <td><input type='date' id='closingDate' onChange={() => handleDateChange('closingDateNull', 'closingDate', setClosingDateFinal)} /></td>
-                <td><input type='checkbox' value='off' id='closingDateNull' onChange={() => handleDateChange('closingDateNull', 'closingDate', setClosingDateFinal)} /></td>
-              </tr>
-              <tr>
-                <td>Modified Date</td>
-                <td>{deal.Modify_Date === 'None' ? '' : deal.Modify_Date}</td>
-                <td><input type='date' id='modifiedDate' onChange={() => handleDateChange('modifiedDateNull', 'modifiedDate', setModifiedDateFinal)} /></td>
-                <td><input type='checkbox' id='modifiedDateNull' value='off' onChange={() => handleDateChange('modifiedDateNull', 'modifiedDate', setModifiedDateFinal)} /></td>
-              </tr>
-              <tr>
-                <td>Sub-Sector</td>
-                <td>{deal.Subsector}</td>
-                <td>
-                  <select id='subSector' onChange={() => handleSelectChange('subSectorNull', 'subSector', setSubSectorFinal)}>
-                    <option value={"-1"}>Choose one option</option>
-                    {subSectorValueList.map((s, index) => {
-                      return (<option key={index} value={s}>{s}</option>);
-                    })}
-                  </select>
-                </td>
-                <td><input type='checkbox' id='subSectorNull' value='off' onChange={() => handleSelectChange('subSectorNull', 'subSector', setSubSectorFinal)} /></td>
-              </tr>
-              <tr>
-                <td>Strategy</td>
-                <td>{deal.Strategy}</td>
-                <td>
-                  <select id='strategy' onChange={() => handleSelectChange('strategyNull', 'strategy', setStrategyFinal)}>
-                    <option value={"-1"}>Choose one option</option>
-                    {strategyValueList.map((s, index) => {
-                      return (<option key={index} value={s}>{s}</option>);
-                    })}
-                  </select>
-                </td>
-                <td><input type='checkbox' id='strategyNull' value='off' onChange={() => handleSelectChange('strategyNull', 'strategy', setStrategyFinal)} /></td>
-              </tr>
-              <tr>
-                <td>Is Liquid</td>
-                <td>{deal.Liquid_Illiquid}</td>
-                <td>
-                  <select id='isLiquid' onChange={() => handleSelectChange('isLiquidNull', 'isLiquid', setIsLiquidFinal)}>
-                    <option value={"-1"}>Choose one option</option>
-                    <option key={1} value={"Liquid"}>{"Liquid"}</option>
-                    <option key={2} value={"Illiquid"}>{"Illiquid"}</option>
-                  </select>
-                </td>
-                <td><input type='checkbox' id='isLiquidNull' value='off' onChange={() => handleSelectChange('isLiquidNull', 'isLiquid', setIsLiquidFinal)} /></td>
-              </tr>
-            </MDBTableBody>
-          </MDBTable>
-          <button onClick={() => handleCancel()}>Cancel</button>{itemChanged && <button>Save Changes</button>}
-        </center>
-      </form>
-    </div>
+          <Container className='editSection'>
+            <Row>
+              <Col>
+                <Row><b>Dates</b></Row>
+                <Row className='editRow'>
+                  <Col>
+                    <Row><b>Closing Date</b></Row>
+                    <Row>{deal.Closing_Date === '' ? 'None' : deal.Closing_Date}</Row>
+                    <Row><input type='date' id='closingDate' onChange={() => handleDateChange('closingDateNull', 'closingDate', setClosingDateFinal)} /></Row>
+                    <br></br>
+                    <Row><input type='checkbox' value='off' id='closingDateNull' onChange={() => handleDateChange('closingDateNull', 'closingDate', setClosingDateFinal)} /></Row>
+                  </Col>
+                  <Col>
+                    <Row><b>Modified Date</b></Row>
+                    <Row>{deal.Modify_Date === '' ? 'None' : deal.Modify_Date}</Row>
+                    <Row><input type='date' id='modifiedDate' onChange={() => handleDateChange('modifiedDateNull', 'modifiedDate', setModifiedDateFinal)} /></Row>
+                    <br></br>
+                    <Row><input type='checkbox' id='modifiedDateNull' value='off' onChange={() => handleDateChange('modifiedDateNull', 'modifiedDate', setModifiedDateFinal)} /></Row>
+                  </Col>
+                </Row>
+              </Col>
+              <Col>
+                <Row><b>Factors</b></Row>
+                <Row className='editRow'>
+                  <Col>
+                    <Row><b>Sub-Sector</b></Row>
+                    <Row>{deal.Subsector === '' ? 'None' : deal.Subsector}</Row>
+                    <Row>
+                      <select id='subSector' onChange={() => handleSelectChange('subSectorNull', 'subSector', setSubSectorFinal)}>
+                        <option value={"-1"}>Choose One</option>
+                        {subSectorValueList.map((s, index) => {
+                          return (<option key={index} value={s}>{s}</option>);
+                        })}
+                      </select>
+                    </Row>
+                    <br></br>
+                    <Row><input type='checkbox' id='subSectorNull' value='off' onChange={() => handleSelectChange('subSectorNull', 'subSector', setSubSectorFinal)} /></Row>
+                  </Col>
+                  <Col>
+                    <Row><b>Strategy</b></Row>
+                    <Row>{deal.Strategy === '' ? 'None' : deal.Strategy}</Row>
+                    <Row>
+                      <select id='strategy' onChange={() => handleSelectChange('strategyNull', 'strategy', setStrategyFinal)}>
+                        <option value={"-1"}>Choose One</option>
+                        {strategyValueList.map((s, index) => {
+                          return (<option key={index} value={s}>{s}</option>);
+                        })}
+                      </select>
+                    </Row>
+                    <br></br>
+                    <Row><input type='checkbox' id='strategyNull' value='off' onChange={() => handleSelectChange('strategyNull', 'strategy', setStrategyFinal)} /></Row>
+                  </Col>
+                  <Col>
+                    <Row><b>Is Liquid</b></Row>
+                    <Row>{deal.Liquid_Illiquid}</Row>
+                    <Row>
+                      <select id='isLiquid' onChange={() => handleSelectChange('isLiquidNull', 'isLiquid', setIsLiquidFinal)}>
+                        <option value={"-1"}>Choose One</option>
+                        <option key={1} value={"Liquid"}>{"Liquid"}</option>
+                        <option key={2} value={"Illiquid"}>{"Illiquid"}</option>
+                      </select>
+                    </Row>
+                    <br></br>
+                    <Row><input type='checkbox' id='isLiquidNull' value='off' onChange={() => handleSelectChange('isLiquidNull', 'isLiquid', setIsLiquidFinal)} /></Row>
+                  </Col>
+                </Row>
+              </Col>
+            </Row>
+          </Container>
+          <br></br>
+          <Button onClick={() => handleCancel()}>Cancel</Button>{itemChanged && <Button type='submit'>Save Changes</Button>}
+        </form>
+      </center >
+    </div >
   );
 }

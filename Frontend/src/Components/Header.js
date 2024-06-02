@@ -1,31 +1,15 @@
 import React from 'react';
-import {
-    MDBContainer,
-    MDBNavbar,
-    MDBNavbarBrand,
-    MDBNavbarNav,
-    MDBNavbarItem,
-    MDBNavbarLink,
-    MDBCollapse
-} from 'mdb-react-ui-kit';
+import { Navbar, Container, Nav } from 'react-bootstrap';
 
 export default function Header() {
-
     return (
-        <>
-            <MDBNavbar expand='lg' light bgColor='light' className='top'>
-                <MDBContainer fluid>
-                    <MDBNavbarBrand href='/'>DealMapping</MDBNavbarBrand>
-                    <MDBCollapse navbar>
-                        <MDBNavbarNav>
-                            <MDBNavbarItem>
-                                <MDBNavbarLink active href='/'>Deals</MDBNavbarLink>
-                            </MDBNavbarItem>
-                        </MDBNavbarNav>
-                    </MDBCollapse>
-                </MDBContainer>
-            </MDBNavbar>
-            <br></br>
-        </>
+        <Container>
+            <Navbar bg="primary" data-bs-theme="light">
+                <Navbar.Brand href="/">MaintainDeal</Navbar.Brand>
+                <Nav className="me-auto" style={{ textDecorationColor: '100px' }}>
+                    <Nav.Link href="/">Deals</Nav.Link>
+                </Nav>
+            </Navbar>
+        </Container>
     );
 }

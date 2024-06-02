@@ -1,0 +1,11 @@
+.editSection {
+   color: rgb(50, 50, 50);
+   background-color: rgb(200, 200, 200);
+   text-align: center;
+   vertical-align: center;
+   text-wrap: nowrap;
+}
+
+.editRow {
+   border-bottom: rgb(14, 2, 26);
+}

@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import { MDBTable, MDBTableHead, MDBTableBody, MDBBtn } from 'mdb-react-ui-kit';
 import MappingHistory from '../Components/MappingHistory';
 import AddMapping from '../Components/AddMapping';
+import { Button, Table } from 'react-bootstrap';
 
 export default function Mappings({ DBdeal, DBfund }) {
 
@@ -20,7 +20,6 @@ export default function Mappings({ DBdeal, DBfund }) {
 
   useEffect(() => {
     console.log("Mappings.js: useEffect entered.");
-    //console.log("REACT_APP_USER_DEFAULT" + process.env.REACT_APP_USER_DEFAULT)
     if (!gotMappings) {
       console.log("Mappings.js: useEffect getting Funds list.");
       console.log(DBdeal);
@@ -57,9 +56,9 @@ export default function Mappings({ DBdeal, DBfund }) {
   return (
     <div className="App">
       <center>
-        <h5>Mappings: {DBdeal.Deal_Name} || {DBfund.Fund_Name} </h5>
-        <MDBTable striped hover bordered align="middle" small responsive borderColor="dark">
-          <MDBTableHead>
+        <p>Mappings: <b>{DBdeal.Deal_Name}</b> || <b>{DBfund.Fund_Name}</b> </p>
+        <Table striped hover bordered align="middle" responsive>
+          <thead>
             <tr align="center">
               <th>Deal Name</th>
               <th>Deal Name EntityCode</th>
@@ -68,8 +67,8 @@ export default function Mappings({ DBdeal, DBfund }) {
               <th>Active/Realized</th>
               <th>Show History</th>
             </tr>
-          </MDBTableHead>
-          <MDBTableBody>
+          </thead>
+          <tbody>
             {mappings.map((f, index) => (
               <tr key={index} align="center">
                 <td>{f.Deal_Name}</td>
@@ -77,19 +76,22 @@ export default function Mappings({ DBdeal, DBfund }) {
                 <td>{f.ACDB_Deal_ID}</td>
                 <td>{f.Fund_Name}</td>
                 <td>{f.Active_Realized}</td>
-                <td><button value={index} onClick={handleHistoryClick}>History</button></td>
+                <td><Button variant='info' value={index} onClick={handleHistoryClick}>History</Button></td>
               </tr>
             ))}
-          </MDBTableBody>
-        </MDBTable>
-        {!showAddForm && <MDBBtn color='link' size='lg' onClick={() => setShowAddForm(true)}>Add Mapping</MDBBtn>}
+          </tbody>
+        </Table>
+        {!showAddForm &&
+          <Button variant='link' size='md' onClick={() => setShowAddForm(true)}>
+            Add Mapping
+          </Button>}
         <br></br>
-        {!showAddForm && <button onClick={() => navigate("/funds")}>Done</button>}
-        {showHistory && <MappingHistory mapping={currentMapping} setModalOpen={setShowHistory} setPageMsg={setPageMsg} />}
+        {!showAddForm && <Button onClick={() => navigate("/funds")}>Done</Button>}
         {showAddForm && <AddMapping DBdeal={DBdeal} DBfund={DBfund} setShowAddForm={setShowAddForm} setPageMsg={setPageMsg} />}
         <br></br>
         {pageMsg}
       </center>
+      {showHistory && <MappingHistory mapping={currentMapping} setModalOpen={setShowHistory} setPageMsg={setPageMsg} />}
     </div>
   );
 }
