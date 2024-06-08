@@ -72,7 +72,7 @@ def updateDealSQL(ACDB_Deal_ID, Deal_Name_EntityCode, Deal_Name, Closing_Date, M
     return sql_stmt_1 + sql_stmt_2 + sql_stmt_3
  """
 def getMappingAsOfDateSQL(ACDB_Deal_ID, Fund_Name):
-    sql_stmt_1 = f"SELECT As_Of_Date from {DBstr}.fund_mappings_v"
+    sql_stmt_1 = f"SELECT As_Of_Date from {DBstr}.mapping_history_v"
     sql_stmt_2 = f" WHERE ACDB_Deal_ID = {ACDB_Deal_ID} AND Fund_Name = '{Fund_Name}'"
 
     return sql_stmt_1 + sql_stmt_2
