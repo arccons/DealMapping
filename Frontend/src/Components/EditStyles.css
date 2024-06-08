@@ -1,11 +1,33 @@
 .editSection {
-   color: rgb(50, 50, 50);
-   background-color: rgb(200, 200, 200);
+   color: black;
+   background-color: burlywood;
    text-align: center;
    vertical-align: center;
    text-wrap: nowrap;
 }
 
 .editRow {
-   border-bottom: rgb(14, 2, 26);
+   color: black;
+   background-color: burlywood;
+   text-align: center;
+   vertical-align: center;
+   text-wrap: nowrap;
+   border-bottom: black;
+}
+
+.displaySection {
+   color: blue;
+   background-color: white;
+   text-align: center;
+   vertical-align: center;
+   text-wrap: nowrap;
+}
+
+.displayRow {
+   color: blue;
+   background-color: burlywood;
+   text-align: center;
+   vertical-align: center;
+   text-wrap: nowrap;
+   border-bottom: black;
 }

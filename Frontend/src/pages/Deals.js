@@ -12,7 +12,7 @@ export default function Deals({ setDBdeal }) {
 
   const [gotDeals, setGotDeals] = useState(false);
   const [initialDealList, setInitialDealList] = useState([]);
-  const [currrentDealList, setCurrentDealList] = useState([]);
+  const [displayedDealList, setDisplayedDealList] = useState([]);
   const [currentDeal, setCurrentDeal] = useState();
 
   const [showSecurities, setShowSecurities] = useState(false);
@@ -22,7 +22,7 @@ export default function Deals({ setDBdeal }) {
   const navigate = useNavigate();
 
   const dealsURL = "http://localhost:8000/deals";
-  const search_parameters = ["ACDB_Deal_ID", "Deal_Name"];
+  const search_parameters = ["ACDB_Deal_ID", "Deal_Name", "Deal_Name_EntityCode"];
 
   useEffect(() => {
     console.log("Deal.js: useEffect entered.");
@@ -37,7 +37,7 @@ export default function Deals({ setDBdeal }) {
         .then(response => {
           const initialDeals = JSON.parse(response.data.DEAL_LIST);
           setInitialDealList(initialDeals);
-          setCurrentDealList(initialDeals);
+          setDisplayedDealList(initialDeals);
           setGotDeals(true);
           setShowEditForm(false);
           setPageMsg("Deal.js: Got deal list from DB.");
@@ -54,7 +54,7 @@ export default function Deals({ setDBdeal }) {
     event.preventDefault();
     setShowEditForm(true);
     const selectedIndex = event.target.value;
-    const dl = currrentDealList[selectedIndex];
+    const dl = displayedDealList[selectedIndex];
     setCurrentDeal(dl);
     setShowEditForm(true);
     setPageMsg("Deal.js: Got deal details.");
@@ -64,7 +64,7 @@ export default function Deals({ setDBdeal }) {
     event.preventDefault();
     setShowEditForm(false);
     const selectedIndex = event.target.value;
-    const dl = currrentDealList[selectedIndex];
+    const dl = displayedDealList[selectedIndex];
     setCurrentDeal(dl);
     setDBdeal(dl);
     navigate('/funds')
@@ -73,7 +73,7 @@ export default function Deals({ setDBdeal }) {
   function handleSecuritiesClick(event) {
     event.preventDefault();
     const selectedIndex = event.target.value;
-    const dl = currrentDealList[selectedIndex];
+    const dl = displayedDealList[selectedIndex];
     setCurrentDeal(dl);
     setShowSecurities(true);
     console.log("Deal.js: Current deal = " + dl.Deal_Name);
@@ -88,7 +88,7 @@ export default function Deals({ setDBdeal }) {
           <>
             <Search
               initialDataList={initialDealList}
-              setCurrentDataList={setCurrentDealList}
+              setDisplayList={setDisplayedDealList}
               search_parameters={search_parameters}
               placeholder={"Search Deals"}>
             </Search>
@@ -110,7 +110,7 @@ export default function Deals({ setDBdeal }) {
                 </tr>
               </thead>
               <tbody>
-                {currrentDealList.map((d, index) => (
+                {displayedDealList.map((d, index) => (
                   <tr key={index} align="center">
                     <td><Button variant="link" size='sm' value={index} onClick={handleEditClick}>Edit Deal</Button></td>
                     <td>{d.ACDB_Deal_ID}</td>

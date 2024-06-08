@@ -18,7 +18,7 @@ export default function MappingHistory({ mapping, setModalOpen, setPageMsg }) {
    const [history, setHistory] = useState([]);
    const [gotHistory, setGotHistory] = useState(false);
 
-   const historyURL = "http://localhost:8000/fundHistory/" + mapping.ACDB_Deal_ID + "/" + mapping.Fund_Name;
+   const historyURL = "http://localhost:8000/mappingHistory/" + mapping.ACDB_Deal_ID + "/" + mapping.Fund_Name;
 
    useEffect(() => {
       console.log("MappingHistory.js: useEffect entered.");
@@ -51,7 +51,9 @@ export default function MappingHistory({ mapping, setModalOpen, setPageMsg }) {
       <Modal show>
          <Modal.Dialog centered scrollable onHide={() => setModalOpen(false)}>
             <Modal.Header closeButton onHide={() => setModalOpen(false)}>
-               <Modal.Title>History: Fund - {mapping.Fund_Name} AND Deal - {mapping.ACDB_Deal_ID}</Modal.Title>
+               <Modal.Title>
+                  <p>Deal: {mapping.Deal_Name} - Fund: {mapping.Fund_Name}</p>
+               </Modal.Title>
             </Modal.Header>
             <Modal.Body>
                <Table>

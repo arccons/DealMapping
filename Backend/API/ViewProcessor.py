@@ -65,7 +65,7 @@ def getFundMapping(ACDB_Deal_ID, Fund_Name):
     sql_stmt = DB.getFundMappingSQL(ACDB_Deal_ID, Fund_Name)
     print(sql_stmt)
     mappingList = readCursor.execute(sql_stmt).fetchall()
-
+    #ACDB_Deal_ID, Deal_Name_EntityCode, Deal_Name, Fund_Name, Active_Realized
     list_of_dicts = [{'ACDB_Deal_ID': item[0],
                       'Deal_Name_EntityCode': item[1].rstrip(" "),
                       'Deal_Name': item[2].rstrip(" "),
@@ -76,10 +76,10 @@ def getFundMapping(ACDB_Deal_ID, Fund_Name):
 
     return {'retVal': True, 'json_mapping': json_mapping}
 
-def getFundHistory(ACDB_Deal_ID, Fund_Name):
-    fnStr = fileStr + "::getFundHistory"
+def getMappingHistory(ACDB_Deal_ID, Fund_Name):
+    fnStr = fileStr + "::getMappingHistory"
 
-    sql_stmt = DB.getFundHistorySQL(ACDB_Deal_ID, Fund_Name)
+    sql_stmt = DB.getMappingHistorySQL(ACDB_Deal_ID, Fund_Name)
     print(sql_stmt)
     historyList = readCursor.execute(sql_stmt).fetchall()
     #print(historyList)
@@ -120,7 +120,7 @@ def updateDeal(ACDB_Deal_ID, Deal_Name_EntityCode, Deal_Name, Closing_Date, Modi
 
     return {'retVal': True, 'updatedDeal': ACDB_Deal_ID}
 
-def updateFund(ACDB_Deal_ID, Fund_Name, Active_Realized, Deal_Investment_Currency, Investment_Blended_FX_Rate):
+""" def updateFund(ACDB_Deal_ID, Fund_Name, Active_Realized, Deal_Investment_Currency, Investment_Blended_FX_Rate):
     fnStr = fileStr + "::updateFund"
 
     writeCursor, writeDBconn = DB.connect_to_DB()
@@ -130,7 +130,7 @@ def updateFund(ACDB_Deal_ID, Fund_Name, Active_Realized, Deal_Investment_Currenc
     DB.commitConnection(writeDBconn)
     DB.closeConnection(writeDBconn)
 
-    return {'retVal': True, 'updatedFund': Fund_Name}
+    return {'retVal': True, 'updatedFund': Fund_Name} """
 
 def addMapping(ACDB_Deal_ID, Fund_Name, Realized_PnL, Realized_IRR, Realized_MOIC, Realized_Date, 
                Commitment_Local, Commitment_USD, Legal_Commitment_Local, Legal_Commitment_USD, 

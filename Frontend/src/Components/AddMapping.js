@@ -85,10 +85,9 @@ export default function AddMapping({ DBdeal, DBfund, setShowAddForm, setPageMsg 
     <div className="App">
       <form id="MainForm" onSubmit={handleSubmit}>
         <center>
-          <p>Adding Mapping: <b>{DBdeal.Deal_Name}</b> || <b>{DBfund.Fund_Name}</b></p>
           <Container className='editSection'>
             <Row><b>As Of Date</b></Row>
-            <Row>
+            <Row className='editRow'>
               <Col>
                 <label htmlFor='PIT'>PIT: </label>
                 <input type='Date' id='PIT' onChange={() => handleDateChange("PIT", setPIT_final)} />
@@ -100,9 +99,8 @@ export default function AddMapping({ DBdeal, DBfund, setShowAddForm, setPageMsg 
                 <input type='Date' id='range_to' onChange={() => handleDateChange("range_to", setRange_To_final)} />
               </Col>
             </Row>
-            <br></br>
             <Row><b>Realized</b></Row>
-            <Row>
+            <Row className='editRow'>
               <Col>
                 <Row>Realized PnL</Row>
                 <Row><input type="text" id='Realized_PnL' onChange={() => handleTextChange("Realized_PnL", setRealized_PnL_final)} /></Row>
@@ -120,9 +118,8 @@ export default function AddMapping({ DBdeal, DBfund, setShowAddForm, setPageMsg 
                 <Row><input type='Date' id='Realized_Date' onChange={() => handleDateChange("Realized_Date", setRealized_Date_final)} /></Row>
               </Col>
             </Row>
-            <br></br>
             <Row><b>Commitment</b></Row>
-            <Row>
+            <Row className='editRow'>
               <Col>
                 <Row>Commitment Local</Row>
                 <Row><input type="text" id='Commitment_Local' onChange={() => handleTextChange("Commitment_Local", setCommitment_Local_final)} /></Row>
@@ -140,9 +137,8 @@ export default function AddMapping({ DBdeal, DBfund, setShowAddForm, setPageMsg 
                 <Row><input type="text" id='Legal_Commitment_USD' onChange={() => handleTextChange("Legal_Commitment_USD", setLegal_Commitment_USD_final)} /></Row>
               </Col>
             </Row>
-            <br></br>
             <Row><b>Adjustments</b></Row>
-            <Row>
+            <Row className='editRow'>
               <Col>
                 <Row>ITD PM Adjustment USD</Row>
                 <Row><input type="text" id='ITD_PM_Adjustment_USD' onChange={() => handleTextChange("ITD_PM_Adjustment_USD", setITD_PM_Adjustment_USD_final)} /></Row>
@@ -152,9 +148,8 @@ export default function AddMapping({ DBdeal, DBfund, setShowAddForm, setPageMsg 
                 <Row><input type="text" id='IC_Discretionary_Unfunded_USD' onChange={() => handleTextChange("IC_Discretionary_Unfunded_USD", setIC_Discretionary_Unfunded_USD_final)} /></Row>
               </Col>
             </Row>
-            <br></br>
             <Row><b>Modified</b></Row>
-            <Row>
+            <Row className='editRow'>
               <Col>
                 <Row>DealMapping Filename</Row>
                 <Row><input type="text" id='DealMapping_Filename' onChange={() => handleTextChange("DealMapping_Filename", seColealMapping_Filename_final)} /></Row>

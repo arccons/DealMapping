@@ -1,24 +1,21 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import FundEdit from '../Components/FundEdit';
 import Search from '../ARC/Search';
 import { Table, Button } from 'react-bootstrap';
 
 export default function Funds({ DBdeal, setDBfund }) {
 
   const [initialFundList, setInitialFundList] = useState([]);
-  const [currrentFundList, setCurrentFundList] = useState([]);
-  const [currentFund, setCurrentFund] = useState();
+  const [displayedFundList, setDisplayedFundList] = useState([]);
   const [gotFunds, setGotFunds] = useState(false);
 
-  const [showEditForm, setShowEditForm] = useState(false);
   const [pageMsg, setPageMsg] = useState("");
 
   const navigate = useNavigate();
   const fundsURL = "http://localhost:8000/dealFunds/" + DBdeal.ACDB_Deal_ID;
 
-  const search_parameters = ["ACDB_Deal_ID", "Fund_Name"];
+  const search_parameters = ["Fund_Name"];
 
   useEffect(() => {
     console.log("Funds.js: useEffect entered.");
@@ -33,7 +30,7 @@ export default function Funds({ DBdeal, setDBfund }) {
         .then(response => {
           const DBfunds = JSON.parse(response.data.FUNDS_LIST);
           setInitialFundList(DBfunds);
-          setCurrentFundList(DBfunds);
+          setDisplayedFundList(DBfunds);
           setGotFunds(true);
           setPageMsg("Got funds list from DB for deal: " + DBdeal.Deal_Name);
         })
@@ -44,21 +41,12 @@ export default function Funds({ DBdeal, setDBfund }) {
     }
   }, [DBdeal, fundsURL, gotFunds, pageMsg])
 
-  function handleEditClick(event) {
-    event.preventDefault();
-    const selectedIndex = event.target.value;
-    const f = currrentFundList[selectedIndex];
-    setCurrentFund(f);
-    setShowEditForm(true);
-    setPageMsg("Editing Fund for deal ID: " + DBdeal.Deal_Name);
-  }
-
   function handleMappingClick(event) {
     event.preventDefault();
     const selectedIndex = event.target.value;
-    const f = currrentFundList[selectedIndex];
-    setCurrentFund(f);
+    const f = displayedFundList[selectedIndex];
     setDBfund(f);
+    console.log(f);
     navigate('/mappings');
   }
 
@@ -69,7 +57,7 @@ export default function Funds({ DBdeal, setDBfund }) {
         {gotFunds &&
           <Search
             initialDataList={initialFundList}
-            setCurrentDataList={setCurrentFundList}
+            setDisplayList={setDisplayedFundList}
             search_parameters={search_parameters}
             placeholder={"Search Funds"}>
           </Search>
@@ -78,7 +66,6 @@ export default function Funds({ DBdeal, setDBfund }) {
         <Table striped hover bordered align="middle" responsive>
           <thead>
             <tr align="center">
-              <th>Edit Fund</th>
               <th>Fund Name</th>
               <th>Active/Realized</th>
               <th>Deal Investment Currency</th>
@@ -87,9 +74,8 @@ export default function Funds({ DBdeal, setDBfund }) {
             </tr>
           </thead>
           <tbody>
-            {currrentFundList.map((f, index) => (
+            {displayedFundList.map((f, index) => (
               <tr key={index} align="center">
-                <td><Button variant="link" size='sm' value={index} onClick={handleEditClick}>Edit Fund</Button></td>
                 <td>{f.Fund_Name}</td>
                 <td>{f.Active_Realized}</td>
                 <td>{f.Deal_Investment_Currency}</td>
@@ -99,14 +85,7 @@ export default function Funds({ DBdeal, setDBfund }) {
             ))}
           </tbody>
         </Table>
-        {!showEditForm && <Button onClick={() => navigate("/")}>Done</Button>}
-        <br></br>
-        {showEditForm &&
-          <FundEdit
-            fund={currentFund}
-            setGotFunds={setGotFunds}
-            setShowEditForm={setShowEditForm}
-            setPageMsg={setPageMsg} />}
+        <Button onClick={() => navigate("/")}>Done</Button>
         <br></br>
         {pageMsg}
       </center>

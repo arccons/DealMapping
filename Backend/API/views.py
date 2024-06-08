@@ -47,10 +47,10 @@ def dealFunds(request, ACDB_Deal_ID):
 
 @api_view(['GET'])
 @permission_classes((permissions.AllowAny,))
-def fundHistory(request, ACDB_Deal_ID, Fund_Name):
-    fnStr = f"{fileStr}::fundHistory"
+def mappingHistory(request, ACDB_Deal_ID, Fund_Name):
+    fnStr = f"{fileStr}::mappingHistory"
 
-    retVal = VP.getFundHistory(ACDB_Deal_ID, Fund_Name)
+    retVal = VP.getMappingHistory(ACDB_Deal_ID, Fund_Name)
     if not retVal['retVal']:
         Response.status_code = status.HTTP_500_INTERNAL_SERVER_ERROR
         return Response({"errorMessage": f"Error in VP.getFundHistory(): {retVal['errorMessage']}"})
@@ -69,7 +69,7 @@ def fundMapping(request, ACDB_Deal_ID, Fund_Name):
         return Response({"errorMessage": f"Error in VP.getFundMapping(): {retVal['errorMessage']}"})
     else:
         Response.status_code = status.HTTP_200_OK
-        return Response({"message": "Mappings list received.", "MAPPING_LIST": retVal['json_mapping']})
+        return Response({"message": "Mappings list received.", "MAPPING": retVal['json_mapping']})
 
 @api_view(['POST'])
 @permission_classes((permissions.AllowAny,))
@@ -99,7 +99,7 @@ def updateDeal(request):
         Response.status_code = status.HTTP_200_OK
         return Response({"message": "Deal updated.", "updatedDeal": retVal['updatedDeal']})
 
-@api_view(['POST'])
+""" @api_view(['POST'])
 @permission_classes((permissions.AllowAny,))
 def updateFund(request):
     fnStr = f"{fileStr}::updateFund"
@@ -119,7 +119,7 @@ def updateFund(request):
         return Response({"errorMessage": f"Error in VP.updateFund(): {retVal['errorMessage']}"})
     else:
         Response.status_code = status.HTTP_200_OK
-        return Response({"message": "Fund updated.", "updatedFund": retVal['updatedFund']})
+        return Response({"message": "Fund updated.", "updatedFund": retVal['updatedFund']}) """
 
 @api_view(['POST'])
 @permission_classes((permissions.AllowAny,))

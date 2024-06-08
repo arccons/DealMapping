@@ -1,23 +1,21 @@
-import "../App.css";
-
 import React, { useEffect, useState } from "react";
 
-export default function Search({ initialDataList, setCurrentDataList, search_parameters, placeholder }) {
+export default function Search({ initialDataList, setDisplayList, search_parameters, placeholder }) {
 
-   const [currentData, setCurrentData] = useState([]);
-   const [query, setQuery] = useState("");
+   const [currentDataList, setCurrentDataList] = useState([]);
 
    useEffect(() => {
-      setCurrentData(initialDataList);
+      console.log("Search.js: useEffect entered.");
+      setCurrentDataList(initialDataList);
    }, [initialDataList]);
 
-   function search() {
-      console.log("search_parameters = " + search_parameters.toString());
-      if (query !== '') {
-         let queryStr = query.toString().toLowerCase();
-         let searchResults = currentData.filter(d =>
-            search_parameters.some(param => d[param.toString()].toString().toLowerCase().includes(queryStr)));
-         console.log("searchResults = " + searchResults);
+   function search(queryStr) {
+      if (queryStr !== '') {
+         const searchQuery = queryStr.toString().trim();
+         console.log("Search.js.search(): searchQuery = " + searchQuery);
+         let searchResults = initialDataList.filter(d => search_parameters.some(param =>
+            d[param.toString()].toString().toLowerCase().includes(searchQuery.toLowerCase())));
+         console.log("Search.js.search(): searchResults = " + searchResults);
          return searchResults;
       }
       else {
@@ -26,13 +24,18 @@ export default function Search({ initialDataList, setCurrentDataList, search_par
    }
 
    function handleSearchQuery(event) {
-      setQuery(event.target.value);
-      setCurrentDataList(search());
+      const queryStr = event.target.value.trim();
+      const searchResults = search(queryStr);
+      setCurrentDataList(searchResults);
+      setDisplayList(searchResults);
+      console.log("handleSearchQuery.queryStr = " + queryStr);
+      console.log("handleSearchQuery.searchResults = " + searchResults);
+      console.log("handleSearchQuery.currentDataList = " + currentDataList);
    }
 
    return (
       <div className=".container-fluid">
-         <div className="input-box" data-mdb-input-init>
+         <div>
             <input
                type="Search"
                name="search-form"
