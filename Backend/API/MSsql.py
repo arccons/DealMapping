@@ -60,17 +60,6 @@ def updateDealSQL(ACDB_Deal_ID, Deal_Name_EntityCode, Deal_Name, Closing_Date, M
     sql_stmt_5 = f" WHERE ACDB_Deal_ID = {ACDB_Deal_ID}"
     return sql_stmt_1 + sql_stmt_2 + sql_stmt_3 + sql_stmt_4 + sql_stmt_5
 
-""" def updateFundSQL(ACDB_Deal_ID, Fund_Name, Active_Realized, Deal_Investment_Currency, Investment_Blended_FX_Rate):
-
-    if Deal_Investment_Currency == 'null':
-        Deal_Investment_Currency = ''
-    
-    sql_stmt_1 = f"UPDATE {DBstr}.fund SET Active_Realized = '{Active_Realized}'"
-    sql_stmt_2 = f", Deal_Investment_Currency = '{Deal_Investment_Currency}', Investment_Blended_FX_Rate = {Investment_Blended_FX_Rate}"
-    sql_stmt_3 = f" WHERE Fund_Name = '{Fund_Name}'"
-
-    return sql_stmt_1 + sql_stmt_2 + sql_stmt_3
- """
 def getMappingAsOfDateSQL(ACDB_Deal_ID, Fund_Name):
     sql_stmt_1 = f"SELECT As_Of_Date from {DBstr}.mapping_history_v"
     sql_stmt_2 = f" WHERE ACDB_Deal_ID = {ACDB_Deal_ID} AND Fund_Name = '{Fund_Name}'"

@@ -69,7 +69,7 @@ export default function DealEdit({ deal, setGotDeals, setShowEditForm, setPageMs
   return (
     <div className="App">
       <center>
-        < form id="MainForm" onSubmit={handleSubmit}>
+        <form id="MainForm" onSubmit={handleSubmit}>
           <p>Editing Deal: <b>{deal.Deal_Name}</b></p>
           <Container className='editSection'>
             <Row>

@@ -120,18 +120,6 @@ def updateDeal(ACDB_Deal_ID, Deal_Name_EntityCode, Deal_Name, Closing_Date, Modi
 
     return {'retVal': True, 'updatedDeal': ACDB_Deal_ID}
 
-""" def updateFund(ACDB_Deal_ID, Fund_Name, Active_Realized, Deal_Investment_Currency, Investment_Blended_FX_Rate):
-    fnStr = fileStr + "::updateFund"
-
-    writeCursor, writeDBconn = DB.connect_to_DB()
-    sql_stmt = DB.updateFundSQL(ACDB_Deal_ID, Fund_Name, Active_Realized, Deal_Investment_Currency, Investment_Blended_FX_Rate)
-    print(sql_stmt)
-    writeCursor.execute(sql_stmt)
-    DB.commitConnection(writeDBconn)
-    DB.closeConnection(writeDBconn)
-
-    return {'retVal': True, 'updatedFund': Fund_Name} """
-
 def addMapping(ACDB_Deal_ID, Fund_Name, Realized_PnL, Realized_IRR, Realized_MOIC, Realized_Date, 
                Commitment_Local, Commitment_USD, Legal_Commitment_Local, Legal_Commitment_USD, 
                ITD_PM_Adjustment_USD, IC_Discretionary_Unfunded_USD, 
@@ -192,3 +180,27 @@ def addMapping(ACDB_Deal_ID, Fund_Name, Realized_PnL, Realized_IRR, Realized_MOI
     except:
         DB.closeConnection(writeDBconn)
         return {'retVal': False, 'errorMessage': f"{fnStr}: Error adding mapping."}
+
+RULES = [
+    "Rule I: Deal Code Values",
+    "Rule II: Deal Funds",
+    "Rule III: Deal Code to Deal Names",
+    "Rule IV: Deal Names to Deal Code",
+    "Rule V: Just for fun"]
+
+RESULTS = [[1,2,3], [0,1,3], [0,2,3], [], [0,1,2]]
+
+def checkDeals(parsedFile):
+    fnStr = fileStr + "::checkDeals"
+    
+    results = json.dumps(RESULTS)
+    print(results)
+    rules = json.dumps(RULES)
+    print(rules)
+
+    return {'retVal': True, 'rules': rules, 'results': results}
+
+def uploadMappings(parsedFile):
+    fnStr = fileStr + "::uploadMappings"
+
+    return {'retVal': True, 'uploaded': True}

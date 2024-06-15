@@ -99,28 +99,6 @@ def updateDeal(request):
         Response.status_code = status.HTTP_200_OK
         return Response({"message": "Deal updated.", "updatedDeal": retVal['updatedDeal']})
 
-""" @api_view(['POST'])
-@permission_classes((permissions.AllowAny,))
-def updateFund(request):
-    fnStr = f"{fileStr}::updateFund"
-
-    ACDB_Deal_ID = request.data['ACDB_Deal_ID']
-    Fund_Name = request.data['Fund_Name']
-    Active_Realized = request.data['Active_Realized']
-    Deal_Investment_Currency = request.data['Deal_Investment_Currency']
-    Investment_Blended_FX_Rate = request.data['Investment_Blended_FX_Rate']
-    retVal = VP.updateFund(ACDB_Deal_ID, 
-                           Fund_Name, 
-                           Active_Realized, 
-                           Deal_Investment_Currency, 
-                           Investment_Blended_FX_Rate)
-    if not retVal['retVal']:
-        Response.status_code = status.HTTP_500_INTERNAL_SERVER_ERROR
-        return Response({"errorMessage": f"Error in VP.updateFund(): {retVal['errorMessage']}"})
-    else:
-        Response.status_code = status.HTTP_200_OK
-        return Response({"message": "Fund updated.", "updatedFund": retVal['updatedFund']}) """
-
 @api_view(['POST'])
 @permission_classes((permissions.AllowAny,))
 def addMapping(request):
@@ -156,3 +134,35 @@ def addMapping(request):
     else:
         Response.status_code = status.HTTP_200_OK
         return Response({"message": "Mappings list added.", "mappingsAdded": retVal['mappingsAdded']})
+
+@api_view(['POST'])
+@permission_classes((permissions.AllowAny,))
+def checkDeals(request):
+    fnStr = f"{fileStr}::checkDeals"
+
+    parsedFile = request.data['parsedFile']
+    print(parsedFile)
+
+    retVal = VP.checkDeals(parsedFile)
+    if not retVal['retVal']:
+        Response.status_code = status.HTTP_500_INTERNAL_SERVER_ERROR
+        return Response({"message": f"Error in VP.checkDeals(): {retVal['errorMessage']}"})
+    else:
+        Response.status_code = status.HTTP_200_OK
+        return Response({"message": "Mappings list checked.", "results": retVal['results'], "rules": retVal['rules']})
+
+@api_view(['POST'])
+@permission_classes((permissions.AllowAny,))
+def uploadMappings(request):
+    fnStr = f"{fileStr}::uploadMappings"
+
+    parsedFile = request.data['parsedFile']
+    print(parsedFile)
+
+    retVal = VP.uploadMappings(parsedFile)
+    if not retVal['retVal']:
+        Response.status_code = status.HTTP_500_INTERNAL_SERVER_ERROR
+        return Response({"message": f"Error in VP.uploadMappings(): {retVal['errorMessage']}"})
+    else:
+        Response.status_code = status.HTTP_200_OK
+        return Response({"message": "Mappings list uploaded.", 'UPLOADED': retVal['uploaded']})

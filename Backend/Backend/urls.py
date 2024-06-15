@@ -29,4 +29,6 @@ urlpatterns = [
     path('updateDeal', views.updateDeal), # POST
     #path('updateFund', views.updateFund), # POST
     path('addMapping', views.addMapping), # POST
+    path('checkDeals', views.checkDeals), # POST
+    path('uploadMappings', views.uploadMappings), # POST
 ]

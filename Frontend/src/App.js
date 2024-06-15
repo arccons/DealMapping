@@ -10,6 +10,7 @@ import About from "./pages/About";
 import Deals from "./pages/Deals";
 import Funds from './pages/Funds';
 import Mappings from './pages/Mappings';
+import CheckDeals from './pages/CheckDeals';
 
 function App() {
   const [DBdeal, setDBdeal] = useState();
@@ -22,8 +23,13 @@ function App() {
           <Route index element={<Deals setDBdeal={setDBdeal} />} />
           <Route path="funds" element={<Funds DBdeal={DBdeal} setDBfund={setDBfund} />} />
           <Route path="mappings" element={<Mappings DBdeal={DBdeal} DBfund={DBfund} />} />
+        </Route>
+        <Route path="/checkDeals" element={<Layout />}>
+          <Route index element={<CheckDeals />} />
+        </Route>
+        <Route path="/about" element={<Layout />}>
+          <Route index element={<About />} />
           <Route path="contact" element={<Contact />} />
-          <Route path="about" element={<About />} />
           <Route path="*" element={<NoPage />} />
         </Route>
       </Routes>
