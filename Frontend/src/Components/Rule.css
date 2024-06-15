@@ -1,0 +1,7 @@
+.failed-rule {
+   color: red;
+}
+
+.passed-rule {
+   color: green;
+}
