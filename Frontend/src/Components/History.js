@@ -13,7 +13,7 @@ import axios from 'axios';
 } from 'mdb-react-ui-kit'; */
 import { Button, Modal, Table } from 'react-bootstrap';
 
-export default function MappingHistory({ mapping, setModalOpen, setPageMsg }) {
+export default function History({ mapping, setModalOpen, setPageMsg }) {
 
    const [history, setHistory] = useState([]);
    const [gotHistory, setGotHistory] = useState(false);
@@ -48,8 +48,8 @@ export default function MappingHistory({ mapping, setModalOpen, setPageMsg }) {
    });
 
    return (
-      <Modal show>
-         <Modal.Dialog centered scrollable onHide={() => setModalOpen(false)}>
+      <Modal show backdrop="static" keyboard={false} fullscreen>
+         <Modal.Dialog scrollable size='xl' onHide={() => setModalOpen(false)}>
             <Modal.Header closeButton onHide={() => setModalOpen(false)}>
                <Modal.Title>
                   <p>Deal: {mapping.Deal_Name} - Fund: {mapping.Fund_Name}</p>

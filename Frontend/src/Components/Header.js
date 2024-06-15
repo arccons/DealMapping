@@ -9,6 +9,7 @@ export default function Header() {
                 <Nav className="me-auto" style={{ textDecorationColor: '100px' }}>
                     <Nav.Link href="/">Maintain Deals</Nav.Link>
                     <Nav.Link href="/checkDeals">Check Deals</Nav.Link>
+                    <Nav.Link href="/reports">Reports</Nav.Link>
                     <Nav.Link href="/about/contact">Contact</Nav.Link>
                 </Nav>
             </Navbar>

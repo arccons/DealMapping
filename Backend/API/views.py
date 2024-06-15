@@ -166,3 +166,16 @@ def uploadMappings(request):
     else:
         Response.status_code = status.HTTP_200_OK
         return Response({"message": "Mappings list uploaded.", 'UPLOADED': retVal['uploaded']})
+
+@api_view(['POST'])
+@permission_classes((permissions.AllowAny,))
+def reports(request, report_type):
+    fnStr = f"{fileStr}::reports"
+
+    retVal = VP.reports(report_type)
+    if not retVal['retVal']:
+        Response.status_code = status.HTTP_500_INTERNAL_SERVER_ERROR
+        return Response({"message": f"Error in VP.uploadMappings(): {retVal['errorMessage']}"})
+    else:
+        Response.status_code = status.HTTP_200_OK
+        return Response({"message": "Mappings list uploaded.", 'UPLOADED': retVal['uploaded']})

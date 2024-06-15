@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import MappingHistory from '../Components/MappingHistory';
+import History from '../Components/History';
 import AddMapping from '../Components/AddMapping';
 import { Button, Col, Row, Container } from 'react-bootstrap';
 
@@ -67,7 +67,7 @@ export default function Mappings({ DBdeal, DBfund }) {
         <br></br>
         {pageMsg}
       </center >
-      {showHistory && <MappingHistory mapping={mapping} setModalOpen={setShowHistory} setPageMsg={setPageMsg} />}
+      {showHistory && <History mapping={mapping} setModalOpen={setShowHistory} setPageMsg={setPageMsg} />}
     </div >
   );
 }

@@ -11,8 +11,9 @@ import Deals from "./pages/Deals";
 import Funds from './pages/Funds';
 import Mappings from './pages/Mappings';
 import CheckDeals from './pages/CheckDeals';
+import Reports from './pages/Reports';
 
-function App() {
+export default function App() {
   const [DBdeal, setDBdeal] = useState();
   const [DBfund, setDBfund] = useState();
 
@@ -27,6 +28,9 @@ function App() {
         <Route path="/checkDeals" element={<Layout />}>
           <Route index element={<CheckDeals />} />
         </Route>
+        <Route path="/reports" element={<Layout />}>
+          <Route index element={<Reports />} />
+        </Route>
         <Route path="/about" element={<Layout />}>
           <Route index element={<About />} />
           <Route path="contact" element={<Contact />} />
@@ -36,5 +40,3 @@ function App() {
     </BrowserRouter>
   );
 }
-
-export default App;

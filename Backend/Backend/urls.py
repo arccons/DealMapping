@@ -27,8 +27,8 @@ urlpatterns = [
     path('fundMapping/<int:ACDB_Deal_ID>/<str:Fund_Name>', views.fundMapping), # GET
     path('mappingHistory/<int:ACDB_Deal_ID>/<str:Fund_Name>', views.mappingHistory), # GET
     path('updateDeal', views.updateDeal), # POST
-    #path('updateFund', views.updateFund), # POST
     path('addMapping', views.addMapping), # POST
     path('checkDeals', views.checkDeals), # POST
     path('uploadMappings', views.uploadMappings), # POST
+    path('reports', views.reports), # GET
 ]

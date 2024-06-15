@@ -11,10 +11,11 @@ export default function CheckDeals() {
    const [results, setResults] = useState([]);
 
    const [fileSelected, setFileSelected] = useState(false);
-   const [fileSubmitted, setFileSubmitted] = useState(false);
+   //const [fileSubmitted, setFileSubmitted] = useState(false);
    const [fileChecked, setFileChecked] = useState(false);
    const [showResults, setShowResults] = useState(false);
-   const [fileUploaded, setFileUploaded] = useState(false);
+   //const [fileUploaded, setFileUploaded] = useState(false);
+   const [failed, setFailed] = useState(false);
 
    const [pageMsg, setPageMsg] = useState("");
 
@@ -34,19 +35,19 @@ export default function CheckDeals() {
          document.getElementById("fileError").innerHTML = "";
          setParsedFile(fileData);
          setFileSelected(true);
-         setFileSubmitted(false);
+         //setFileSubmitted(false);
          setFileChecked(false);
          setShowResults(false);
-         setFileUploaded(false);
+         // setFileUploaded(false);
       }
    }
 
    function handleFileSubmit(event) {
       console.log("CheckDeals.js: handleFileSubmit entered ...");
-      setFileSubmitted(true);
+      //setFileSubmitted(true);
       setFileChecked(false);
       setShowResults(false);
-      setFileUploaded(false);
+      //setFileUploaded(false);
       const fileAsJSON = JSON.stringify(parsedFile);
       const checkURL = "http://localhost:8000/checkDeals";
       const formData = new FormData();
@@ -64,14 +65,14 @@ export default function CheckDeals() {
             setResults(tempResults);
             setFileChecked(true);
             setShowResults(true);
-            setFileUploaded(false);
+            //setFileUploaded(false);
             setPageMsg(response.data.message);
          })
          .catch((error) => {
-            setFileSubmitted(false);
+            //setFileSubmitted(false);
             setFileChecked(false);
             setShowResults(false);
-            setFileUploaded(false);
+            //setFileUploaded(false);
             const errMsg = JSON.parse(error);
             setPageMsg(errMsg);
             console.error("error: ", errMsg);
@@ -80,7 +81,7 @@ export default function CheckDeals() {
 
    function handleFileUpload(event) {
       console.log("CheckDeals.js: handleFileUpload entered ...");
-      setFileUploaded(false);
+      //setFileUploaded(false);
       const fileAsJSON = JSON.stringify(parsedFile);
       const formData = new FormData();
       formData.append('parsedFile', fileAsJSON);
@@ -94,12 +95,12 @@ export default function CheckDeals() {
          .then((response) => {
             setRules([]);
             setResults([]);
-            setFileUploaded(true);
+            //setFileUploaded(true);
             setShowResults(false);
             setPageMsg(response.data.message);
          })
          .catch((error) => {
-            setFileUploaded(false);
+            //setFileUploaded(false);
             setPageMsg(error.message);
             console.error("error.message: ", error.message);
          });
@@ -122,10 +123,10 @@ export default function CheckDeals() {
             <p id="fileError"></p>
             {fileSelected && <Button disabled={!fileSelected} onClick={handleFileSubmit}>Check File</Button>}
          </form>
-         {showResults && <Results parsedFile={parsedFile} rules={rules} results={results} setPageMsg={setPageMsg} />}
+         {showResults && <Results parsedFile={parsedFile} rules={rules} results={results} setFailed={setFailed} />}
          {fileChecked && showResults &&
             <>
-               <Button onClick={handleFileUpload}>Upload File</Button>
+               {!failed && <Button onClick={handleFileUpload}>Upload File</Button>}
                <Button onClick={handleCancel}>Cancel</Button>
             </>}
          <br />

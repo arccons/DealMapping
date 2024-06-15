@@ -188,11 +188,12 @@ RULES = [
     "Rule IV: Deal Names to Deal Code",
     "Rule V: Just for fun"]
 
-RESULTS = [[1,2,3], [0,1,3], [0,2,3], [], [0,1,2]]
+#RESULTS = [[1,2,3], [], [0,2,3], [], [0,1,2]]
+RESULTS = [[], [], [], [], []]
 
 def checkDeals(parsedFile):
     fnStr = fileStr + "::checkDeals"
-    
+
     results = json.dumps(RESULTS)
     print(results)
     rules = json.dumps(RULES)
@@ -204,3 +205,8 @@ def uploadMappings(parsedFile):
     fnStr = fileStr + "::uploadMappings"
 
     return {'retVal': True, 'uploaded': True}
+
+def reports(report_type):
+    fnStr = fileStr + "::reports"
+
+    return {'retVal': True, 'report': True}
