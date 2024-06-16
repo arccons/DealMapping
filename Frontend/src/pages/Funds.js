@@ -28,7 +28,7 @@ export default function Funds({ DBdeal, setDBfund }) {
       }
       axios.get(fundsURL, config)
         .then(response => {
-          const DBfunds = JSON.parse(response.data.FUNDS_LIST);
+          const DBfunds = JSON.parse(response.data.FUNDS);
           setInitialFundList(DBfunds);
           setDisplayedFundList(DBfunds);
           setGotFunds(true);
@@ -68,8 +68,7 @@ export default function Funds({ DBdeal, setDBfund }) {
             <tr align="center">
               <th>Fund Name</th>
               <th>Active/Realized</th>
-              <th>Deal Investment Currency</th>
-              <th>Investment Blended FX Rate</th>
+              <th>Deal Mapping Currency</th>
               <th>Mapping</th>
             </tr>
           </thead>
@@ -77,9 +76,8 @@ export default function Funds({ DBdeal, setDBfund }) {
             {displayedFundList.map((f, index) => (
               <tr key={index} align="center">
                 <td>{f.Fund_Name}</td>
-                <td>{f.Active_Realized}</td>
-                <td>{f.Deal_Investment_Currency}</td>
-                <td>{f.Investment_Blended_FX_Rate}</td>
+                <td>{f.Realized_Active}</td>
+                <td>{f.Deal_Mapping_Currency}</td>
                 <td><Button variant="secondary" size='sm' value={index} onClick={handleMappingClick}>Mapping</Button></td>
               </tr>
             ))}

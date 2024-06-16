@@ -1,0 +1,15 @@
+insert into dbo.deal_security VALUES 
+('S001',NULL,'Sec 001','CLO Debt','EUR'),
+('S002',NULL,'Sec 002','Term Loan','USD'),
+('S003',NULL,'Sec 003','Line of Credit','USD'),
+('S004',NULL,'Sec 004','Bridge Loan','EUR'),
+('S005',NULL,'Sec 005','Delay Draw Loan','USD'),
+('S006',NULL,'Sec 006','Delay Draw Loan','GBP'),
+('S007',NULL,'Sec 007','Corporate Bond','SEK'),
+('S008',NULL,'Sec 008','Term Loan','INR'),
+('S009',NULL,'Sec 009','Revolver Loan','USD'),
+('S010',NULL,'Sec 010','Bridge Loan','USD'),
+('S011',NULL,'Sec 011','Line of Credit','INR'),
+('S012',NULL,'Sec 012','Term Loan','SEK'),
+('S013',NULL,'Sec 013','CLO Debt','GBP'),
+('S014',NULL,'Sec 014','Revolver Loan','EUR')

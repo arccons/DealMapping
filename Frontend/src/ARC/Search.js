@@ -13,7 +13,8 @@ export default function Search({ initialDataList, setDisplayList, search_paramet
       if (queryStr !== '') {
          const searchQuery = queryStr.toString().trim();
          console.log("Search.js.search(): searchQuery = " + searchQuery);
-         let searchResults = initialDataList.filter(d => search_parameters.some(param =>
+         // Does not work with fields with null values
+         const searchResults = initialDataList.filter(d => search_parameters.some(param =>
             d[param.toString()].toString().toLowerCase().includes(searchQuery.toLowerCase())));
          console.log("Search.js.search(): searchResults = " + searchResults);
          return searchResults;

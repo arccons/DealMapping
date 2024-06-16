@@ -24,7 +24,7 @@ export default function Securities({ deal, setModalOpen, setPageMsg }) {
          }
          axios.get(securitiesURL, config)
             .then(response => {
-               const DBsecs = JSON.parse(response.data.SECURITIES_LIST);
+               const DBsecs = JSON.parse(response.data.SECURITIES);
                setSecurities(DBsecs);
                setGotSecurities(true);
                setModalOpen(true);

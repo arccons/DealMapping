@@ -35,7 +35,7 @@ export default function Deals({ setDBdeal }) {
       }
       axios.get(dealsURL, config)
         .then(response => {
-          const initialDeals = JSON.parse(response.data.DEAL_LIST);
+          const initialDeals = JSON.parse(response.data.DEALS);
           setInitialDealList(initialDeals);
           setDisplayedDealList(initialDeals);
           setGotDeals(true);
@@ -67,7 +67,7 @@ export default function Deals({ setDBdeal }) {
     const dl = displayedDealList[selectedIndex];
     setCurrentDeal(dl);
     setDBdeal(dl);
-    navigate('/funds')
+    navigate('/funds');
   }
 
   function handleSecuritiesClick(event) {
@@ -96,15 +96,14 @@ export default function Deals({ setDBdeal }) {
             <Table striped hover bordered align="middle" responsive>
               <thead>
                 <tr align="center">
-                  <th>Edit Deal</th>
+                  <th>Edit</th>
                   <th>ACDB_Deal_ID</th>
                   <th>Entity Code</th>
                   <th>Deal Name</th>
-                  <th>Closing Date</th>
-                  <th>Modified Date</th>
-                  <th>Sub-Sector</th>
                   <th>Strategy</th>
+                  <th>Sub-Sector</th>
                   <th>Is Liquid</th>
+                  <th>Closing Date</th>
                   <th>Securities</th>
                   <th>Funds</th>
                 </tr>
@@ -116,11 +115,10 @@ export default function Deals({ setDBdeal }) {
                     <td>{d.ACDB_Deal_ID}</td>
                     <td>{d.Deal_Name_EntityCode}</td>
                     <td>{d.Deal_Name}</td>
-                    <td>{d.Closing_Date === 'None' ? '' : d.Closing_Date}</td>
-                    <td>{d.Modify_Date === 'None' ? '' : d.Modify_Date}</td>
-                    <td>{d.Subsector}</td>
                     <td>{d.Strategy}</td>
+                    <td>{d.Subsector}</td>
                     <td>{d.Liquid_Illiquid}</td>
+                    <td>{d.Closing_Date === 'None' ? '' : d.Closing_Date}</td>
                     <td><Button variant="info" size='sm' value={index} onClick={handleSecuritiesClick}>Securities</Button></td>
                     <td><Button variant="secondary" size='sm' value={index} onClick={handleFundsClick}>Funds</Button></td>
                   </tr>

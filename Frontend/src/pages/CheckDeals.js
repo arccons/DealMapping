@@ -11,17 +11,13 @@ export default function CheckDeals() {
    const [results, setResults] = useState([]);
 
    const [fileSelected, setFileSelected] = useState(false);
-   //const [fileSubmitted, setFileSubmitted] = useState(false);
    const [fileChecked, setFileChecked] = useState(false);
    const [showResults, setShowResults] = useState(false);
-   //const [fileUploaded, setFileUploaded] = useState(false);
    const [failed, setFailed] = useState(false);
 
    const [pageMsg, setPageMsg] = useState("");
 
    function handleFileSelect(fileData) {
-      console.log("CheckDeals.js: handleFileSelect entered ...");
-      console.log("CheckDeals.js: handleFileSelect(fileData)");
       if (fileData.length !== 0) {
          fileData.pop(); // LAST ROW EXISTS BECAUSE OF CSVReader
       }
@@ -30,24 +26,24 @@ export default function CheckDeals() {
       }
       if (fileData.length === 0) {
          document.getElementById("fileError").innerHTML = "Empty file selected";
+         setParsedFile([]);
          setFileSelected(false);
+         setShowResults(false);
+         setFailed(false);
       } else {
          document.getElementById("fileError").innerHTML = "";
          setParsedFile(fileData);
          setFileSelected(true);
-         //setFileSubmitted(false);
          setFileChecked(false);
          setShowResults(false);
-         // setFileUploaded(false);
+         setFailed(false);
       }
    }
 
    function handleFileSubmit(event) {
-      console.log("CheckDeals.js: handleFileSubmit entered ...");
-      //setFileSubmitted(true);
       setFileChecked(false);
       setShowResults(false);
-      //setFileUploaded(false);
+      setFailed(false);
       const fileAsJSON = JSON.stringify(parsedFile);
       const checkURL = "http://localhost:8000/checkDeals";
       const formData = new FormData();
@@ -59,20 +55,17 @@ export default function CheckDeals() {
       };
       axios.post(checkURL, formData, config)
          .then((response) => {
-            const tempRules = JSON.parse(response.data.rules);
-            const tempResults = JSON.parse(response.data.results);
+            const tempRules = JSON.parse(response.data.RULES);
+            const tempResults = JSON.parse(response.data.RESULTS);
             setRules(tempRules);
             setResults(tempResults);
             setFileChecked(true);
             setShowResults(true);
-            //setFileUploaded(false);
             setPageMsg(response.data.message);
          })
          .catch((error) => {
-            //setFileSubmitted(false);
             setFileChecked(false);
             setShowResults(false);
-            //setFileUploaded(false);
             const errMsg = JSON.parse(error);
             setPageMsg(errMsg);
             console.error("error: ", errMsg);
@@ -80,8 +73,6 @@ export default function CheckDeals() {
    }
 
    function handleFileUpload(event) {
-      console.log("CheckDeals.js: handleFileUpload entered ...");
-      //setFileUploaded(false);
       const fileAsJSON = JSON.stringify(parsedFile);
       const formData = new FormData();
       formData.append('parsedFile', fileAsJSON);
@@ -95,12 +86,11 @@ export default function CheckDeals() {
          .then((response) => {
             setRules([]);
             setResults([]);
-            //setFileUploaded(true);
             setShowResults(false);
+            setFailed(false);
             setPageMsg(response.data.message);
          })
          .catch((error) => {
-            //setFileUploaded(false);
             setPageMsg(error.message);
             console.error("error.message: ", error.message);
          });

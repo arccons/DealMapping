@@ -7,7 +7,7 @@ import { Button, Container, Row, Col } from 'react-bootstrap';
 export default function DealEdit({ deal, setGotDeals, setShowEditForm, setPageMsg }) {
 
   const [closingDateFinal, setClosingDateFinal] = useState(deal.Closing_Date);
-  const [modifiedDateFinal, setModifiedDateFinal] = useState(deal.Modify_Date);
+  //const [modifiedDateFinal, setModifiedDateFinal] = useState(deal.Modify_Date);
   const [subSectorFinal, setSubSectorFinal] = useState(deal.Subsector);
   const [strategyFinal, setStrategyFinal] = useState(deal.Strategy);
   const [isLiquidFinal, setIsLiquidFinal] = useState(deal.Liquid_Illiquid);
@@ -28,7 +28,7 @@ export default function DealEdit({ deal, setGotDeals, setShowEditForm, setPageMs
       formData.append('Deal_Name_EntityCode', deal.Deal_Name_EntityCode);
       formData.append('Deal_Name', deal.Deal_Name);
       formData.append('Closing_Date', closingDateFinal);
-      formData.append('Modify_Date', modifiedDateFinal);
+      //formData.append('Modify_Date', modifiedDateFinal);
       formData.append('Subsector', subSectorFinal);
       formData.append('Strategy', strategyFinal);
       formData.append('Liquid_Illiquid', isLiquidFinal);
@@ -74,69 +74,52 @@ export default function DealEdit({ deal, setGotDeals, setShowEditForm, setPageMs
           <Container className='editSection'>
             <Row>
               <Col>
-                <Row><b>Dates</b></Row>
-                <Row className='editRow'>
-                  <Col>
-                    <Row><b>Closing Date</b></Row>
-                    <Row>{deal.Closing_Date === '' ? 'None' : deal.Closing_Date}</Row>
-                    <Row><input type='date' id='closingDate' onChange={() => handleDateChange('closingDateNull', 'closingDate', setClosingDateFinal)} /></Row>
-                    <br></br>
-                    <Row><input type='checkbox' value='off' id='closingDateNull' onChange={() => handleDateChange('closingDateNull', 'closingDate', setClosingDateFinal)} /></Row>
-                  </Col>
-                  <Col>
-                    <Row><b>Modified Date</b></Row>
-                    <Row>{deal.Modify_Date === '' ? 'None' : deal.Modify_Date}</Row>
-                    <Row><input type='date' id='modifiedDate' onChange={() => handleDateChange('modifiedDateNull', 'modifiedDate', setModifiedDateFinal)} /></Row>
-                    <br></br>
-                    <Row><input type='checkbox' id='modifiedDateNull' value='off' onChange={() => handleDateChange('modifiedDateNull', 'modifiedDate', setModifiedDateFinal)} /></Row>
-                  </Col>
-                </Row>
+                <Row><b>Closing Date</b></Row>
+                <Row>{deal.Closing_Date === '' ? 'None' : deal.Closing_Date}</Row>
+                <Row><input type='date' id='closingDate' onChange={() => handleDateChange('closingDateNull', 'closingDate', setClosingDateFinal)} /></Row>
+                <br></br>
+                <Row><input type='checkbox' value='off' id='closingDateNull' onChange={() => handleDateChange('closingDateNull', 'closingDate', setClosingDateFinal)} /></Row>
               </Col>
               <Col>
-                <Row><b>Factors</b></Row>
-                <Row className='editRow'>
-                  <Col>
-                    <Row><b>Sub-Sector</b></Row>
-                    <Row>{deal.Subsector === '' ? 'None' : deal.Subsector}</Row>
-                    <Row>
-                      <select id='subSector' onChange={() => handleSelectChange('subSectorNull', 'subSector', setSubSectorFinal)}>
-                        <option value={"-1"}>Choose One</option>
-                        {subSectorValueList.map((s, index) => {
-                          return (<option key={index} value={s}>{s}</option>);
-                        })}
-                      </select>
-                    </Row>
-                    <br></br>
-                    <Row><input type='checkbox' id='subSectorNull' value='off' onChange={() => handleSelectChange('subSectorNull', 'subSector', setSubSectorFinal)} /></Row>
-                  </Col>
-                  <Col>
-                    <Row><b>Strategy</b></Row>
-                    <Row>{deal.Strategy === '' ? 'None' : deal.Strategy}</Row>
-                    <Row>
-                      <select id='strategy' onChange={() => handleSelectChange('strategyNull', 'strategy', setStrategyFinal)}>
-                        <option value={"-1"}>Choose One</option>
-                        {strategyValueList.map((s, index) => {
-                          return (<option key={index} value={s}>{s}</option>);
-                        })}
-                      </select>
-                    </Row>
-                    <br></br>
-                    <Row><input type='checkbox' id='strategyNull' value='off' onChange={() => handleSelectChange('strategyNull', 'strategy', setStrategyFinal)} /></Row>
-                  </Col>
-                  <Col>
-                    <Row><b>Is Liquid</b></Row>
-                    <Row>{deal.Liquid_Illiquid}</Row>
-                    <Row>
-                      <select id='isLiquid' onChange={() => handleSelectChange('isLiquidNull', 'isLiquid', setIsLiquidFinal)}>
-                        <option value={"-1"}>Choose One</option>
-                        <option key={1} value={"Liquid"}>{"Liquid"}</option>
-                        <option key={2} value={"Illiquid"}>{"Illiquid"}</option>
-                      </select>
-                    </Row>
-                    <br></br>
-                    <Row><input type='checkbox' id='isLiquidNull' value='off' onChange={() => handleSelectChange('isLiquidNull', 'isLiquid', setIsLiquidFinal)} /></Row>
-                  </Col>
+                <Row><b>Sub-Sector</b></Row>
+                <Row>{deal.Subsector === '' ? 'None' : deal.Subsector}</Row>
+                <Row>
+                  <select id='subSector' onChange={() => handleSelectChange('subSectorNull', 'subSector', setSubSectorFinal)}>
+                    <option value={"-1"}>Choose One</option>
+                    {subSectorValueList.map((s, index) => {
+                      return (<option key={index} value={s}>{s}</option>);
+                    })}
+                  </select>
                 </Row>
+                <br></br>
+                <Row><input type='checkbox' id='subSectorNull' value='off' onChange={() => handleSelectChange('subSectorNull', 'subSector', setSubSectorFinal)} /></Row>
+              </Col>
+              <Col>
+                <Row><b>Strategy</b></Row>
+                <Row>{deal.Strategy === '' ? 'None' : deal.Strategy}</Row>
+                <Row>
+                  <select id='strategy' onChange={() => handleSelectChange('strategyNull', 'strategy', setStrategyFinal)}>
+                    <option value={"-1"}>Choose One</option>
+                    {strategyValueList.map((s, index) => {
+                      return (<option key={index} value={s}>{s}</option>);
+                    })}
+                  </select>
+                </Row>
+                <br></br>
+                <Row><input type='checkbox' id='strategyNull' value='off' onChange={() => handleSelectChange('strategyNull', 'strategy', setStrategyFinal)} /></Row>
+              </Col>
+              <Col>
+                <Row><b>Is Liquid</b></Row>
+                <Row>{deal.Liquid_Illiquid}</Row>
+                <Row>
+                  <select id='isLiquid' onChange={() => handleSelectChange('isLiquidNull', 'isLiquid', setIsLiquidFinal)}>
+                    <option value={"-1"}>Choose One</option>
+                    <option key={1} value={"Liquid"}>{"Liquid"}</option>
+                    <option key={2} value={"Illiquid"}>{"Illiquid"}</option>
+                  </select>
+                </Row>
+                <br></br>
+                <Row><input type='checkbox' id='isLiquidNull' value='off' onChange={() => handleSelectChange('isLiquidNull', 'isLiquid', setIsLiquidFinal)} /></Row>
               </Col>
             </Row>
           </Container>

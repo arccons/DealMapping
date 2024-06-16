@@ -28,7 +28,7 @@ export default function Mappings({ DBdeal, DBfund }) {
       }
       axios.get(mappingURL, config)
         .then(response => {
-          const DBmappings = JSON.parse(response.data.MAPPING);
+          const DBmappings = JSON.parse(response.data.MAPPINGS);
           setMapping(DBmappings[0]);
           setGotMapping(true);
           console.log(DBmappings[0]);
@@ -56,7 +56,7 @@ export default function Mappings({ DBdeal, DBfund }) {
               <Col>EntityCode: <b>{mapping.Deal_Name_EntityCode}</b></Col>
               <Col>ACDB_Deal_ID: <b>{mapping.ACDB_Deal_ID}</b></Col>
               <Col>Fund: <b>{mapping.Fund_Name}</b></Col>
-              <Col>Active/Realized: <b>{mapping.Active_Realized}</b></Col>
+              <Col>Realized/Active: <b>{mapping.Realized_Active}</b></Col>
               <Col><Button variant='info' size='sm' onClick={handleHistoryClick}>History</Button></Col>
             </Row>
           </Container>}

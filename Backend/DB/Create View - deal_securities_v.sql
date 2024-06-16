@@ -1,7 +1,7 @@
 USE [DealMapping]
 GO
 
-/****** Object:  View [dbo].[deal_securities_v]    Script Date: 26-05-2024 10:56:25 ******/
+/****** Object:  View [dbo].[deal_securities_v]    Script Date: 16-06-2024 05:34:21 ******/
 SET ANSI_NULLS ON
 GO
 
@@ -10,7 +10,11 @@ GO
 
 CREATE VIEW [dbo].[deal_securities_v]
 AS
-SELECT dbo.security.*, dbo.deal_security_fact.As_Of_Date, dbo.deal_security_fact.ACDB_Deal_ID
-FROM  dbo.security INNER JOIN
-       dbo.deal_security_fact ON dbo.security.Security_ID = dbo.deal_security_fact.Security_ID
+SELECT 
+	dbo.deal_security_fact.*, 
+	dbo.deal_security.Security_Name, 
+	dbo.deal_security.Investment_Type, 
+	dbo.deal_security.Currency
+FROM  dbo.deal_security_fact INNER JOIN
+       dbo.deal_security ON dbo.deal_security.Security_ID = dbo.deal_security_fact.Security_ID
 GO

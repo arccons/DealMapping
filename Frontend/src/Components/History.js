@@ -1,16 +1,5 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-//import { MDBTable, MDBTableHead, MDBTableBody } from 'mdb-react-ui-kit';
-/* import {
-   MDBBtn,
-   MDBModal,
-   MDBModalDialog,
-   MDBModalContent,
-   MDBModalHeader,
-   MDBModalTitle,
-   MDBModalBody,
-   MDBModalFooter,
-} from 'mdb-react-ui-kit'; */
 import { Button, Modal, Table } from 'react-bootstrap';
 
 export default function History({ mapping, setModalOpen, setPageMsg }) {
@@ -31,7 +20,7 @@ export default function History({ mapping, setModalOpen, setPageMsg }) {
          }
          axios.get(historyURL, config)
             .then(response => {
-               const DBhistory = JSON.parse(response.data.HISTORY_LIST);
+               const DBhistory = JSON.parse(response.data.HISTORY);
                setGotHistory(true);
                setHistory(DBhistory);
                setModalOpen(true);
@@ -64,12 +53,9 @@ export default function History({ mapping, setModalOpen, setPageMsg }) {
                         <th>Realized PnL</th>
                         <th>Realized IRR</th>
                         <th>Realized MOIC</th>
+                        <th>Blended FX Rate</th>
                         <th>Commitment Local</th>
-                        <th>Commitment USD</th>
                         <th>Legal Commitment Local</th>
-                        <th>Legal Commitment USD</th>
-                        <th>ITD PM Adjustment USD</th>
-                        <th>IC Discretionary Unfunded USD</th>
                      </tr>
                   </thead>
                   <tbody>
@@ -80,12 +66,9 @@ export default function History({ mapping, setModalOpen, setPageMsg }) {
                            <td>{f.Realized_PnL === 'None' ? '' : f.Realized_PnL}</td>
                            <td>{f.Realized_IRR === 'None' ? '' : f.Realized_IRR}</td>
                            <td>{f.Realized_MOIC === 'None' ? '' : f.Realized_MOIC}</td>
+                           <td>{f.Blended_FX_Rate === 'None' ? '' : f.Blended_FX_Rate}</td>
                            <td>{f.Commitment_Local === 'None' ? '' : f.Commitment_Local}</td>
-                           <td>{f.Commitment_USD === 'None' ? '' : f.Commitment_USD}</td>
                            <td>{f.Legal_Commitment_Local === 'None' ? '' : f.Legal_Commitment_Local}</td>
-                           <td>{f.Legal_Commitment_USD === 'None' ? '' : f.Legal_Commitment_USD}</td>
-                           <td>{f.ITD_PM_Adjustment_USD === 'None' ? '' : f.ITD_PM_Adjustment_USD}</td>
-                           <td>{f.IC_Discretionary_Unfunded_USD === 'None' ? '' : f.IC_Discretionary_Unfunded_USD}</td>
                         </tr>))}
                   </tbody>
                </Table>
