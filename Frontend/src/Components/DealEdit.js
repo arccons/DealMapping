@@ -123,7 +123,6 @@ export default function DealEdit({ deal, setGotDeals, setShowEditForm, setPageMs
               </Col>
             </Row>
           </Container>
-          <br></br>
           <Button onClick={() => handleCancel()}>Cancel</Button>{itemChanged && <Button type='submit'>Save Changes</Button>}
         </form>
       </center >

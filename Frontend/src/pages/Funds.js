@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import Search from '../ARC/Search';
 import { Table, Button } from 'react-bootstrap';
+import DownloadCSV from '../ARC/DownloadCSV';
 
 export default function Funds({ DBdeal, setDBfund }) {
 
@@ -29,6 +30,7 @@ export default function Funds({ DBdeal, setDBfund }) {
       axios.get(fundsURL, config)
         .then(response => {
           const DBfunds = JSON.parse(response.data.FUNDS);
+          console.log(DBfunds);
           setInitialFundList(DBfunds);
           setDisplayedFundList(DBfunds);
           setGotFunds(true);
@@ -54,35 +56,42 @@ export default function Funds({ DBdeal, setDBfund }) {
     <div className="App">
       <center>
         <h5>Funds for: {DBdeal.Deal_Name} (ACDB_Deal_ID: {DBdeal.ACDB_Deal_ID}) </h5>
-        {gotFunds &&
-          <Search
-            initialDataList={initialFundList}
-            setDisplayList={setDisplayedFundList}
-            search_parameters={search_parameters}
-            placeholder={"Search Funds"}>
-          </Search>
-        }
-        <br></br>
-        <Table striped hover bordered align="middle" responsive>
-          <thead>
-            <tr align="center">
-              <th>Fund Name</th>
-              <th>Active/Realized</th>
-              <th>Deal Mapping Currency</th>
-              <th>Mapping</th>
-            </tr>
-          </thead>
-          <tbody>
-            {displayedFundList.map((f, index) => (
-              <tr key={index} align="center">
-                <td>{f.Fund_Name}</td>
-                <td>{f.Realized_Active}</td>
-                <td>{f.Deal_Mapping_Currency}</td>
-                <td><Button variant="secondary" size='sm' value={index} onClick={handleMappingClick}>Mapping</Button></td>
-              </tr>
-            ))}
-          </tbody>
-        </Table>
+        {gotFunds && displayedFundList.length > 0 &&
+          <>
+            <Search
+              initialDataList={initialFundList}
+              setDisplayList={setDisplayedFundList}
+              search_parameters={search_parameters}
+              placeholder={"Search Funds"}>
+            </Search>
+            <br></br>
+            <Table striped hover bordered align="middle" responsive>
+              <thead>
+                <tr align="center">
+                  <th>Fund Name</th>
+                  <th>Active/Realized</th>
+                  <th>Deal Mapping Currency</th>
+                  <th>Mapping</th>
+                </tr>
+              </thead>
+              <tbody>
+                {displayedFundList.map((f, index) => (
+                  <tr key={index} align="center">
+                    <td>{f.Fund_Name}</td>
+                    <td>{f.Realized_Active}</td>
+                    <td>{f.Deal_Mapping_Currency}</td>
+                    <td><Button variant="secondary" size='sm' value={index} onClick={handleMappingClick}>Mapping</Button></td>
+                  </tr>
+                ))}
+              </tbody>
+            </Table>
+            <DownloadCSV
+              data={displayedFundList}
+              fileName={DBdeal.Deal_Name}
+              columns={["ACDB_Deal_ID", "Fund_Name", "Deal_Mapping_Currency", "Realized_Active", "Realized_Date"]}
+            />
+          </>}
+        {displayedFundList.length === 0 && <h6>No Funds mapped</h6>}
         <Button onClick={() => navigate("/")}>Done</Button>
         <br></br>
         {pageMsg}

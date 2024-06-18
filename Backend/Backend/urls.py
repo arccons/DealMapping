@@ -29,6 +29,7 @@ urlpatterns = [
     path('updateDeal', views.updateDeal), # POST
     path('addMapping', views.addMapping), # POST
     path('checkDeals', views.checkDeals), # POST
+    path('uploadDeals', views.uploadDeals), # POST
+    path('checkMappings', views.checkMappings), # POST
     path('uploadMappings', views.uploadMappings), # POST
-    path('reports', views.reports), # GET
 ]

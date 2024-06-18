@@ -1,7 +1,7 @@
 import os
 import pyodbc
 
-DBstr = f"{os.getenv('MSSQL_DATABASE')}.dbo"
+DBstr = f"{os.getenv('MSSQL_DATABASE')}.{os.getenv('MSSQL_DB_SCHEMA')}"
 
 def connect_to_DB():
     DBconn = pyodbc.connect(driver=os.getenv('MSSQL_DB_DRIVER'), server=os.getenv('MSSQL_DB_HOST'), database=os.getenv('MSSQL_DATABASE'), trusted_connection=os.getenv('MSSQL_TRUSTED_CONNECTION'))
@@ -94,3 +94,20 @@ def updateMappingSQL(As_Of_Date, ACDB_Deal_ID, Fund_Name,
     sql_stmt_5 = f" WHERE As_Of_Date = '{As_Of_Date}' AND ACDB_Deal_ID = {ACDB_Deal_ID} AND Fund_Name = '{Fund_Name}'"
 
     return sql_stmt_1 + sql_stmt_2 + sql_stmt_3 + sql_stmt_4 + sql_stmt_5
+
+def checkDealCodeValuesSQL(Deal_Name_EntityCode):
+    sql_stmt = f"SELECT COUNT * FROM {DBstr}.deal WHERE Deal_Name_EntityCode = {Deal_Name_EntityCode}"
+    return sql_stmt
+
+def checkDealNameSQL(Deal_Name):
+    sql_stmt = f"SELECT COUNT(Deal_Name_EntityCode) FROM {DBstr}.deal WHERE Deal_Name = {Deal_Name}"
+    return sql_stmt
+
+def checkDealCodeSQL(Deal_Name_EntityCode):
+    sql_stmt = f"SELECT COUNT(Deal_Name) FROM {DBstr}.deal WHERE Deal_Name_EntityCode = {Deal_Name_EntityCode}"
+    return sql_stmt
+
+def checkInvestmentValuesSQL(ACDB_Deal_ID, Fund_Name):
+    sql_stmt_1 = f"SELECT COUNT * FROM {DBstr}.deal_investment_fact"
+    sql_stmt_2 = f" WHERE ACDB_Deal_ID = {ACDB_Deal_ID} AND Fund_Name = {Fund_Name}"
+    return sql_stmt_1 + sql_stmt_2

@@ -7,6 +7,7 @@ import DealEdit from '../Components/DealEdit';
 import Securities from '../Components/Securities';
 
 import Search from '../ARC/Search';
+import DownloadCSV from '../ARC/DownloadCSV';
 
 export default function Deals({ setDBdeal }) {
 
@@ -41,6 +42,7 @@ export default function Deals({ setDBdeal }) {
           setGotDeals(true);
           setShowEditForm(false);
           setPageMsg("Deal.js: Got deal list from DB.");
+          console.log(initialDeals);
         })
         .catch(error => {
           setPageMsg("Deal.js: Error getting deal list: " + error);
@@ -83,7 +85,17 @@ export default function Deals({ setDBdeal }) {
   return (
     <div className="App">
       <center>
-        <h4>Deals</h4>
+        <h5>Deals</h5>
+        {showEditForm &&
+          <>
+            <DealEdit
+              deal={currentDeal}
+              setGotDeals={setGotDeals}
+              setShowEditForm={setShowEditForm}
+              setPageMsg={setPageMsg} />
+            <br></br>
+          </>
+        }
         {gotDeals &&
           <>
             <Search
@@ -92,7 +104,7 @@ export default function Deals({ setDBdeal }) {
               search_parameters={search_parameters}
               placeholder={"Search Deals"}>
             </Search>
-            <br />
+            <br></br>
             <Table striped hover bordered align="middle" responsive>
               <thead>
                 <tr align="center">
@@ -132,13 +144,13 @@ export default function Deals({ setDBdeal }) {
                 setPageMsg={setPageMsg}>
               </Securities>}
           </>}
-        {showEditForm &&
-          <DealEdit
-            deal={currentDeal}
-            setGotDeals={setGotDeals}
-            setShowEditForm={setShowEditForm}
-            setPageMsg={setPageMsg} />}
-        <br />
+        {displayedDealList.length > 0 && !showEditForm &&
+          <DownloadCSV
+            data={displayedDealList}
+            fileName={"All Deals"}
+            columns={["ACDB_Deal_ID", "Deal_Name_EntityCode", "Deal_Name", "Liquid_Illiquid", "Strategy", "Subsector", "Region", "Closing_Date", "Is_Deleted"]}
+          />}
+        <br></br>
         {pageMsg}
       </center>
     </div>

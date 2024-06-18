@@ -10,8 +10,7 @@ import About from "./pages/About";
 import Deals from "./pages/Deals";
 import Funds from './pages/Funds';
 import Mappings from './pages/Mappings';
-import CheckDeals from './pages/CheckDeals';
-import Reports from './pages/Reports';
+import UploadFile from './pages/UploadFile';
 
 export default function App() {
   const [DBdeal, setDBdeal] = useState();
@@ -22,14 +21,13 @@ export default function App() {
       <Routes>
         <Route path="/" element={<Layout />}>
           <Route index element={<Deals setDBdeal={setDBdeal} />} />
+          <Route path="deals" element={<Deals setDBdeal={setDBdeal} />} />
           <Route path="funds" element={<Funds DBdeal={DBdeal} setDBfund={setDBfund} />} />
           <Route path="mappings" element={<Mappings DBdeal={DBdeal} DBfund={DBfund} />} />
         </Route>
-        <Route path="/checkDeals" element={<Layout />}>
-          <Route index element={<CheckDeals />} />
-        </Route>
-        <Route path="/reports" element={<Layout />}>
-          <Route index element={<Reports />} />
+        <Route path="/upload" element={<Layout />}>
+          <Route path="deals" element={<UploadFile objType={"Deals"} />} />
+          <Route path="mappings" element={<UploadFile objType={"Mappings"} />} />
         </Route>
         <Route path="/about" element={<Layout />}>
           <Route index element={<About />} />

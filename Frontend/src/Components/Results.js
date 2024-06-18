@@ -5,6 +5,7 @@ export default function Results({ parsedFile, rules, results, setFailed }) {
 
    return (
       <>
+         <h6>File check results</h6>
          {rules.map((rl, rlIndex) => {
             return <>
                <Rule key={"Rule-" + (rlIndex + 1)}
@@ -12,7 +13,6 @@ export default function Results({ parsedFile, rules, results, setFailed }) {
                   rule={rl}
                   result={results[rlIndex]}
                   setFailed={setFailed} />
-               <br></br>
             </>;
          }
          )}
