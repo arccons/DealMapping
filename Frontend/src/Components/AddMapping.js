@@ -21,7 +21,7 @@ export default function AddMapping({ DBdeal, DBfund, setShowAddForm, setPageMsg 
   function handleSubmit(event) {
     event.preventDefault();
     if (itemChanged) {
-      const url = 'http://localhost:8000/addMapping';
+      const addMappingURL = process.env.REACT_APP_URL_DEFAULT + "addMapping/";
       const formData = new FormData();
       formData.append('ACDB_Deal_ID', DBdeal.ACDB_Deal_ID);
       formData.append('Fund_Name', DBfund.Fund_Name);
@@ -40,7 +40,7 @@ export default function AddMapping({ DBdeal, DBfund, setShowAddForm, setPageMsg 
           'content-type': 'application/vnd.api+json'
         },
       };
-      axios.post(url, formData, config)
+      axios.post(addMappingURL, formData, config)
         .then((response) => {
           setItemChanged(false);
           setShowAddForm(false);

@@ -1,0 +1,9 @@
+ACDB_Deal_ID,Deal_Name_EntityCode,Deal_Name,Liquid_Illiquid,Strategy,Subsector,Region,Closing_Date,Is_Deleted
+5,D005,_Currency,Illiquid,_Currency,Residential,,2024-06-17,0
+4,D004,_Expenses,Liquid,_Expenses,null,,2024-03-31,0
+7,D007,Deal 7,Illiquid,_Currency,CLO,,2024-05-01,0
+1,D001,Deal One,Illiquid,,Residential,,2024-04-06,0
+6,D006,Deal Six,Illiquid,CLO,CLO,,2023-09-19,0
+8,D010,Deal Ten,Illiquid,_Expenses,Infrastructure,,2023-09-10,0
+3,D003,Deal Three,Iliquid,,Infrastructure,,2024-01-01,0
+2,D002,Deal Two,Iliquid,CLO,Residential,,2023-05-30,0

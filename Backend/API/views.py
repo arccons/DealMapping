@@ -1,8 +1,8 @@
-import os
+import os, json
 from rest_framework.response import Response
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework import status, permissions
-from API import ViewProcessor as VP
+from API import Download, Upload
 
 fileStr = f"{__file__.strip(os.getcwd())}"
 
@@ -11,65 +11,65 @@ fileStr = f"{__file__.strip(os.getcwd())}"
 def deals(request):
     fnStr = f"{fileStr}::deals"
 
-    retVal = VP.getDeals()
+    retVal = Download.getDeals()
     if not retVal['retVal']:
         Response.status_code = status.HTTP_500_INTERNAL_SERVER_ERROR
-        return Response({"errorMessage": f"Error in VP.getDeals(): {retVal['errorMessage']}"})
+        return Response({"errorMessage": f"Error in Download.getDeals(): {retVal['errorMessage']}"})
     else:
         Response.status_code = status.HTTP_200_OK
-        return Response({"message": "Deal list received.", "DEALS": retVal['json_deals']})
+        return Response({"message": "Deal list received.", "DEALS": json.dumps(retVal['deals'])})
 
 @api_view(['GET'])
 @permission_classes((permissions.AllowAny,))
 def dealSecurities(request, ACDB_Deal_ID):
     fnStr = f"{fileStr}::dealSecurities"
 
-    retVal = VP.getSecurities(ACDB_Deal_ID)
+    retVal = Download.getSecurities(ACDB_Deal_ID)
     if not retVal['retVal']:
         Response.status_code = status.HTTP_500_INTERNAL_SERVER_ERROR
-        return Response({"errorMessage": f"Error in VP.getSecurities(): {retVal['errorMessage']}"})
+        return Response({"errorMessage": f"Error in Download.getSecurities(): {retVal['errorMessage']}"})
     else:
         Response.status_code = status.HTTP_200_OK
-        return Response({"message": "Deal list received.", "SECURITIES": retVal['json_securities']})
+        return Response({"message": "Deal list received.", "SECURITIES": json.dumps(retVal['securities'])})
 
 @api_view(['GET'])
 @permission_classes((permissions.AllowAny,))
 def dealFunds(request, ACDB_Deal_ID):
     fnStr = f"{fileStr}::dealFunds"
 
-    retVal = VP.getFunds(ACDB_Deal_ID)
+    retVal = Download.getFunds(ACDB_Deal_ID)
     if not retVal['retVal']:
         Response.status_code = status.HTTP_500_INTERNAL_SERVER_ERROR
-        return Response({"errorMessage": f"Error in VP.getFunds(): {retVal['errorMessage']}"})
+        return Response({"errorMessage": f"Error in Download.getFunds(): {retVal['errorMessage']}"})
     else:
         Response.status_code = status.HTTP_200_OK
-        return Response({"message": "Mappings list received.", "FUNDS": retVal['json_funds']})
+        return Response({"message": "Mappings list received.", "FUNDS": json.dumps(retVal['funds'])})
 
 @api_view(['GET'])
 @permission_classes((permissions.AllowAny,))
 def mappingHistory(request, ACDB_Deal_ID, Fund_Name):
     fnStr = f"{fileStr}::mappingHistory"
 
-    retVal = VP.getMappingHistory(ACDB_Deal_ID, Fund_Name)
+    retVal = Download.getMappingHistory(ACDB_Deal_ID, Fund_Name)
     if not retVal['retVal']:
         Response.status_code = status.HTTP_500_INTERNAL_SERVER_ERROR
-        return Response({"errorMessage": f"Error in VP.getFundHistory(): {retVal['errorMessage']}"})
+        return Response({"errorMessage": f"Error in Download.getFundHistory(): {retVal['errorMessage']}"})
     else:
         Response.status_code = status.HTTP_200_OK
-        return Response({"message": "Mappings list received.", "HISTORY": retVal['json_history']})
+        return Response({"message": "Mappings list received.", "HISTORY": json.dumps(retVal['history'])})
 
 @api_view(['GET'])
 @permission_classes((permissions.AllowAny,))
 def fundMapping(request, ACDB_Deal_ID, Fund_Name):
     fnStr = f"{fileStr}::fundMapping"
 
-    retVal = VP.getFundMapping(ACDB_Deal_ID, Fund_Name)
+    retVal = Download.getFundMapping(ACDB_Deal_ID, Fund_Name)
     if not retVal['retVal']:
         Response.status_code = status.HTTP_500_INTERNAL_SERVER_ERROR
-        return Response({"errorMessage": f"Error in VP.getFundMapping(): {retVal['errorMessage']}"})
+        return Response({"errorMessage": f"Error in Download.getFundMapping(): {retVal['errorMessage']}"})
     else:
         Response.status_code = status.HTTP_200_OK
-        return Response({"message": "Mappings list received.", "MAPPINGS": retVal['json_mapping']})
+        return Response({"message": "Mappings list received.", "MAPPINGS": json.dumps(retVal['mappings'])})
 
 @api_view(['POST'])
 @permission_classes((permissions.AllowAny,))
@@ -81,14 +81,14 @@ def updateDeal(request):
     Subsector = request.data['Subsector']
     Strategy = request.data['Strategy']
     Liquid_Illiquid = request.data['Liquid_Illiquid']
-    retVal = VP.updateDeal(ACDB_Deal_ID, 
+    retVal = Download.updateDeal(ACDB_Deal_ID, 
                            Closing_Date, 
                            Subsector, 
                            Strategy, 
                            Liquid_Illiquid)
     if not retVal['retVal']:
         Response.status_code = status.HTTP_500_INTERNAL_SERVER_ERROR
-        return Response({"errorMessage": f"Error in VP.updateDeal(): {retVal['errorMessage']}"})
+        return Response({"errorMessage": f"Error in Download.updateDeal(): {retVal['errorMessage']}"})
     else:
         Response.status_code = status.HTTP_200_OK
         return Response({"message": "Deal updated.", "UPDATED_DEAL": retVal['updatedDeal']})
@@ -109,44 +109,44 @@ def addMapping(request):
     PIT = request.data['PIT']
     range_from = request.data['range_from']
     range_to = request.data['range_to']
-    retVal = VP.addMapping(ACDB_Deal_ID, Fund_Name, 
+    retVal = Download.addMapping(ACDB_Deal_ID, Fund_Name, 
                            Realized_PnL, Realized_IRR, Realized_MOIC, Realized_Date, 
                            Commitment_Local, Legal_Commitment_Local, PIT, range_from, range_to)
     if not retVal['retVal']:
         Response.status_code = status.HTTP_500_INTERNAL_SERVER_ERROR
-        return Response({"message": f"Error in VP.addMapping(): {retVal['errorMessage']}"})
+        return Response({"message": f"Error in Download.addMapping(): {retVal['errorMessage']}"})
     else:
         Response.status_code = status.HTTP_200_OK
-        return Response({"message": "Mappings list added.", "MAPPING_ADDED": retVal['mappingsAdded']})
+        return Response({"message": "Mappings list added.", "MAPPINGS_ADDED": retVal['mappingsAdded']})
 
 @api_view(['POST'])
 @permission_classes((permissions.AllowAny,))
 def checkDeals(request):
     fnStr = f"{fileStr}::checkDeals"
 
-    parsedFile = request.data['parsedFile']
-    print(parsedFile)
+    parsedFile = json.loads(request.data['parsedFile'])
 
-    retVal = VP.checkDeals(parsedFile)
+    retVal = Upload.checkDeals(parsedFile)
     if not retVal['retVal']:
         Response.status_code = status.HTTP_500_INTERNAL_SERVER_ERROR
-        return Response({"message": f"Error in VP.checkDeals(): {retVal['errorMessage']}"})
+        return Response({"message": f"Error in Upload.checkDeals(): {retVal['errorMessage']}"})
     else:
+        #print(retVal['rules'])
+        #print(retVal['results'])
         Response.status_code = status.HTTP_200_OK
-        return Response({"message": "Deals list checked.", "RESULTS": retVal['results'], "RULES": retVal['rules']})
+        return Response({"message": "Deals list checked.", "RESULTS": json.dumps(retVal['results']), "RULES": json.dumps(retVal['rules'])})
 
 @api_view(['POST'])
 @permission_classes((permissions.AllowAny,))
 def uploadDeals(request):
     fnStr = f"{fileStr}::uploadDeals"
 
-    parsedFile = request.data['parsedFile']
-    print(parsedFile)
+    parsedFile = json.loads(request.data['parsedFile'])
 
-    retVal = VP.uploadDeals(parsedFile)
+    retVal = Upload.uploadDeals(parsedFile)
     if not retVal['retVal']:
         Response.status_code = status.HTTP_500_INTERNAL_SERVER_ERROR
-        return Response({"message": f"Error in VP.uploadDeals(): {retVal['errorMessage']}"})
+        return Response({"message": f"Error in Upload.uploadDeals(): {retVal['errorMessage']}"})
     else:
         Response.status_code = status.HTTP_200_OK
         return Response({"message": "Deals file uploaded."})
@@ -156,29 +156,30 @@ def uploadDeals(request):
 def checkMappings(request):
     fnStr = f"{fileStr}::checkMappings"
 
-    parsedFile = request.data['parsedFile']
-    print(parsedFile)
+    parsedFile = json.loads(request.data['parsedFile'])
+    As_Of_Date = request.data['applicableDate']
 
-    retVal = VP.checkMappings(parsedFile)
+    retVal = Upload.checkMappings(parsedFile, As_Of_Date)
     if not retVal['retVal']:
         Response.status_code = status.HTTP_500_INTERNAL_SERVER_ERROR
-        return Response({"message": f"Error in VP.checkMappings(): {retVal['errorMessage']}"})
+        return Response({"message": f"Error in Upload.checkMappings(): {retVal['errorMessage']}"})
     else:
+        #print(retVal['rules'])
+        #print(retVal['results'])
         Response.status_code = status.HTTP_200_OK
-        return Response({"message": "Mappings list checked.", "RESULTS": retVal['results'], "RULES": retVal['rules']})
+        return Response({"message": "Mappings list checked.", "RESULTS": json.dumps(retVal['results']), "RULES": json.dumps(retVal['rules'])})
 
 @api_view(['POST'])
 @permission_classes((permissions.AllowAny,))
 def uploadMappings(request):
     fnStr = f"{fileStr}::uploadMappings"
 
-    parsedFile = request.data['parsedFile']
-    print(parsedFile)
+    parsedFile = json.loads(request.data['parsedFile'])
 
-    retVal = VP.uploadMappings(parsedFile)
+    retVal = Upload.uploadMappings(parsedFile)
     if not retVal['retVal']:
         Response.status_code = status.HTTP_500_INTERNAL_SERVER_ERROR
-        return Response({"message": f"Error in VP.uploadMappings(): {retVal['errorMessage']}"})
+        return Response({"message": f"Error in Upload.uploadMappings(): {retVal['errorMessage']}"})
     else:
         Response.status_code = status.HTTP_200_OK
         return Response({"message": "Mappings file uploaded"})

@@ -23,20 +23,17 @@ def getDealSecuritiesSQL(ACDB_Deal_ID):
     return sql_stmt
 
 def getDealFundsSQL(ACDB_Deal_ID):
-    sql_stmt_1 = f"SELECT * from {DBstr}.deal_funds_v WHERE ACDB_Deal_ID = {ACDB_Deal_ID}"
-    sql_stmt_2 = f" ORDER BY Fund_Name"
-    return sql_stmt_1 + sql_stmt_2
+    sql_stmt = f"SELECT * from {DBstr}.deal_funds_v WHERE ACDB_Deal_ID = {ACDB_Deal_ID} ORDER BY Fund_Name"
+    return sql_stmt
 
 def getFundMappingSQL(ACDB_Deal_ID, Fund_Name):
-    sql_stmt_1 = f"SELECT * FROM {DBstr}.fund_mappings_v"
-    sql_stmt_2 = f" WHERE ACDB_Deal_ID = {ACDB_Deal_ID} and Fund_Name = '{Fund_Name}'"
-    return sql_stmt_1 + sql_stmt_2
+    sql_stmt = f"SELECT * FROM {DBstr}.deal_funds_v WHERE ACDB_Deal_ID = {ACDB_Deal_ID} and Fund_Name = '{Fund_Name}'"
+    return sql_stmt
 
 def getMappingHistorySQL(ACDB_Deal_ID, Fund_Name):
     sql_stmt_1 = f"SELECT * from {DBstr}.mapping_history_v"
-    sql_stmt_2 = f" WHERE ACDB_Deal_ID = {ACDB_Deal_ID} AND Fund_Name = '{Fund_Name}'"
-    sql_stmt_3 = f" ORDER BY As_Of_Date"
-    return sql_stmt_1 + sql_stmt_2 + sql_stmt_3
+    sql_stmt_2 = f" WHERE ACDB_Deal_ID = {ACDB_Deal_ID} AND Fund_Name = '{Fund_Name}' ORDER BY As_Of_Date"
+    return sql_stmt_1 + sql_stmt_2
 
 def updateDealSQL(ACDB_Deal_ID, Closing_Date, Subsector, Strategy, Liquid_Illiquid):
 
@@ -46,11 +43,9 @@ def updateDealSQL(ACDB_Deal_ID, Closing_Date, Subsector, Strategy, Liquid_Illiqu
     else:
         Closing_Date_str = f", Closing_Date = NULL"
 
-    sql_stmt_1 = f"UPDATE {DBstr}.Deal SET "
-    sql_stmt_2 = f"Subsector = '{Subsector}', Strategy = '{Strategy}'"
-    sql_stmt_3 = f"{Closing_Date_str}, Liquid_Illiquid = '{Liquid_Illiquid}'"
-    sql_stmt_4 = f" WHERE ACDB_Deal_ID = {ACDB_Deal_ID}"
-    return sql_stmt_1 + sql_stmt_2 + sql_stmt_3 + sql_stmt_4
+    sql_stmt_1 = f"UPDATE {DBstr}.Deal SET Subsector = '{Subsector}', Strategy = '{Strategy}'{Closing_Date_str}"
+    sql_stmt_2 = f", Liquid_Illiquid = '{Liquid_Illiquid}' WHERE ACDB_Deal_ID = {ACDB_Deal_ID}"
+    return sql_stmt_1 + sql_stmt_2
 
 def getMappingAsOfDateSQL(ACDB_Deal_ID, Fund_Name):
     sql_stmt_1 = f"SELECT As_Of_Date from {DBstr}.mapping_history_v"
@@ -58,7 +53,7 @@ def getMappingAsOfDateSQL(ACDB_Deal_ID, Fund_Name):
 
     return sql_stmt_1 + sql_stmt_2
 
-def insertMappingSQL(As_Of_Date, ACDB_Deal_ID, Fund_Name, 
+def insertMappingSQL(As_Of_Date, ACDB_Deal_ID, Fund_Name, Deal_Mapping_Currency, Realized_Active,
                      Realized_PnL, Realized_IRR, Realized_MOIC, Realized_Date, 
                      Commitment_Local, Legal_Commitment_Local):
     
@@ -69,7 +64,7 @@ def insertMappingSQL(As_Of_Date, ACDB_Deal_ID, Fund_Name,
         Realized_Date_str = f", NULL"
 
     #Deal_Mapping_Currency, Realized_Active, Blended_FX_Rate
-    sql_stmt_1 = f" '{As_Of_Date}', {ACDB_Deal_ID}, '{Fund_Name}', 'USD',  'Active'"
+    sql_stmt_1 = f" '{As_Of_Date}', {ACDB_Deal_ID}, '{Fund_Name}', '{Deal_Mapping_Currency}', '{Realized_Active}'"
     sql_stmt_2 = f", {Realized_IRR}, {Realized_MOIC}, {Realized_PnL}{Realized_Date_str}, 1.0"
     sql_stmt_3 = f", {Commitment_Local}, {Legal_Commitment_Local}"
 
@@ -96,18 +91,22 @@ def updateMappingSQL(As_Of_Date, ACDB_Deal_ID, Fund_Name,
     return sql_stmt_1 + sql_stmt_2 + sql_stmt_3 + sql_stmt_4 + sql_stmt_5
 
 def checkDealCodeValuesSQL(Deal_Name_EntityCode):
-    sql_stmt = f"SELECT COUNT * FROM {DBstr}.deal WHERE Deal_Name_EntityCode = {Deal_Name_EntityCode}"
-    return sql_stmt
+    sql_stmt_1 = f"SELECT COUNT(*) FROM (SELECT DISTINCT ACDB_Deal_ID, Deal_Name, Liquid_Illiquid, Strategy"
+    sql_stmt_2 = f", Subsector, Region, Closing_Date, Is_Deleted FROM {DBstr}.deal"
+    sql_stmt_3 = f" WHERE Deal_Name_EntityCode = '{Deal_Name_EntityCode}') AS dt"
+    return sql_stmt_1 + sql_stmt_2 + sql_stmt_3
 
-def checkDealNameSQL(Deal_Name):
-    sql_stmt = f"SELECT COUNT(Deal_Name_EntityCode) FROM {DBstr}.deal WHERE Deal_Name = {Deal_Name}"
-    return sql_stmt
+def checkDealNameSQL(Deal_Name, Deal_Name_EntityCode):
+    sql_stmt_1 = f"SELECT COUNT(*) FROM {DBstr}.deal"
+    sql_stmt_2 = f" WHERE Deal_Name = '{Deal_Name}' AND Deal_Name_EntityCode <> '{Deal_Name_EntityCode}'"
+    return sql_stmt_1 + sql_stmt_2
 
-def checkDealCodeSQL(Deal_Name_EntityCode):
-    sql_stmt = f"SELECT COUNT(Deal_Name) FROM {DBstr}.deal WHERE Deal_Name_EntityCode = {Deal_Name_EntityCode}"
-    return sql_stmt
+def checkDealCodeSQL(Deal_Name_EntityCode, Deal_Name):
+    sql_stmt_1 = f"SELECT COUNT(*) FROM {DBstr}.deal"
+    sql_stmt_2 = f" WHERE Deal_Name_EntityCode = '{Deal_Name_EntityCode}' AND Deal_Name <> '{Deal_Name}'"
+    return sql_stmt_1 + sql_stmt_2
 
-def checkInvestmentValuesSQL(ACDB_Deal_ID, Fund_Name):
-    sql_stmt_1 = f"SELECT COUNT * FROM {DBstr}.deal_investment_fact"
-    sql_stmt_2 = f" WHERE ACDB_Deal_ID = {ACDB_Deal_ID} AND Fund_Name = {Fund_Name}"
+def checkInvestmentValuesSQL(As_Of_Date, Deal_Name_EntityCode, Fund_Name):
+    sql_stmt_1 = f"SELECT COUNT(*) FROM {DBstr}.fund_mappings_v"
+    sql_stmt_2 = f" WHERE As_Of_Date = '{As_Of_Date}' AND Deal_Name_EntityCode = '{Deal_Name_EntityCode}' AND Fund_Name = '{Fund_Name}'"
     return sql_stmt_1 + sql_stmt_2

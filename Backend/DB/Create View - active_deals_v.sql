@@ -1,7 +1,7 @@
 USE [DealMapping]
 GO
 
-/****** Object:  View [dbo].[active_deals_v]    Script Date: 16-06-2024 03:41:43 ******/
+/****** Object:  View [dbo].[active_deals_v]    Script Date: 20-06-2024 04:24:27 ******/
 SET ANSI_NULLS ON
 GO
 

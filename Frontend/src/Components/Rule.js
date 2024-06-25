@@ -10,10 +10,10 @@ export default function Rule({ parsedFile, rule, result, setFailed }) {
 
    return (
       <>
-         <h6 className={ruleColor}>{rule}</h6>
+         <p className={ruleColor}><b>{rule}</b></p>
          {result.map((rs, rsIndex) => {
-            return <div key={rsIndex}><p>{parsedFile[rs].toString()}</p></div>
+            return (<div key={"Result-" + rsIndex}><p>{parsedFile[rs].toString()}</p></div>);
          })}
       </>
-   )
+   );
 }

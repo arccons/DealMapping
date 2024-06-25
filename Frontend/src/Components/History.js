@@ -2,12 +2,12 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Button, Modal, Table } from 'react-bootstrap';
 
-export default function History({ mapping, setModalOpen, setPageMsg }) {
+export default function History({ DBdeal, DBfund, setModalOpen, setPageMsg }) {
 
    const [history, setHistory] = useState([]);
    const [gotHistory, setGotHistory] = useState(false);
 
-   const historyURL = "http://localhost:8000/mappingHistory/" + mapping.ACDB_Deal_ID + "/" + mapping.Fund_Name;
+   const historyURL = process.env.REACT_APP_URL_DEFAULT + "mappingHistory/" + DBdeal.ACDB_Deal_ID + "/" + DBfund.Fund_Name;
 
    useEffect(() => {
       console.log("MappingHistory.js: useEffect entered.");
@@ -41,7 +41,7 @@ export default function History({ mapping, setModalOpen, setPageMsg }) {
          <Modal.Dialog scrollable size='xl' onHide={() => setModalOpen(false)}>
             <Modal.Header closeButton onHide={() => setModalOpen(false)}>
                <Modal.Title>
-                  <p>Deal: {mapping.Deal_Name} - Fund: {mapping.Fund_Name}</p>
+                  <p>Deal: {DBdeal.Deal_Name} - Fund: {DBfund.Fund_Name}</p>
                </Modal.Title>
             </Modal.Header>
             <Modal.Body>

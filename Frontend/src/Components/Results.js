@@ -5,15 +5,15 @@ export default function Results({ parsedFile, rules, results, setFailed }) {
 
    return (
       <>
-         <h6>File check results</h6>
+         <h4>File check results</h4>
          {rules.map((rl, rlIndex) => {
-            return <>
-               <Rule key={"Rule-" + (rlIndex + 1)}
+            return (
+               <Rule key={"Rule-" + rlIndex}
                   parsedFile={parsedFile}
                   rule={rl}
                   result={results[rlIndex]}
                   setFailed={setFailed} />
-            </>;
+            );
          }
          )}
       </>

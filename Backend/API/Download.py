@@ -1,4 +1,4 @@
-import os, json, datetime
+import os, datetime
 from API import MSsql as DB
 
 fileStr = f"{__file__.strip(os.getcwd())}"
@@ -18,10 +18,11 @@ def getDeals():
                       'Strategy': item[4],
                       'Subsector': item[5],
                       'Region': item[6],
-                      'Closing_Date': str(item[7])} for item in dealList]
-    json_deals = json.dumps(list_of_dicts)
+                      'Closing_Date': str(item[7]), 
+                      'Is_Deleted': item[8]} for item in dealList]
+    #json_deals = json.dumps(list_of_dicts)
 
-    return {'retVal': True, 'json_deals': json_deals}
+    return {'retVal': True, 'deals': list_of_dicts}
 
 def getSecurities(ACDB_Deal_ID):
     fnStr = fileStr + "::getSecurities"
@@ -36,9 +37,9 @@ def getSecurities(ACDB_Deal_ID):
                       'Security_Name': item[4],
                       'Investment_Type': item[5].rstrip(" "),
                       'Currency': item[6].rstrip(" ")} for item in securitiesList]
-    json_securities = json.dumps(list_of_dicts)
+    #json_securities = json.dumps(list_of_dicts)
 
-    return {'retVal': True, 'json_securities': json_securities}
+    return {'retVal': True, 'securities': list_of_dicts}
 
 def getFunds(ACDB_Deal_ID):
     fnStr = fileStr + "::getFunds"
@@ -47,12 +48,14 @@ def getFunds(ACDB_Deal_ID):
     print(sql_stmt)
     fundlist = readCursor.execute(sql_stmt).fetchall()
     list_of_dicts = [{'ACDB_Deal_ID': item[0],
-                      'Fund_Name': item[1].rstrip(" "), 
-                      'Deal_Mapping_Currency': item[2],
-                      'Realized_Active': item[3],
-                      'Realized_Date': str(item[4])} for item in fundlist]
-    json_funds = json.dumps(list_of_dicts)
-    return {'retVal': True, 'json_funds': json_funds}
+                      'Deal_Name': item[1].rstrip(" "),
+                      'Deal_Name_EntityCode': item[2].rstrip(" "),
+                      'Fund_Name': item[3].rstrip(" "), 
+                      'Deal_Mapping_Currency': item[4],
+                      'Realized_Active': item[5],
+                      'Realized_Date': str(item[6])} for item in fundlist]
+    #json_funds = json.dumps(list_of_dicts)
+    return {'retVal': True, 'funds': list_of_dicts}
 
 # UPDATE FIELDS LIST
 def getFundMapping(ACDB_Deal_ID, Fund_Name):
@@ -68,9 +71,9 @@ def getFundMapping(ACDB_Deal_ID, Fund_Name):
                       'Deal_Mapping_Currency': item[4],
                       'Realized_Active': item[5],
                       'Realized_Date': str(item[6])} for item in mappingList]
-    json_mapping = json.dumps(list_of_dicts)
+    #json_mapping = json.dumps(list_of_dicts)
 
-    return {'retVal': True, 'json_mapping': json_mapping}
+    return {'retVal': True, 'mappings': list_of_dicts}
 
 # UPDATE FIELDS LIST
 def getMappingHistory(ACDB_Deal_ID, Fund_Name):
@@ -91,9 +94,9 @@ def getMappingHistory(ACDB_Deal_ID, Fund_Name):
                       'Blended_FX_Rate': str(item[9]),
                       'Commitment_Local': str(item[10]), 
                       'Legal_Commitment_Local': str(item[11])} for item in historyList]
-    json_history = json.dumps(list_of_dicts)
+    #json_history = json.dumps(list_of_dicts)
 
-    return {'retVal': True, 'json_history': json_history}
+    return {'retVal': True, 'history': list_of_dicts}
 
 # UPDATE FIELDS LIST
 def updateDeal(ACDB_Deal_ID, Closing_Date, Subsector, Strategy, Liquid_Illiquid):
@@ -160,93 +163,3 @@ def addMapping(ACDB_Deal_ID, Fund_Name, Realized_PnL, Realized_IRR, Realized_MOI
     except:
         DB.closeConnection(writeDBconn)
         return {'retVal': False, 'errorMessage': f"{fnStr}: Error adding mapping."}
-
-DEAL_RULES = ["Deal Rule I: Deal Code Values", 
-              "Deal Rule II: Deal Code to Deal Names", 
-              "Deal Rule III: Deal Names to Deal Code"]
-DEAL_RESULTS = [[], [], []]
-
-def checkDealCodeValues(Deal_Name_EntityCode):
-    sql_stmt = DB.checkDealCodeValuesSQL(Deal_Name_EntityCode)
-    dealCodes = readCursor.execute(sql_stmt).fetchall()
-    if dealCodes[0][0] > 1:
-        return False
-    
-    return True
-
-def checkDealCode(Deal_Name_EntityCode):
-    sql_stmt = DB.checkDealCodeSQL(Deal_Name_EntityCode)
-    dealCodes = readCursor.execute(sql_stmt).fetchall()
-    if dealCodes[0][0] > 1:
-        return False
-    
-    return True
-
-def checkDealName(Deal_Name):
-    sql_stmt = DB.checkDealNameSQL(Deal_Name)
-    dealCodes = readCursor.execute(sql_stmt).fetchall()
-    if dealCodes[0][0] > 1:
-        return False
-    
-    return True
-
-def checkDeals(parsedFile):
-    fnStr = fileStr + "::checkDeals"
-
-    for index, rec in enumerate(parsedFile):
-        ruleRetVal = checkDealCodeValues(rec)
-        if not ruleRetVal:
-            DEAL_RESULTS[0].append(index)
-
-    for index, rec in enumerate(parsedFile):
-        ruleRetVal = checkDealName(rec)
-        if not ruleRetVal:
-            DEAL_RESULTS[1].append(index)
-
-    for index, rec in enumerate(parsedFile):
-        ruleRetVal = checkDealCode(rec)
-        if not ruleRetVal:
-            DEAL_RESULTS[2].append(index)
-
-    results = json.dumps(DEAL_RESULTS)
-    print(results)
-    rules = json.dumps(DEAL_RULES)
-    print(rules)
-
-    return {'retVal': True, 'rules': rules, 'results': results}
-
-def uploadDeals(parsedFile):
-    fnStr = fileStr + "::uploadDeals"
-
-    return {'retVal': True, 'uploaded': True}
-
-MAPPING_RULES = ["Mapping Rule I: Deal Funds"]
-MAPPING_RESULTS =[[]]
-
-def checkInvestmentValues(record):
-    sql_stmt = DB.checkInvestmentValuesSQL(record[0], record[1])
-    dealCodes = readCursor.execute(sql_stmt).fetchall()
-    if dealCodes[0][0] > 1:
-        return False
-    
-    return True
-
-def checkMappings(parsedFile):
-    fnStr = fileStr + "::checkMappings"
-
-    for index, rec in enumerate(parsedFile):
-        ruleRetVal = checkInvestmentValues(rec)
-        if not ruleRetVal:
-            MAPPING_RESULTS[0].append(index)
-
-    results = json.dumps(MAPPING_RESULTS)
-    print(results)
-    rules = json.dumps(MAPPING_RULES)
-    print(rules)
-
-    return {'retVal': True, 'rules': rules, 'results': results}
-
-def uploadMappings(parsedFile):
-    fnStr = fileStr + "::uploadMappings"
-
-    return {'retVal': True, 'uploaded': True}

@@ -14,7 +14,8 @@ export default function Funds({ DBdeal, setDBfund }) {
   const [pageMsg, setPageMsg] = useState("");
 
   const navigate = useNavigate();
-  const fundsURL = "http://localhost:8000/dealFunds/" + DBdeal.ACDB_Deal_ID;
+  const fundsURL = process.env.REACT_APP_URL_DEFAULT + "dealFunds/" + DBdeal.ACDB_Deal_ID;
+  const columns = ["ACDB_Deal_ID", "Fund Name", "Currency", "Deal Realized / Active", "Realized Date"];
 
   const search_parameters = ["Fund_Name"];
 
@@ -69,8 +70,9 @@ export default function Funds({ DBdeal, setDBfund }) {
               <thead>
                 <tr align="center">
                   <th>Fund Name</th>
-                  <th>Active/Realized</th>
                   <th>Deal Mapping Currency</th>
+                  <th>Active/Realized</th>
+                  <th>Realized Date</th>
                   <th>Mapping</th>
                 </tr>
               </thead>
@@ -78,8 +80,9 @@ export default function Funds({ DBdeal, setDBfund }) {
                 {displayedFundList.map((f, index) => (
                   <tr key={index} align="center">
                     <td>{f.Fund_Name}</td>
-                    <td>{f.Realized_Active}</td>
                     <td>{f.Deal_Mapping_Currency}</td>
+                    <td>{f.Realized_Active}</td>
+                    <td>{f.Realized_Date}</td>
                     <td><Button variant="secondary" size='sm' value={index} onClick={handleMappingClick}>Mapping</Button></td>
                   </tr>
                 ))}
@@ -87,8 +90,8 @@ export default function Funds({ DBdeal, setDBfund }) {
             </Table>
             <DownloadCSV
               data={displayedFundList}
-              fileName={DBdeal.Deal_Name}
-              columns={["ACDB_Deal_ID", "Fund_Name", "Deal_Mapping_Currency", "Realized_Active", "Realized_Date"]}
+              fileName={"Funds - " + DBdeal.Deal_Name}
+              columns={columns}
             />
           </>}
         {displayedFundList.length === 0 && <h6>No Funds mapped</h6>}

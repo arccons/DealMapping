@@ -7,7 +7,6 @@ import { Button, Container, Row, Col } from 'react-bootstrap';
 export default function DealEdit({ deal, setGotDeals, setShowEditForm, setPageMsg }) {
 
   const [closingDateFinal, setClosingDateFinal] = useState(deal.Closing_Date);
-  //const [modifiedDateFinal, setModifiedDateFinal] = useState(deal.Modify_Date);
   const [subSectorFinal, setSubSectorFinal] = useState(deal.Subsector);
   const [strategyFinal, setStrategyFinal] = useState(deal.Strategy);
   const [isLiquidFinal, setIsLiquidFinal] = useState(deal.Liquid_Illiquid);
@@ -28,7 +27,6 @@ export default function DealEdit({ deal, setGotDeals, setShowEditForm, setPageMs
       formData.append('Deal_Name_EntityCode', deal.Deal_Name_EntityCode);
       formData.append('Deal_Name', deal.Deal_Name);
       formData.append('Closing_Date', closingDateFinal);
-      //formData.append('Modify_Date', modifiedDateFinal);
       formData.append('Subsector', subSectorFinal);
       formData.append('Strategy', strategyFinal);
       formData.append('Liquid_Illiquid', isLiquidFinal);

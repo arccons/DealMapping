@@ -22,7 +22,10 @@ export default function Deals({ setDBdeal }) {
 
   const navigate = useNavigate();
 
-  const dealsURL = "http://localhost:8000/deals";
+
+  const columns = ["ACDB_Deal_ID", "Deal_Name_EntityCode", "Deal_Name",
+    "Liquid_Illiquid", "Strategy", "Subsector", "Region", "Closing_Date", "Is_Deleted"];
+  const dealsURL = process.env.REACT_APP_URL_DEFAULT + "deals";
   const search_parameters = ["ACDB_Deal_ID", "Deal_Name", "Deal_Name_EntityCode"];
 
   useEffect(() => {
@@ -50,7 +53,7 @@ export default function Deals({ setDBdeal }) {
           setShowEditForm(false);
         });
     }
-  }, [gotDeals, pageMsg, showEditForm])
+  }, [gotDeals, pageMsg, showEditForm, dealsURL])
 
   function handleEditClick(event) {
     event.preventDefault();
@@ -148,7 +151,7 @@ export default function Deals({ setDBdeal }) {
           <DownloadCSV
             data={displayedDealList}
             fileName={"All Deals"}
-            columns={["ACDB_Deal_ID", "Deal_Name_EntityCode", "Deal_Name", "Liquid_Illiquid", "Strategy", "Subsector", "Region", "Closing_Date", "Is_Deleted"]}
+            columns={columns}
           />}
         <br></br>
         {pageMsg}
