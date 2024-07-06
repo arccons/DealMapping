@@ -1,0 +1,4 @@
+﻿Deal Name,Deal Code,Liquid / Illiquid,Strategy,Subsector,DealRegion,Closing Date,Prism Link,DealCloud Link,ICMemo Link,Fund Name,Currency,Deal Realized / Active,Realized IRR,Realized P & L,Realized Date,Commitment(Local),Legal Commitment,ITD PM Adjustments(USD),IC / Discretionary Unfunded(USD),Adjusted Commitment(USD),Security_ID,Security Name,Investment Type
+Deal Two,D003,Illiquid,CLO,Infrastructure,,30-05-2024,,,,Fund F05,GBP,Realized,90384.9587,8410293,30-03-2024,748930,3029485,84952,9385738,48573902,,,
+Deal Three,D003,Liquid,CLO,Residential,,31-01-2024,,,,Fund F09,ITL,Realized,891181795,308302,29-02-2024,98119,832984,238940,293487,28374938,,,
+_Expenses,D005,Liquid,CLO,Infrastructure,,31-03-2024,,,,Fund F01,USD,Active,891181795,308302,,98119,832984,238940,293487,28374938,,,

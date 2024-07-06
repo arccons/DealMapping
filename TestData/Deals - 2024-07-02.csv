@@ -1,0 +1,3 @@
+﻿ACDB_Deal_ID,Deal_Name_EntityCode,Deal_Name,Liquid_Illiquid,Strategy,Subsector,Region,Closing_Date,Is_Deleted
+9,D011,Deal Eleven,Liquid,Currency,Infrastructure,,20-06-2024,0
+12,D012,Deal Twelve,Illiquid,Expense,CLO,,20-06-2023,0

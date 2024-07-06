@@ -58,7 +58,7 @@ def mappingHistory(request, ACDB_Deal_ID, Fund_Name):
         Response.status_code = status.HTTP_200_OK
         return Response({"message": "Mappings list received.", "HISTORY": json.dumps(retVal['history'])})
 
-@api_view(['GET'])
+""" @api_view(['GET'])
 @permission_classes((permissions.AllowAny,))
 def fundMapping(request, ACDB_Deal_ID, Fund_Name):
     fnStr = f"{fileStr}::fundMapping"
@@ -69,7 +69,7 @@ def fundMapping(request, ACDB_Deal_ID, Fund_Name):
         return Response({"errorMessage": f"Error in Download.getFundMapping(): {retVal['errorMessage']}"})
     else:
         Response.status_code = status.HTTP_200_OK
-        return Response({"message": "Mappings list received.", "MAPPINGS": json.dumps(retVal['mappings'])})
+        return Response({"message": "Mappings list received.", "MAPPINGS": json.dumps(retVal['mappings'])}) """
 
 @api_view(['POST'])
 @permission_classes((permissions.AllowAny,))
@@ -125,6 +125,7 @@ def checkDeals(request):
     fnStr = f"{fileStr}::checkDeals"
 
     parsedFile = json.loads(request.data['parsedFile'])
+    #As_Of_Date =request.data['applicableDate']
 
     retVal = Upload.checkDeals(parsedFile)
     if not retVal['retVal']:
@@ -142,8 +143,9 @@ def uploadDeals(request):
     fnStr = f"{fileStr}::uploadDeals"
 
     parsedFile = json.loads(request.data['parsedFile'])
+    As_Of_Date =request.data['applicableDate']
 
-    retVal = Upload.uploadDeals(parsedFile)
+    retVal = Upload.uploadDeals(As_Of_Date, parsedFile)
     if not retVal['retVal']:
         Response.status_code = status.HTTP_500_INTERNAL_SERVER_ERROR
         return Response({"message": f"Error in Upload.uploadDeals(): {retVal['errorMessage']}"})
@@ -159,13 +161,13 @@ def checkMappings(request):
     parsedFile = json.loads(request.data['parsedFile'])
     As_Of_Date = request.data['applicableDate']
 
-    retVal = Upload.checkMappings(parsedFile, As_Of_Date)
+    retVal = Upload.checkMappings(As_Of_Date, parsedFile)
     if not retVal['retVal']:
         Response.status_code = status.HTTP_500_INTERNAL_SERVER_ERROR
         return Response({"message": f"Error in Upload.checkMappings(): {retVal['errorMessage']}"})
     else:
-        #print(retVal['rules'])
-        #print(retVal['results'])
+        print(retVal['rules'])
+        print(retVal['results'])
         Response.status_code = status.HTTP_200_OK
         return Response({"message": "Mappings list checked.", "RESULTS": json.dumps(retVal['results']), "RULES": json.dumps(retVal['rules'])})
 
@@ -175,8 +177,9 @@ def uploadMappings(request):
     fnStr = f"{fileStr}::uploadMappings"
 
     parsedFile = json.loads(request.data['parsedFile'])
+    As_Of_Date =request.data['applicableDate']
 
-    retVal = Upload.uploadMappings(parsedFile)
+    retVal = Upload.uploadMappings(As_Of_Date, parsedFile)
     if not retVal['retVal']:
         Response.status_code = status.HTTP_500_INTERNAL_SERVER_ERROR
         return Response({"message": f"Error in Upload.uploadMappings(): {retVal['errorMessage']}"})

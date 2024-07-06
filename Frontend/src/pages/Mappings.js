@@ -1,45 +1,16 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-//import axios from 'axios';
 import History from '../Components/History';
 import AddMapping from '../Components/AddMapping';
 import { Button, Col, Row, Container } from 'react-bootstrap';
 
 export default function Mappings({ DBdeal, DBfund }) {
 
-  //const [mapping, setMapping] = useState();
-  //const [gotMapping, setGotMapping] = useState(false);
-
   const [showHistory, setShowHistory] = useState(false);
   const [showAddForm, setShowAddForm] = useState(false);
   const [pageMsg, setPageMsg] = useState("");
 
   const navigate = useNavigate();
-  //const mappingURL = process.env.REACT_APP_URL_DEFAULT + "fundMapping/" + DBdeal.ACDB_Deal_ID + "/" + DBfund.Fund_Name;
-
-  /* useEffect(() => {
-    console.log("Mappings.js: useEffect entered.");
-    if (!gotMapping) {
-      console.log("Mappings.js: useEffect getting mapping.");
-      const config = {
-        headers: {
-          'content-type': 'application/json'
-        },
-      }
-      axios.get(mappingURL, config)
-        .then(response => {
-          const DBmappings = JSON.parse(response.data.MAPPINGS);
-          setMapping(DBmappings[0]);
-          setGotMapping(true);
-          console.log(DBmappings[0]);
-          setPageMsg("Got mapping from DB for deal: " + DBdeal.Deal_Name + " AND Fund: " + DBfund.Fund_Name);
-        })
-        .catch(error => {
-          setPageMsg("Error getting mappings list: " + error);
-          setGotMapping(false);
-        });
-    }
-  }, [DBdeal, DBfund, mappingURL, gotMapping, pageMsg]); */
 
   function handleHistoryClick(event) {
     event.preventDefault();

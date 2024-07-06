@@ -15,7 +15,7 @@ export default function Funds({ DBdeal, setDBfund }) {
 
   const navigate = useNavigate();
   const fundsURL = process.env.REACT_APP_URL_DEFAULT + "dealFunds/" + DBdeal.ACDB_Deal_ID;
-  const columns = ["ACDB_Deal_ID", "Fund Name", "Currency", "Deal Realized / Active", "Realized Date"];
+  const columns = ["ACDB_Deal_ID", "Deal_Name", "Deal_Name_EntityCode", "Fund Name", "Currency", "Deal Realized / Active", "Realized Date"];
 
   const search_parameters = ["Fund_Name"];
 

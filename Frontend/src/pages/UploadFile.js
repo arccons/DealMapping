@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Button } from "react-bootstrap";
 import CSVReader from "react-csv-reader";
-import _ from "lodash";
+//import _ from "lodash";
 import Results from "../Components/Results";
 
 export default function UploadFile({ objType, checkURL, submitURL, columns }) {
@@ -19,6 +19,19 @@ export default function UploadFile({ objType, checkURL, submitURL, columns }) {
 
    const [pageMsg, setPageMsg] = useState("");
 
+   function getApplicableDate() {
+      let today = new Date();
+      const dayToday = today.getDay();
+      if (dayToday === 1) { today.setDate(today.getDate() - 3); }
+      else if (dayToday === 0) { today.setDate(today.getDate() - 2); }
+      else { today.setDate(today.getDate() - 1); }
+      const month = (today.getMonth() + 1).toString().padStart(2, '0');
+      const day = today.getDate().toString().padStart(2, '0');
+      const year = today.getFullYear();
+      const dateStr = `${year}-${month}-${day}`;
+      return dateStr;
+   }
+
    useEffect(() => {
       setApplicableDate(getApplicableDate);
    }, []);
@@ -29,7 +42,8 @@ export default function UploadFile({ objType, checkURL, submitURL, columns }) {
          fileData.pop(); // LAST ROW EXISTS BECAUSE OF CSVReader
          if (fileData.length !== 0) {
             const fileColumns = fileData.shift(); // HEADER ROW EXPECTED
-            if (fileData.length !== 0 && !_.isEqual(fileColumns, columns)) {
+            //if (fileData.length !== 0 && !_.isEqual(fileColumns, columns)) {
+            if (fileData.length !== 0 && fileColumns.length !== columns.length) {
                return null;
             }
          }
@@ -80,8 +94,8 @@ export default function UploadFile({ objType, checkURL, submitURL, columns }) {
       axios.post(checkURL, formData, config)
          .then((response) => {
             const tempRules = JSON.parse(response.data.RULES);
-            const tempResults = JSON.parse(response.data.RESULTS);
             setRules(tempRules);
+            const tempResults = JSON.parse(response.data.RESULTS);
             setResults(tempResults);
             setFileChecked(true);
             setShowResults(true);
@@ -100,6 +114,7 @@ export default function UploadFile({ objType, checkURL, submitURL, columns }) {
       const fileAsJSON = JSON.stringify(parsedFile);
       const formData = new FormData();
       formData.append('parsedFile', fileAsJSON);
+      formData.append('applicableDate', applicableDate);
       const config = {
          headers: {
             'content-type': 'text/json'
@@ -122,19 +137,6 @@ export default function UploadFile({ objType, checkURL, submitURL, columns }) {
    function handleCancel() {
       setShowResults(false);
       setPageMsg("File selected.");
-   }
-
-   function getApplicableDate() {
-      let today = new Date();
-      const dayToday = today.getDay();
-      if (dayToday === 1) { today.setDate(today.getDate() - 3); }
-      else if (dayToday === 0) { today.setDate(today.getDate() - 2); }
-      else { today.setDate(today.getDate() - 1); }
-      const month = (today.getMonth() + 1).toString().padStart(2, '0');
-      const day = today.getDate().toString().padStart(2, '0');
-      const year = today.getFullYear();
-      const dateStr = `${year}-${month}-${day}`;
-      return dateStr;
    }
 
    return (

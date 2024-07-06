@@ -3,9 +3,10 @@ from API import MSsql as DB
 
 fileStr = f"{__file__.strip(os.getcwd())}"
 
-readCursor, DBconn = DB.connect_to_DB()
+readCursor, readDBconn = DB.connect_to_DB()
 
 def getDeals():
+
     fnStr = fileStr + "::getDeals"
 
     sql_stmt = DB.getDealsSQL()
@@ -20,11 +21,11 @@ def getDeals():
                       'Region': item[6],
                       'Closing_Date': str(item[7]), 
                       'Is_Deleted': item[8]} for item in dealList]
-    #json_deals = json.dumps(list_of_dicts)
 
     return {'retVal': True, 'deals': list_of_dicts}
 
 def getSecurities(ACDB_Deal_ID):
+
     fnStr = fileStr + "::getSecurities"
 
     sql_stmt = DB.getDealSecuritiesSQL(ACDB_Deal_ID)
@@ -37,11 +38,11 @@ def getSecurities(ACDB_Deal_ID):
                       'Security_Name': item[4],
                       'Investment_Type': item[5].rstrip(" "),
                       'Currency': item[6].rstrip(" ")} for item in securitiesList]
-    #json_securities = json.dumps(list_of_dicts)
 
     return {'retVal': True, 'securities': list_of_dicts}
 
 def getFunds(ACDB_Deal_ID):
+
     fnStr = fileStr + "::getFunds"
 
     sql_stmt = DB.getDealFundsSQL(ACDB_Deal_ID)
@@ -53,30 +54,17 @@ def getFunds(ACDB_Deal_ID):
                       'Fund_Name': item[3].rstrip(" "), 
                       'Deal_Mapping_Currency': item[4],
                       'Realized_Active': item[5],
-                      'Realized_Date': str(item[6])} for item in fundlist]
-    #json_funds = json.dumps(list_of_dicts)
+                      'Realized_Date': str(item[6]),
+                      'Realized_IRR': str(item[7]),
+                      'Realized_MOIC': str(item[8]),
+                      'Realized_PnL': str(item[9]),
+                      'Commitment_Local': str(item[10]),
+                      'Legal_Commitment_Local': str(item[11])} for item in fundlist]
+    
     return {'retVal': True, 'funds': list_of_dicts}
 
-# UPDATE FIELDS LIST
-def getFundMapping(ACDB_Deal_ID, Fund_Name):
-    fnStr = fileStr + "::getFundMapping"
-
-    sql_stmt = DB.getFundMappingSQL(ACDB_Deal_ID, Fund_Name)
-    print(sql_stmt)
-    mappingList = readCursor.execute(sql_stmt).fetchall()
-    list_of_dicts = [{'ACDB_Deal_ID': item[0],
-                      'Deal_Name': item[1].rstrip(" "),
-                      'Deal_Name_EntityCode': item[2].rstrip(" "),
-                      'Fund_Name': item[3].rstrip(" "),
-                      'Deal_Mapping_Currency': item[4],
-                      'Realized_Active': item[5],
-                      'Realized_Date': str(item[6])} for item in mappingList]
-    #json_mapping = json.dumps(list_of_dicts)
-
-    return {'retVal': True, 'mappings': list_of_dicts}
-
-# UPDATE FIELDS LIST
 def getMappingHistory(ACDB_Deal_ID, Fund_Name):
+
     fnStr = fileStr + "::getMappingHistory"
 
     sql_stmt = DB.getMappingHistorySQL(ACDB_Deal_ID, Fund_Name)
@@ -94,12 +82,11 @@ def getMappingHistory(ACDB_Deal_ID, Fund_Name):
                       'Blended_FX_Rate': str(item[9]),
                       'Commitment_Local': str(item[10]), 
                       'Legal_Commitment_Local': str(item[11])} for item in historyList]
-    #json_history = json.dumps(list_of_dicts)
 
     return {'retVal': True, 'history': list_of_dicts}
 
-# UPDATE FIELDS LIST
 def updateDeal(ACDB_Deal_ID, Closing_Date, Subsector, Strategy, Liquid_Illiquid):
+
     fnStr = fileStr + "::updateDeal"
 
     writeCursor, writeDBconn = DB.connect_to_DB()
@@ -111,9 +98,9 @@ def updateDeal(ACDB_Deal_ID, Closing_Date, Subsector, Strategy, Liquid_Illiquid)
 
     return {'retVal': True, 'updatedDeal': ACDB_Deal_ID}
 
-# UPDATE FIELDS LIST
 def addMapping(ACDB_Deal_ID, Fund_Name, Realized_PnL, Realized_IRR, Realized_MOIC, Realized_Date, 
                Commitment_Local, Legal_Commitment_Local, PIT, range_from, range_to):
+    
     fnStr = fileStr + "::addMapping"
 
     mappingDateSet = set()
