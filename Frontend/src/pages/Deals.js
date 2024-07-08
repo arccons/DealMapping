@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import { Button, Table } from 'react-bootstrap';
+import { Button, Container, Row, Col } from 'react-bootstrap';
 
 import DealEdit from '../Components/DealEdit';
 import Securities from '../Components/Securities';
@@ -108,38 +108,34 @@ export default function Deals({ setDBdeal }) {
               placeholder={"Search Deals"}>
             </Search>
             <br></br>
-            <Table striped hover bordered align="middle" responsive>
-              <thead>
-                <tr align="center">
-                  <th>Edit</th>
-                  <th>ACDB_Deal_ID</th>
-                  <th>Entity Code</th>
-                  <th>Deal Name</th>
-                  <th>Strategy</th>
-                  <th>Sub-Sector</th>
-                  <th>Is Liquid</th>
-                  <th>Closing Date</th>
-                  <th>Securities</th>
-                  <th>Funds</th>
-                </tr>
-              </thead>
-              <tbody>
-                {displayedDealList.map((d, index) => (
-                  <tr key={index} align="center">
-                    <td><Button variant="link" size='sm' value={index} onClick={handleEditClick}>Edit Deal</Button></td>
-                    <td>{d.ACDB_Deal_ID}</td>
-                    <td>{d.Deal_Name_EntityCode}</td>
-                    <td>{d.Deal_Name}</td>
-                    <td>{d.Strategy}</td>
-                    <td>{d.Subsector}</td>
-                    <td>{d.Liquid_Illiquid}</td>
-                    <td>{d.Closing_Date === 'None' ? '' : d.Closing_Date}</td>
-                    <td><Button variant="info" size='sm' value={index} onClick={handleSecuritiesClick}>Securities</Button></td>
-                    <td><Button variant="secondary" size='sm' value={index} onClick={handleFundsClick}>Funds</Button></td>
-                  </tr>
-                ))}
-              </tbody>
-            </Table>
+            <Container>
+              <Row align="center">
+                <Col><b>Edit</b></Col>
+                <Col><b>Deal ID</b></Col>
+                <Col><b>Entity Code</b></Col>
+                <Col><b>Deal Name</b></Col>
+                <Col><b>Strategy</b></Col>
+                <Col><b>Sub-Sector</b></Col>
+                <Col><b>Is Liquid</b></Col>
+                <Col><b>Closing Date</b></Col>
+                <Col><b>Securities</b></Col>
+                <Col><b>Funds</b></Col>
+              </Row>
+              {displayedDealList.map((d, index) => (
+                <Row key={index} align="center" className='mt-2'>
+                  <Col><Button variant="link" size='sm' value={index} onClick={handleEditClick}>Edit Deal</Button></Col>
+                  <Col>{d.ACDB_Deal_ID}</Col>
+                  <Col>{d.Deal_Name_EntityCode}</Col>
+                  <Col>{d.Deal_Name}</Col>
+                  <Col>{d.Strategy}</Col>
+                  <Col>{d.Subsector}</Col>
+                  <Col>{d.Liquid_Illiquid}</Col>
+                  <Col>{d.Closing_Date === 'None' ? '' : d.Closing_Date}</Col>
+                  <Col><Button variant="info" size='sm' value={index} onClick={handleSecuritiesClick}>Securities</Button></Col>
+                  <Col><Button variant="secondary" size='sm' value={index} onClick={handleFundsClick}>Funds</Button></Col>
+                </Row>
+              ))}
+            </Container>
             {showSecurities &&
               <Securities
                 deal={currentDeal}

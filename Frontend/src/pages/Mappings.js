@@ -11,6 +11,7 @@ export default function Mappings({ DBdeal, DBfund }) {
   const [pageMsg, setPageMsg] = useState("");
 
   const navigate = useNavigate();
+  const showAddLink = DBfund.Realized_Active === 'Realized' ? false : true;
 
   function handleHistoryClick(event) {
     event.preventDefault();
@@ -30,7 +31,7 @@ export default function Mappings({ DBdeal, DBfund }) {
             <Col><Button variant='info' size='sm' onClick={handleHistoryClick}>History</Button></Col>
           </Row>
         </Container>}
-        {!showAddForm && <Button variant='link' size='md' onClick={() => setShowAddForm(true)}>Add Mapping</Button>}
+        {!showAddForm && showAddLink && <Button variant='link' size='md' onClick={() => setShowAddForm(true)}>Add Mapping</Button>}
         <br></br>
         {!showAddForm && <Button onClick={() => navigate("/funds")}>Done</Button>}
         {showAddForm && <AddMapping DBdeal={DBdeal} DBfund={DBfund} setShowAddForm={setShowAddForm} setPageMsg={setPageMsg} />}

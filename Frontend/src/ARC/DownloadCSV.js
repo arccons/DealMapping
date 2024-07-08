@@ -11,7 +11,9 @@ export default function DownloadCSV({ data, fileName, columns }) {
          let line = '';
          for (let index in array[i]) {
             if (line !== '') line += ',';
-            line += array[i][index];
+            let item = array[i][index];
+            item = item === 'None' ? '' : item;
+            line += item;
          }
          str += line + '\r\n';
       }
@@ -30,6 +32,6 @@ export default function DownloadCSV({ data, fileName, columns }) {
    };
 
    return (
-      <Button onClick={downloadCSV}>Download CSV</Button>
+      <Button onClick={downloadCSV} className='m-3'>Download CSV</Button>
    );
 }

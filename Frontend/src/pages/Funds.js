@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import Search from '../ARC/Search';
-import { Table, Button } from 'react-bootstrap';
+import { Button, Container, Row, Col } from 'react-bootstrap';
 import DownloadCSV from '../ARC/DownloadCSV';
 
 export default function Funds({ DBdeal, setDBfund }) {
@@ -15,7 +15,9 @@ export default function Funds({ DBdeal, setDBfund }) {
 
   const navigate = useNavigate();
   const fundsURL = process.env.REACT_APP_URL_DEFAULT + "dealFunds/" + DBdeal.ACDB_Deal_ID;
-  const columns = ["ACDB_Deal_ID", "Deal_Name", "Deal_Name_EntityCode", "Fund Name", "Currency", "Deal Realized / Active", "Realized Date"];
+  const columns = ["ACDB_Deal_ID", "Deal_Name", "Deal_Name_EntityCode", "Fund Name", "Currency",
+    "Deal Realized / Active", "Realized Date", "Realized_IRR", "Realized_MOIC", "Realized_PnL",
+    "Commitment_Local", "Legal_Commitment_Local"];
 
   const search_parameters = ["Fund_Name"];
 
@@ -56,7 +58,13 @@ export default function Funds({ DBdeal, setDBfund }) {
   return (
     <div className="App">
       <center>
-        <h5>Funds for: {DBdeal.Deal_Name} (ACDB_Deal_ID: {DBdeal.ACDB_Deal_ID}) </h5>
+        {<Container className='displaySection'>
+          <Row>
+            <Col>Deal Name: <b>{DBdeal.Deal_Name}</b></Col>
+            <Col>EntityCode: <b>{DBdeal.Deal_Name_EntityCode}</b></Col>
+            <Col>ACDB_Deal_ID: <b>{DBdeal.ACDB_Deal_ID}</b></Col>
+          </Row>
+        </Container>}
         {gotFunds && displayedFundList.length > 0 &&
           <>
             <Search
@@ -66,28 +74,24 @@ export default function Funds({ DBdeal, setDBfund }) {
               placeholder={"Search Funds"}>
             </Search>
             <br></br>
-            <Table striped hover bordered align="middle" responsive>
-              <thead>
-                <tr align="center">
-                  <th>Fund Name</th>
-                  <th>Deal Mapping Currency</th>
-                  <th>Active/Realized</th>
-                  <th>Realized Date</th>
-                  <th>Mapping</th>
-                </tr>
-              </thead>
-              <tbody>
-                {displayedFundList.map((f, index) => (
-                  <tr key={index} align="center">
-                    <td>{f.Fund_Name}</td>
-                    <td>{f.Deal_Mapping_Currency}</td>
-                    <td>{f.Realized_Active}</td>
-                    <td>{f.Realized_Date}</td>
-                    <td><Button variant="secondary" size='sm' value={index} onClick={handleMappingClick}>Mapping</Button></td>
-                  </tr>
-                ))}
-              </tbody>
-            </Table>
+            <Container striped hover bordered align="middle" responsive>
+              <Row>
+                <Col><b>Fund Name</b></Col>
+                <Col><b>Deal Mapping Currency</b></Col>
+                <Col><b>Active/Realized</b></Col>
+                <Col><b>Realized Date</b></Col>
+                <Col><b>Mapping</b></Col>
+              </Row>
+              {displayedFundList.map((f, index) => (
+                <Row key={index} align="center" className='mt-2'>
+                  <Col>{f.Fund_Name}</Col>
+                  <Col>{f.Deal_Mapping_Currency}</Col>
+                  <Col>{f.Realized_Active}</Col>
+                  <Col>{f.Realized_Date}</Col>
+                  <Col><Button variant="secondary" size='sm' value={index} onClick={handleMappingClick}>Mapping</Button></Col>
+                </Row>
+              ))}
+            </Container>
             <DownloadCSV
               data={displayedFundList}
               fileName={"Funds - " + DBdeal.Deal_Name}
@@ -95,7 +99,7 @@ export default function Funds({ DBdeal, setDBfund }) {
             />
           </>}
         {displayedFundList.length === 0 && <h6>No Funds mapped</h6>}
-        <Button onClick={() => navigate("/")}>Done</Button>
+        <Button onClick={() => navigate("/")} className='m-3'>Done</Button>
         <br></br>
         {pageMsg}
       </center>

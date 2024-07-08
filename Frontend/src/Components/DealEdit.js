@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import { ARC_handleSelectChange_NULL, ARC_handleDateChange_NULL } from '../ARC/ChangeFields';
 import { Button, Container, Row, Col } from 'react-bootstrap';
+import { ARC_handleSelectChange_NULL, ARC_handleDateChange_NULL } from '../ARC/ChangeFields';
 
 export default function DealEdit({ deal, setGotDeals, setShowEditForm, setPageMsg }) {
 
@@ -68,7 +68,13 @@ export default function DealEdit({ deal, setGotDeals, setShowEditForm, setPageMs
     <div className="App">
       <center>
         <form id="MainForm" onSubmit={handleSubmit}>
-          <p>Editing Deal: <b>{deal.Deal_Name}</b></p>
+          {<Container className='displaySection'>
+            <Row>
+              <Col>Deal Name: <b>{deal.Deal_Name}</b></Col>
+              <Col>EntityCode: <b>{deal.Deal_Name_EntityCode}</b></Col>
+              <Col>ACDB_Deal_ID: <b>{deal.ACDB_Deal_ID}</b></Col>
+            </Row>
+          </Container>}
           <Container className='editSection'>
             <Row>
               <Col>

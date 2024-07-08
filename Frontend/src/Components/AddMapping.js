@@ -31,7 +31,6 @@ export default function AddMapping({ DBdeal, DBfund, setShowAddForm, setPageMsg 
       formData.append('Realized_Date', Realized_Date_final);
       formData.append('Commitment_Local', Commitment_Local_final);
       formData.append('Legal_Commitment_Local', Legal_Commitment_Local_final);
-      //formData.append('Modified_By', process.env.REACT_APP_USER_DEFAULT);
       formData.append('PIT', PIT_final);
       formData.append('range_from', Range_From_final);
       formData.append('range_to', Range_To_final);
