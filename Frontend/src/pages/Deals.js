@@ -107,7 +107,6 @@ export default function Deals({ setDBdeal }) {
               search_parameters={search_parameters}
               placeholder={"Search Deals"}>
             </Search>
-            <br></br>
             <Container>
               <Row align="center">
                 <Col><b>Edit</b></Col>
@@ -149,8 +148,7 @@ export default function Deals({ setDBdeal }) {
             fileName={"All Deals"}
             columns={columns}
           />}
-        <br></br>
-        {pageMsg}
+        <p>{pageMsg}</p>
       </center>
     </div>
   );

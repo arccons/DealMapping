@@ -77,7 +77,7 @@ export default function Funds({ DBdeal, setDBfund }) {
             <Container striped hover bordered align="middle" responsive>
               <Row>
                 <Col><b>Fund Name</b></Col>
-                <Col><b>Deal Mapping Currency</b></Col>
+                <Col><b>Mapping Currency</b></Col>
                 <Col><b>Active/Realized</b></Col>
                 <Col><b>Realized Date</b></Col>
                 <Col><b>Mapping</b></Col>

@@ -80,9 +80,9 @@ def checkDeals(parsedFile):
         if (failedPair == None and failedCode == None):
             return list(fileDF.index)
         elif (failedPair != None and failedCode == None):
-            return list((fileDF.loc[(fileDF['Deal_Name_EntityCode'] == failedPair[0]) & (fileDF['Deal_Name'] == failedPair[1])]).index)
+            return list(fileDF.loc[(fileDF['Deal_Name_EntityCode'] == failedPair[0]) & (fileDF['Deal_Name'] == failedPair[1])].index)
         elif (failedPair == None and failedCode != None):
-            return list((fileDF.loc[fileDF['Deal_Name_EntityCode'] == failedCode]).index)
+            return list(fileDF.loc[fileDF['Deal_Name_EntityCode'] == failedCode].index)
         else:
             return None
 
@@ -128,17 +128,18 @@ def checkMappings(As_Of_Date, parsedFile):
     uniquePairs_mapping = pandas.Series(fileDF["Deal_Code_TO_Fund_Name"]).unique()
     uniqueCodes = pandas.Series(fileDF["Deal Code"]).unique()
     uniqueNames = pandas.Series(fileDF["Deal Name"]).unique()
+    #print(fileDF)
 
     def getFailedMappingRows(failedDealPair = None, failedMappingPair = None, failedCode = None):
         if (failedDealPair is None and failedMappingPair is None):
             if failedCode is None:
                 return list(fileDF.index)
             else:
-                return list((fileDF.loc[fileDF['Deal Code'] == failedCode]).index)
+                return list(fileDF.loc[fileDF['Deal Code'] == failedCode].index)
         elif failedDealPair is not None:
-            return list((fileDF.loc[(fileDF['Deal Code'] == failedDealPair[0]) & (fileDF['Deal Name'] == failedDealPair[1])]).index)
+            return list(fileDF.loc[(fileDF['Deal Code'] == failedDealPair[0]) & (fileDF['Deal Name'] == failedDealPair[1])].index)
         elif failedMappingPair is not None:
-            return list((fileDF.loc[(fileDF['Deal Code'] == failedMappingPair[0]) & (fileDF['Fund Name'] == failedMappingPair[1])]).index)
+            return list(fileDF.loc[(fileDF['Deal Code'] == failedMappingPair[0]) & (fileDF['Fund Name'] == failedMappingPair[1])].index)
         return None
 
     ruleRetVal = checkUnique(uniquePairs_mapping, uniqueCodes, uniqueNames)

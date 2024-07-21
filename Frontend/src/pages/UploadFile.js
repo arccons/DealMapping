@@ -141,19 +141,14 @@ export default function UploadFile({ objType, checkURL, submitURL, columns }) {
 
    return (
       <>
-         <h5>Check {objType}</h5>
-         <form id="FileForm">
-            <label htmlFor="fileToUpload">Select File:</label>
-            <CSVReader id="fileToUpload"
-               required
-               onFileLoaded={(data, fileInfo, originalFile) => handleFileSelect(data)}
-            />
-            <p id="fileError"></p>
-            <b>{objType === "Mappings" && "Applicable to " + applicableDate}</b>
-            <br></br>
-            {fileSelected && <Button onClick={handleFileCheck}>Check File</Button>}
-         </form>
+         <CSVReader id="fileToUpload"
+            required
+            onFileLoaded={(data, fileInfo, originalFile) => handleFileSelect(data)}
+         />
+         <p id="fileError"></p>
+         <b>{objType === "Mappings" && "Applicable to " + applicableDate}</b>
          <br></br>
+         {fileSelected && <Button onClick={handleFileCheck}>Check File</Button>}
          {showResults &&
             <Results
                parsedFile={parsedFile}
