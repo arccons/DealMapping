@@ -19,13 +19,13 @@ mappingFileColumns = ["Deal Name", "Deal Code", "Liquid / Illiquid", "Strategy",
 ############################### BEGIN RULES ###############################
 def checkUnique(uniquePairs, uniqueCodes, uniqueNames):
     # Check FILE
-    if uniqueCodes.size != uniquePairs.size or uniqueNames.size != uniquePairs.size:
+    if len(uniqueCodes) != len(uniquePairs) or len(uniqueNames) != len(uniquePairs):
         return {"retVal": False, "fileFailed": True}
 
     return {"retVal": True, "fileFailed": None}
 
 def checkDealCodeValues(uniqueCodes):
-    for dealCode in pandas.Series(uniqueCodes).array:
+    for dealCode in uniqueCodes:
         sql_stmt = DB.checkDealCodeValuesSQL(dealCode)
         print(sql_stmt)
         entryCount = readCursor.execute(sql_stmt).fetchall()
@@ -35,31 +35,47 @@ def checkDealCodeValues(uniqueCodes):
     return {"retVal": True, "failedCode": None}
 
 def checkDealCode(uniquePairs):
-    for pair in pandas.Series(uniquePairs).array:
-        sql_stmt = DB.checkDealCodeSQL(pair[0], pair[1])
+    for pair in uniquePairs:
+        sql_stmt = DB.checkDealNameCountSQL(pair[0], pair[1])
         print(sql_stmt)
         entryCount = readCursor.execute(sql_stmt).fetchall()
         if entryCount[0][0] > 0:
             return {"retVal": False, "failedPair": pair}
+        sql_stmt = DB.getDealNamesSQL(pair[0])
+        print(sql_stmt)
+        dealNames = readCursor.execute(sql_stmt).fetchall()
+        if len(dealNames) > 1:
+            return {"retVal": False, "failedPair": pair}
+        for name in dealNames:
+            if pair[1] != name:
+                return {"retVal": False, "failedPair": pair}
 
     return {"retVal": True, "failedPair": None}
 
 def checkDealName(uniquePairs):
-    for pair in pandas.Series(uniquePairs).array:
-        sql_stmt = DB.checkDealNameSQL(pair[1], pair[0])
+    for pair in uniquePairs:
+        sql_stmt = DB.checkDealCodeCountSQL(pair[1], pair[0])
         print(sql_stmt)
         entryCount = readCursor.execute(sql_stmt).fetchall()
         if entryCount[0][0] > 0:
             return {"retVal": False, "failedPair": pair}
+        sql_stmt = DB.getDealCodesSQL(pair[1])
+        print(sql_stmt)
+        dealCodes = readCursor.execute(sql_stmt).fetchall()
+        if len(dealCodes) > 1:
+            return {"retVal": False, "failedPair": pair}
+        for code in dealCodes:
+            if pair[0] != code:
+                return {"retVal": False, "failedPair": pair}
 
     return {"retVal": True, "failedPair": None}
 
 def checkInvestmentValues(As_Of_Date, uniquePairs_mapping):
-    for pair in pandas.Series(uniquePairs_mapping).array:
+    for pair in uniquePairs_mapping:
         sql_stmt = DB.checkInvestmentValuesSQL(As_Of_Date, pair[0], pair[1])
         print(sql_stmt)
         entryCount = readCursor.execute(sql_stmt).fetchall()
-        if entryCount[0][0] > 1:
+        if entryCount[0][0] > 0:
             return {"retVal": False, "failedPair": pair}
 
     return {"retVal": True, "failedPair": None}
@@ -70,9 +86,9 @@ def checkDeals(parsedFile):
 
     fileDF = pandas.DataFrame(parsedFile, columns=dealFileColumns)
     fileDF["Deal_Code_TO_Deal_Name"] = list(zip(fileDF["Deal_Name_EntityCode"], fileDF["Deal_Name"]))
-    uniquePairs = pandas.Series(fileDF["Deal_Code_TO_Deal_Name"]).unique()
-    uniqueCodes = pandas.Series(fileDF["Deal_Name_EntityCode"]).unique()
-    uniqueNames = pandas.Series(fileDF["Deal_Name"]).unique()
+    uniquePairs = pandas.Series(fileDF["Deal_Code_TO_Deal_Name"]).unique().tolist()
+    uniqueCodes = pandas.Series(fileDF["Deal_Name_EntityCode"]).unique().tolist()
+    uniqueNames = pandas.Series(fileDF["Deal_Name"]).unique().tolist()
 
     DEAL_RESULTS = [[], [], [], []]
 
@@ -124,10 +140,10 @@ def checkMappings(As_Of_Date, parsedFile):
     fileDF = pandas.DataFrame(parsedFile, columns=mappingFileColumns)
     fileDF["Deal_Code_TO_Deal_Name"] = list(zip(fileDF["Deal Code"], fileDF["Deal Name"]))
     fileDF["Deal_Code_TO_Fund_Name"] = list(zip(fileDF["Deal Code"], fileDF["Fund Name"]))
-    uniquePairs_deal = pandas.Series(fileDF["Deal_Code_TO_Deal_Name"]).unique()
-    uniquePairs_mapping = pandas.Series(fileDF["Deal_Code_TO_Fund_Name"]).unique()
-    uniqueCodes = pandas.Series(fileDF["Deal Code"]).unique()
-    uniqueNames = pandas.Series(fileDF["Deal Name"]).unique()
+    uniquePairs_deal = pandas.Series(fileDF["Deal_Code_TO_Deal_Name"]).unique().tolist()
+    uniquePairs_mapping = pandas.Series(fileDF["Deal_Code_TO_Fund_Name"]).unique().tolist()
+    uniqueCodes = pandas.Series(fileDF["Deal Code"]).unique().tolist()
+    uniqueNames = pandas.Series(fileDF["Deal Name"]).unique().tolist()
     #print(fileDF)
 
     def getFailedMappingRows(failedDealPair = None, failedMappingPair = None, failedCode = None):

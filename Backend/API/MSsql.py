@@ -57,8 +57,6 @@ def insertMappingSQL(As_Of_Date, ACDB_Deal_ID, Fund_Name, Deal_Mapping_Currency,
     Realized_Date_str = f""
     if Realized_Date != '':
         Realized_Date_str = f"'{Realized_Date}'"
-    #else:
-        #Realized_Date_str = f"NULL"
 
     sql_stmt_1 = f" '{As_Of_Date}', {ACDB_Deal_ID}, '{Fund_Name}', '{Deal_Mapping_Currency}', '{Realized_Active}'"
     sql_stmt_2 = f", {Realized_IRR}, {Realized_MOIC}, {Realized_PnL}, {Realized_Date_str}, 1.0"
@@ -83,21 +81,30 @@ def updateMappingSQL(As_Of_Date, ACDB_Deal_ID, Fund_Name,
     return sql_stmt_1 + sql_stmt_2 + sql_stmt_3 + sql_stmt_4 + sql_stmt_5
 
 def checkDealCodeValuesSQL(Deal_Name_EntityCode):
-    sql_stmt_1 = f"SELECT COUNT(DISTINCT Deal_Name) FROM {DBstr}.deal"
-    sql_stmt_2 = f" WHERE Deal_Name_EntityCode = '{Deal_Name_EntityCode}'"
-    return sql_stmt_1 + sql_stmt_2
+    sql_stmt_1 = f"SELECT COUNT(DISTINCT Deal_Name) FROM {DBstr}.deal WHERE Deal_Name_EntityCode = '{Deal_Name_EntityCode}'"
+    return sql_stmt_1
 
-def checkDealNameSQL(Deal_Name, Deal_Name_EntityCode):
+def checkDealCodeCountSQL(Deal_Name, Deal_Name_EntityCode):
     sql_stmt_1 = f"SELECT COUNT(*) FROM {DBstr}.deal"
     sql_stmt_2 = f" WHERE Deal_Name = '{Deal_Name}' AND Deal_Name_EntityCode <> '{Deal_Name_EntityCode}'"
     return sql_stmt_1 + sql_stmt_2
 
-def checkDealCodeSQL(Deal_Name_EntityCode, Deal_Name):
+def getDealCodesSQL(Deal_Name):
+    sql_stmt_1 = f"SELECT DISTINCT Deal_Name_EntityCode FROM {DBstr}.deal WHERE Deal_Name = '{Deal_Name}'"
+    return sql_stmt_1
+
+def checkDealNameCountSQL(Deal_Name_EntityCode, Deal_Name):
     sql_stmt_1 = f"SELECT COUNT(*) FROM {DBstr}.deal"
     sql_stmt_2 = f" WHERE Deal_Name_EntityCode = '{Deal_Name_EntityCode}' AND Deal_Name <> '{Deal_Name}'"
     return sql_stmt_1 + sql_stmt_2
 
+def getDealNamesSQL(Deal_Name_EntityCode):
+    sql_stmt_1 = f"SELECT DISTINCT Deal_Name FROM {DBstr}.deal WHERE Deal_Name_EntityCode = '{Deal_Name_EntityCode}'"
+    return sql_stmt_1
+
 def checkInvestmentValuesSQL(As_Of_Date, Deal_Name_EntityCode, Fund_Name):
     sql_stmt_1 = f"SELECT COUNT(DISTINCT As_Of_Date) FROM {DBstr}.mapping_history_v"
-    sql_stmt_2 = f" WHERE Deal_Name_EntityCode = '{Deal_Name_EntityCode}' AND Fund_Name = '{Fund_Name}'"
-    return sql_stmt_1 + sql_stmt_2
+    sql_stmt_2 = f" WHERE Deal_Name_EntityCode = '{Deal_Name_EntityCode}'"
+    sql_stmt_3 = f" AND Fund_Name = '{Fund_Name}'"
+    sql_stmt_4 = f" AND As_Of_Date = '{As_Of_Date}'"
+    return sql_stmt_1 + sql_stmt_2 + sql_stmt_3 + sql_stmt_4

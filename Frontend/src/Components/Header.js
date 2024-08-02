@@ -8,9 +8,9 @@ export default function Header() {
                 <Navbar.Brand href="/about">Deal Mapping</Navbar.Brand>
                 <Nav className="me-auto" style={{ textDecorationColor: '100px' }}>
                     <Nav.Link href="/deals">Map Deals</Nav.Link>
-                    <Nav.Link href="/upload/deals">Upload Deals</Nav.Link>
+                    {/* <Nav.Link href="/upload/deals">Upload Deals</Nav.Link> */}
                     <Nav.Link href="/upload/mappings">Upload Mappings</Nav.Link>
-                    <Nav.Link href="/about/contact">Contact</Nav.Link>
+                    {/* <Nav.Link href="/about/contact">Contact</Nav.Link> */}
                 </Nav>
             </Navbar>
         </Container>
