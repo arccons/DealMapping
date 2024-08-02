@@ -3,4 +3,3 @@ migrations
 .env
 Archive
 db.sqlite3
-Test Data

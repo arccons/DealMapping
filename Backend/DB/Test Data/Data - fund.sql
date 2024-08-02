@@ -1,0 +1,8 @@
+fund_name, local_cmmt, is_active, realized_irr, realized_pnl, realized_date, legal_cmmt, ic_pm_adj, realized_moic
+Fund F01, 100000000, 1, 0.25, 25000000, NULL, NULL, NULL, NULL
+Fund F01, 50000000, 0, 0.25, 12000000, NULL, NULL, NULL, NULL
+Fund F02, 13000000, 0, 1.01, 130000, NULL, NULL, NULL, NULL
+Fund F03, 125000000, 1, 0.2, 25000000, 2024-03-31, NULL, NULL, NULL
+Fund F03, 30000000, 1, 0.07, 210000, NULL, NULL, NULL, NULL
+Fund F04, 7000000, 0, 0.1, 700000, 2023-12-31, NULL, NULL, NULL
+Fund F05, 25000000, 0, 0.25, 6250000, NULL, NULL, NULL, NULL
